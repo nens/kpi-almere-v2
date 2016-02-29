@@ -42,7 +42,6 @@ class App extends Component {
 		localStorage.setItem('access_token', parsedQueryParams.access_token);
 	    var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
 	    window.history.pushState({path:newurl},'',newurl);
-		window.location.reload();
 	}  
 
 	const overlay = this.state.map;
