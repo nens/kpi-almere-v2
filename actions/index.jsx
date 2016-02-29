@@ -39,7 +39,7 @@ function loginError(message) {
 // dispatches actions along the way
 export function loginUser() {
 
-  let currentOrigin = window.location.origin;
+  let currentOrigin = window.location.href;
   let portal = 'MOFZd4DTHhn0yx4qCJtIe8XdGUGK35StkgPUf8iNJv22AqCviQcwEVIXk3qZcnVh';
 
   return dispatch => {
@@ -77,6 +77,7 @@ function receiveLogout() {
 // Logs the user out
 export function logoutUser() {
   return dispatch => {
+    let currentOrigin = window.location.href;
   	localStorage.removeItem('access_token');
   	window.location.href = `https://sso.lizard.net/accounts/logout/?next=${currentOrigin}`;
   };
