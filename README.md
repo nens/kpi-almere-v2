@@ -6,6 +6,13 @@ This is the 2nd iteration of the [KPI prototype](http://nens.github.io/kpi-proto
 Goal of this prototype is to connect it to the Lizard 6 API.
 
 
+
+Demo
+----
+
+[http://nens.github.io/kpi-almere-v2/](http://nens.github.io/kpi-almere-v2/)
+
+
 State shape
 -----------
 
