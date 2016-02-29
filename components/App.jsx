@@ -40,13 +40,7 @@ class App extends Component {
 	let parsedQueryParams = queryString.parse(location.search);
 	if(parsedQueryParams.access_token) {
 		localStorage.setItem('access_token', parsedQueryParams.access_token);
-		// dispatch(receiveLogin(access_token))
-		// if (history.pushState) {
-		//     var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-		//     window.history.pushState({path:newurl},'',newurl);
-		// } else {
-			window.location.href='/';	
-		// }	
+		window.location.reload();
 	}  
 
 	const overlay = this.state.map;
