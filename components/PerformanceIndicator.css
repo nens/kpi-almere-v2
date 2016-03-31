@@ -1,0 +1,38 @@
+.PerformanceIndicator {
+	padding: 0;
+	margin: 10px 0 0 0;
+	width: 350px;
+}
+.title {
+	text-transform: uppercase;
+	border-bottom: 1px solid #3D3F4B;
+	color: #ACAFCB;
+	font-weight: 300;
+	font-size: 1em;
+}
+
+
+
+.PerformanceIndicatorDigit {
+	font-size: 1.2em;
+}
+.BarChart {
+	height: 100px;
+}
+
+
+.showValuesLabel {
+	font-weight: 100;
+	font-size: .85em;
+	margin: 0 0 0 5px;
+	cursor: pointer;
+}
+.showValuesCheckbox {
+	margin: 0 0 0 0;	
+}
+
+.AxisLabel {
+	fill: white;
+	font-size: 0.9em;
+}
+

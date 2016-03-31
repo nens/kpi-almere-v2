@@ -3,37 +3,65 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux'
-
-import kpiApp from './reducers';
 import fetch from 'isomorphic-fetch';
-import createLogger from 'redux-logger';
-import App from './components/App';
+import _ from 'underscore';
+import topojson from 'topojson';
+import App from './components/App2.jsx';
 
-import thunkMiddleware from 'redux-thunk';
-import api from './middleware/api';
-
-
-const loggerMiddleware = createLogger();
+var data;
 
 
-let createStoreWithMiddleware = applyMiddleware(thunkMiddleware, api)(createStore);
-let store = createStoreWithMiddleware(kpiApp);
-let rootElement = document.getElementById('root');
-
-
-
-
-function render() {
+function render(data) {
   	ReactDOM.render(
-  		<Provider 
-  			store={store}>
-  			<App />
-  		</Provider>, rootElement
+		<App data={data} />, 
+		document.getElementById('root')
 	);
 }
 
-render();
-store.subscribe(render);
+fetch('./us.topojson')
+    .then(function(response) {
+        if (response.status >= 400) {
+            throw new Error("Bad response from server");
+        }
+        return response.json();
+    })
+    .then(function(geo) {
+    	var buurten_topojson = topojson.feature(geo, geo.objects.counties);
+		data = {
+			chartdata: [
+			  {
+			    'title': 'Meldingen burgers - Ingediend',
+			    'data': [ 10, 20, 30, 40, 50, 60, 70, 80 ,90, 100, 15, 52 ],
+			    'values': [ 344, 200, 877, 1234, 232, 1600, 300, 900 ,910, 210, 400, 20 ],
+			  },
+			  {
+			    'title': 'Meldingen burgers - Afgehandeld',
+			    'data': _.shuffle([ 10, 20, 30, 40, 50, 60, 70, 80 ,90, 100, 15, 52 ]),
+			    'values': [ 344, 200, 877, 1234, 232, 1600, 300, 900 ,910, 210, 400, 20 ],
+			  },
+			  {
+			    'title': 'Schadeclaims - Toegekend',
+			    'data': _.shuffle([ 10, 20, 30, 40, 50, 60, 70, 80 ,90, 100, 15, 52 ]),
+			    'values': [ 344, 200, 877, 1234, 232, 1600, 300, 900 ,910, 210, 400, 20 ],
+			  },
+			  {
+			    'title': 'Enquete - Tevredenheid',
+			    'data': _.shuffle([ 10, 20, 30, 40, 50, 60, 70, 80 ,90, 100, 15, 52 ]),
+			    'values': [ 344, 200, 877, 1234, 232, 1600, 300, 900 ,910, 210, 400, 20 ],
+			  },
+			  {
+			    'title': 'Enquete - Tevredenheid',
+			    'data': _.shuffle([ 10, 20, 30, 40, 50, 60, 70, 80 ,90, 100, 15, 52 ]),
+			    'values': [ 344, 200, 877, 1234, 232, 1600, 300, 900 ,910, 210, 400, 20 ],
+			  },
+			  {
+			    'title': 'Enquete - Tevredenheid',
+			    'data': [ 10, 20, 30, 40, 50, 60, 70, 80 ,90, 100, 15, 52 ],
+			    'values': [ 344, 200, 877, 1234, 232, 1600, 300, 900 ,910, 210, 400, 20 ],
+			  },
+			], mapdata: buurten_topojson
+		}    	
+		render(data);
+    });
+
+

@@ -1,0 +1,27 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.map{
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+
+.zoombutton {
+	position: absolute;
+	top: 59px;
+	right: 10px;
+	z-index: 99999999;
+}
+
+.barChart {
+  position: relative;
+  z-index: 9999999;
+  /*border: 1px solid red;*/
+}

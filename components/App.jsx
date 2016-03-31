@@ -3,66 +3,36 @@
 import styles from './App.css';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
-import MapGL from 'react-map-gl';
-import { connect } from 'react-redux';
-import { loginUser } from '../actions';
-import { receiveLogin } from '../actions';
-import { Button, Grid, Nav, Navbar, NavItem, NavDropdown, MenuItem, Jumbotron } from 'react-bootstrap';
-import { Provider } from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
-import Auth from './Auth';
+import { Button, Grid, Nav, Col, Navbar, NavItem, NavDropdown, MenuItem, Jumbotron } from 'react-bootstrap';
+import Auth from './Auth.jsx';
+import KPIApp from './KPIApp.jsx';
+
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      map: {
-        width: '100%',
-        height: 900,
-        latitude: 52.3749,
-        longitude: 5.2212,
-        zoom: 12,
-        mapStyle: 'mapbox://styles/mapbox/streets-v8',
-        mapboxApiAccessToken: 'pk.eyJ1IjoibmVsZW5zY2h1dXJtYW5zIiwiYSI6ImhkXzhTdXcifQ.3k2-KAxQdyl5bILh_FioCw'
-      }
+    	'access_token': (localStorage.getItem('access_token')) ? localStorage.getItem('access_token') : undefined,
+    	'portal': 'MOFZd4DTHhn0yx4qCJtIe8XdGUGK35StkgPUf8iNJv22AqCviQcwEVIXk3qZcnVh'
     }    
   }
 
-  onChangeViewport(opt) {
-    this.setState({
-      map: Object.assign({}, this.state.map, opt)
-    });
+  componentDidMount() {
+	let parsedQueryParams = queryString.parse(window.location.search);
+	if(parsedQueryParams.access_token) {
+		localStorage.setItem('access_token', parsedQueryParams.access_token);
+		this.setState({'access_token': parsedQueryParams.access_token});
+		var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+		window.history.pushState({path:newurl},'',newurl);
+	}    
   }
 
   render() {	
-    const { access_token, isAuthenticated, errorMessage, dispatch } = this.props
-
-	let parsedQueryParams = queryString.parse(location.search);
-	if(parsedQueryParams.access_token) {
-		localStorage.setItem('access_token', parsedQueryParams.access_token);
-	    var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-	    window.history.pushState({path:newurl},'',newurl);
-	}  
-
-	const overlay = this.state.map;
-
-	var map;
-	if(this.props.isAuthenticated) {
-		map = <MapGL
-	        {...overlay}
-	        className={styles.map}
-	        onChangeViewport={this.onChangeViewport.bind(this)} >
-	      </MapGL>;
-	} else {
-		map = <Grid><Jumbotron>
-			    <h2>Almere KPI Dashboard</h2>
-			    <p>Om gebruik te kunnen maken van dit KPI dashboard vragen wij u om in te loggen via Open Water ID.</p>
-			  </Jumbotron></Grid>;
-	}
+	let kpiapp = (this.state.access_token) ? <KPIApp portal={this.state.portal} access_token={this.state.access_token} /> : <Grid><Col md={12}><h3>Log in via Open Water ID</h3><p>(klik rechtsboven a.u.b.)</p></Col></Grid>;
 
     return (
-      <div>
-		  <Navbar inverse>
+      <div id="main">
+		  <Navbar inverse style={{zIndex:999999}}>
 		    <Navbar.Header>
 		      <Navbar.Brand>
 		        <a href="#">KPI Almere</a>
@@ -71,37 +41,16 @@ class App extends Component {
 		    </Navbar.Header>
 		    <Navbar.Collapse>
 		      <Auth 
-		        access_token={localStorage.getItem('access_token')}
-		        isAuthenticated={isAuthenticated}
-		        errorMessage={errorMessage}
-		      	dispatch={dispatch} />
+		      	portal={this.state.portal}
+		        access_token={this.state.access_token} />
 		    </Navbar.Collapse>
-		  </Navbar>	      
-
-		  {map}
+		  </Navbar>	  
+		  {kpiapp}
 	 </div>
     )
   }
 }
 
-App.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string,
-}
+App.propTypes = {}
 
-// These props come from the application's
-// state when it is started
-function mapStateToProps(state) {
-
-  const { auth } = state
-  const { isAuthenticated, errorMessage } = auth
-
-  return {
-    isAuthenticated,
-    errorMessage
-  }
-}
-
-
-export default connect(mapStateToProps)(App)
+export default App

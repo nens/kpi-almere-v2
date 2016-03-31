@@ -45,6 +45,30 @@ This object defines the applications initial/root state.
 
 
 
+Development
+-----------
+
+In the root of the project
+
+```
+$ npm start
+```
+Then open localhost:3000 in a webbrowser...
+
+
+
+
+Building for production
+-----------------------
+
+In the root of the project
+
+```
+$ NODE_ENV=production webpack -p --config webpack.production.config.js
+```
+
+
+
 
 TODO
 ----
@@ -61,4 +85,4 @@ TODO
 
  * Implement JWT auth (via https://sso.lizard.net/jwt/?portal=<portal-id>&next=<url>, see https://nxt.staging.lizard.net/doc/plugins.html)
 
- 
+ * http://fraserxu.me/2015/06/03/react-data-visualization/

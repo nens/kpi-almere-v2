@@ -1,0 +1,13 @@
+.PerformanceIndicatorList {
+	position: relative;
+	padding: 0;
+	margin: 10px 0 0 0;
+	width: 200px;
+}
+.title {
+	text-transform: uppercase;
+	border-bottom: 1px solid #3D3F4B;
+	color: #ACAFCB;
+	font-weight: 300;
+	font-size: 0.9em;
+}

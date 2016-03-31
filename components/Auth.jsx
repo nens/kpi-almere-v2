@@ -2,29 +2,43 @@
 
 import React, { Component, PropTypes } from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
-import Login from './Login'
-import Logout from './Logout'
-import { loginUser, logoutUser } from '../actions'
+import Login from './Login.jsx'
+import Logout from './Logout.jsx'
+
 
 class Auth extends Component {
   constructor(props) {
     super(props)
   }
 
+  performLogin() {
+    console.log('performLogin()');
+    let currentOrigin = window.location.href;
+    window.location.href = `https://sso.lizard.net/jwt?next=${currentOrigin}&portal=${this.props.portal}`;      
+  }
+
+  performLogout() {
+    console.log('performLogout');
+    localStorage.removeItem('access_token');
+    let currentOrigin = window.location.href;
+    window.location.href = `https://sso.lizard.net/accounts/logout/?next=${currentOrigin}`;
+  }  
+
   render() {
-    const { dispatch, access_token, isAuthenticated, errorMessage } = this.props;
+    const { access_token, portal } = this.props;
 
     return (
 	  <Nav pullRight>
         {!access_token &&
-          <Login
-            errorMessage={errorMessage}
-            onLoginClick={ () => dispatch(loginUser()) }
+          <Login 
+            onLoginClick={ () => this.performLogin() }
           />
         }
 
         {access_token &&
-          <Logout onLogoutClick={() => dispatch(logoutUser())} />
+          <Logout 
+            onLogoutClick={ () => this.performLogout() }
+          />
         }
 	  </Nav>
     )
@@ -32,9 +46,7 @@ class Auth extends Component {
 }
 
 Auth.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string	
+  access_token: PropTypes.string
 }
 
 export default Auth

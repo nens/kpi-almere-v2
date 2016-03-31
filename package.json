@@ -10,21 +10,30 @@
   "license": "MIT",
   "dependencies": {
     "brfs": "^1.4.3",
-    "d3": "3.5.6",    
+    "d3": "3.5.6",   
+    "jquery": "2.2.1", 
     "isomorphic-fetch": "2.2.1",
     "json-loader": "^0.5.4",
-    "react-map-gl": "0.6.4",
-    "viewport-mercator-project": "",    
+    "leaflet": "0.7.3",
+    "leaflet-hash": "0.2.1",    
     "react": "^0.14.7",
     "react-bootstrap": "0.28.3",
     "react-dom": "^0.14.7",
     "react-redux": "^4.2.1",
+    "react-micro-bar-chart": "",
     "redux": "^3.2.1",
     "redux-thunk": "1.0.3",
     "redux-logger": "2.6.0",
-    "query-string": "",
+    "query-string": "3.0.1",
     "transform-loader": "^0.2.3",    
-    "webworkify-webpack": "^1.0.4"
+    "webworkify-webpack": "^1.0.4",
+    "underscore": "1.8.3",
+    "underscore.string": "3.3.4",
+    "turf": "2.0.2",
+    "topojson": "1.6.24",
+    "react-count-to": "0.4.2",
+    "react-addons-create-fragment": "0.14.7",
+    "velocity-react": ""
   },
   "devDependencies": {
     "babel-core": "^6.3.15",
@@ -34,10 +43,11 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-preset-react-hmre": "^1.0.1",
+    "babel-plugin-transform-class-properties": "6.6.0",
     "babel-register": "^6.3.13",
     "cross-env": "^1.0.7",
-    "css-loader": "",
-    "style-loader": "",    
+    "css-loader": "0.23.1",
+    "style-loader": "0.13.0",    
     "expect": "^1.6.0",
     "express": "^4.13.3",
     "jsdom": "^5.6.1",
@@ -47,6 +57,7 @@
     "redux-devtools": "3.1.1",
     "webpack": "^1.9.11",
     "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.2.0"
+    "webpack-hot-middleware": "^2.2.0",
+    "url-loader": "0.5.7"
   }
 }
