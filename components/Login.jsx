@@ -7,16 +7,16 @@ export default class Login extends Component {
 
   handleClick(event) {
     this.props.onLoginClick()
-  }     
+  }
 
   render() {
-    const { errorMessage } = this.props
+    const { errorMessage } = this.props;
 
     return (
       <div>
-        <Button onClick={(event) => this.handleClick(event)} 
-                className={styles.loginButton} 
-                bsStyle='primary' 
+        <Button onClick={(event) => this.handleClick(event)}
+                className={styles.loginButton}
+                bsStyle='primary'
                 bsSize='small'>
           Login
         </Button>

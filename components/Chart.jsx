@@ -1,11 +1,46 @@
-/*jshint esnext: true*/
-
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import d3 from 'd3';
+import _string from 'underscore.string';
 
+class Chart extends Component {
 
+  defaultProps = {
+    width: 350,
+    height: 100,
+    type: 'BarChart',
+  }
 
-Chart.propTypes = {}
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    // create chart and do first data bind
+  }
+
+  componentDidUpdate() {
+    // update chart with new data
+  }
+
+  componentWillUnmount() {
+    // cleanup after chart
+  }
+
+  render() {
+    return (
+      <div className={`pi-chart ${_string.dasherize(this.props.type)}`}>
+        <svg width={this.props.width} height={this.props.height}>
+          {this.props.children}
+        </svg>
+      </div>
+    );
+  }
+}
+
+Chart.propTypes = {
+  children: PropTypes.object,
+  height: PropTypes.number,
+  type: PropTypes.number,
+  width: PropTypes.number,
+};
 
 export default Chart;
