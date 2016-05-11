@@ -41,7 +41,7 @@ Technical
 
  * [CSS modules](https://github.com/css-modules/css-modules) for styling
 
- * [velocity-react](velocity-react) for fast animation (in Chart component)
+ * [velocity-react](https://github.com/twitter-fabric/velocity-react/) for fast animation (in Chart component)
 
  * [Webpack](https://webpack.github.io/) and [HMR](https://webpack.github.io/docs/hot-module-replacement.html) for module bundling / building
 
