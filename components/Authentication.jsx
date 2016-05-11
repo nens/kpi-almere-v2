@@ -18,7 +18,7 @@ class Authentication extends Component {
   render() {
     return (
       <div className={styles.Authentication}>
-       <Button bsSize="xsmall" onClick={this._handleClick}>Login</Button>
+       <Button bsSize="xsmall" onClick={this._handleClick}>{(this.props.username) ? this.props.username : 'Login'}</Button>
       </div>);
   }
 }

@@ -33,18 +33,39 @@ class DataSeries extends Component {
       .domain(d3.range(data.length))
       .rangeRoundBands([0, this.props.width], 0.8);
 
-    const bars = _.map(data, (point, i) => {
-      return (
-        <Bar
-          point={point}
-          height={yScale(point)}
-          width={xScale.rangeBand()}
-          offset={xScale(i)}
-          availableHeight={props.height}
-          color={props.color}
-          key={i} />
-      );
-    });
+    let bars = [];
+    if(data.length > 50) {
+      bars = _.map(data, (point, i) => {
+        return (
+          <Bar
+            showValues={this.props.showValues}
+            point={point}
+            height={yScale(point)}
+            width={xScale.rangeBand()}
+            offset={xScale(i)}
+            availableHeight={props.height}
+            color={props.color}
+            show={(i % 2)}
+            key={i} />
+        );
+      });
+    } else {
+      bars = _.map(data, (point, i) => {
+        return (
+          <Bar
+            showValues={this.props.showValues}
+            point={point}
+            height={yScale(point)}
+            width={xScale.rangeBand()}
+            offset={xScale(i)}
+            availableHeight={props.height}
+            color={props.color}
+            show={1}
+            key={i} />
+        );
+      });
+    }
+
     return (
       <g>{bars}</g>
     );
@@ -53,6 +74,7 @@ class DataSeries extends Component {
 
 DataSeries.propTypes = {
   height: PropTypes.number,
+  showValues: PropTypes.bool,
   width: PropTypes.number,
 };
 

@@ -30,6 +30,12 @@ class Chart extends Component {
       <div className={`pi-chart ${_string.dasherize(this.props.type)}`}>
         <svg width={this.props.width} height={this.props.height}>
           {this.props.children}
+          <rect fill={'#65B59A'}
+                width={2000}
+                height={2}
+                x={0}
+                y={99}>
+          </rect>
         </svg>
       </div>
     );

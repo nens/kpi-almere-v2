@@ -15,7 +15,6 @@ class Bar extends Component {
   }
 
   render() {
-
     const textAnim = {
       opacity: 1,
       y: this.props.availableHeight - (this.props.height) - 4,
@@ -27,19 +26,22 @@ class Bar extends Component {
       y: this.props.availableHeight - this.props.height,
     };
 
+    const labelText = (this.props.show) ? <text opacity={0}
+          className={styles.AxisLabel}
+          x={this.props.offset - 4}
+          y={0}
+          fontSize={10}
+          fill="white">
+          {`${this.props.point} ${(this.props.showValues) ? '' : '%'}`}
+    </text> : <text/>;
+
     return (
       <svg>
         <VelocityComponent
           animation={textAnim}
           duration={500}
           runOnMount={false}>
-          <text opacity={0}
-                className={styles.AxisLabel}
-                x={this.props.offset - 4}
-                y={0}
-                fill="white">
-                {`${this.props.point}%`}
-          </text>
+          {labelText}
         </VelocityComponent>
         <VelocityComponent
           animation={anim}
@@ -53,12 +55,6 @@ class Bar extends Component {
             y={-20}>
           </rect>
         </VelocityComponent>
-        <rect fill={'#ffffff'}
-              width={20}
-              height={2}
-              x={this.props.offset - 7}
-              y={this.props.availableHeight - 2}>
-        </rect>
       </svg>
     );
   }
@@ -70,6 +66,8 @@ Bar.propTypes = {
   height: PropTypes.number,
   offset: PropTypes.number,
   point: PropTypes.number,
+  show: PropTypes.number,
+  showValues: PropTypes.bool,
   width: PropTypes.number,
 };
 

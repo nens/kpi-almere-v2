@@ -76,12 +76,24 @@ class PerformanceIndicatorList extends Component {
 
     const chartdata = this.props.data;
     const performanceindicators = chartdata.map((indicator, i) => {
-      return <PerformanceIndicator
-                key={i}
-                pid={i}
-                data={indicator.data}
-                values={indicator.values}
-                title={indicator.title} />;
+      const data = indicator[1].regions[0].aggregations.map((aggregation) => {
+        return aggregation.score;
+      });
+      const values = indicator[1].regions[0].aggregations.map((v) => {
+        return v.value;
+      });
+
+      if(indicator[0].boundary_type_name === this.props.selectedZoomLevel) {
+        return <PerformanceIndicator
+                  key={i}
+                  pid={i}
+                  data={data}
+                  values={values}
+                  referenceValue={indicator[0].reference_value}
+                  title={indicator[0].name} />;
+      } else {
+        return <div key={i} />;
+      }
     });
 
     return (

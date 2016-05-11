@@ -35,7 +35,7 @@ class PerformanceIndicator extends Component {
                  name="check" />
           <label className={styles.showValuesLabel} htmlFor={this.props.pid}>Toon waardes</label>
         </div>
-        <p className={styles.PerformanceIndicatorDigit}><CountTo to={900} speed={500} /></p>
+        <p className={styles.PerformanceIndicatorDigit}><CountTo to={this.props.referenceValue} speed={500} /></p>
 
         <Chart width={400} height={100}>
              <DataSeries
