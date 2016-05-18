@@ -4,6 +4,7 @@
 	width: 350px;
 }
 .title {
+  cursor: pointer;
 	text-transform: uppercase;
 	border-bottom: 1px solid #3D3F4B;
 	color: #ACAFCB;
@@ -28,11 +29,10 @@
 	cursor: pointer;
 }
 .showValuesCheckbox {
-	margin: 0 0 0 0;	
+	margin: 0 0 0 0;
 }
 
 .AxisLabel {
 	fill: white;
 	font-size: 0.9em;
 }
-

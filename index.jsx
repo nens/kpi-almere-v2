@@ -3,10 +3,13 @@ import queryString from 'query-string';
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import configureStore from './configureStore.jsx';
 import App from './components/App2.jsx';
 import jwtDecode from 'jwt-decode';
-import $ from 'jquery';
-import _ from 'underscore';
+
+// The following section is needed to get a JWT token for futher XHR requests
+// --------------------------------------------------------------------------
 
 const portal = 'MOFZd4DTHhn0yx4qCJtIe8XdGUGK35StkgPUf8iNJv22AqCviQcwEVIXk3qZcnVh';
 
@@ -37,57 +40,14 @@ if (localStorage.getItem('exp') && new Date(localStorage.getItem('exp') * 1000) 
   window.location.href = `https://sso.lizard.net/jwt?next=${currentOrigin}&portal=${portal}`;
 }
 
-function render(_data) {
-  ReactDOM.render(
-    <App
-      username={localStorage.getItem('username')}
-      data={_data} />,
-    document.getElementById('root')
-  );
-}
+// Now start the application by rendering it into the root div
+// -----------------------------------------------------------
 
-const regionEndpoint = $.ajax({
-  type: 'GET',
-  /* eslint-disable */
-  url: `https://nxt.staging.lizard.net/api/v2/regions/?type=9&within_portal_bounds=true&format=json&token=${localStorage.getItem('access_token')}`,
-  /* eslint-enable */
-  success: (data) => {
-    return data;
-  },
-});
+const store = configureStore();
 
-const piEndpoint = $.ajax({
-  type: 'GET',
-  url: `https://nxt.staging.lizard.net/api/v2/pi/?access_token=${localStorage.access_token}`,
-  success: (data) => {
-    return data;
-  },
-});
-
-Promise.all([piEndpoint, regionEndpoint]).then(([piResults, regionResults]) => {
-
-  // Now, get the details for every PI object
-  const piUrls = piResults.results.map((pi) => {
-    return $.ajax({
-      type: 'GET',
-      url: `${pi.url}?access_token=${localStorage.access_token}`,
-    });
-  });
-
-  Promise.all(piUrls).then((details) => {
-    // Combine the pi detail with the pi parent
-    const merged = _.zip(piResults.results, details);
-
-    const zoomlevels = _.unique(piResults.results.map((piresult) => {
-      return piresult.boundary_type_name;
-    }));
-
-    const data = {
-      regions: regionResults,
-      piData: merged,
-      zoomlevels: zoomlevels,
-    };
-    render(data);
-  });
-
-});
+ReactDOM.render(
+  <Provider store={store}>
+    <App username={localStorage.getItem('username')} />
+  </Provider>,
+  document.getElementById('root')
+);

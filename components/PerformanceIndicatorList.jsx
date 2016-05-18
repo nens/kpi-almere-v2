@@ -45,17 +45,22 @@ class PerformanceIndicatorList extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this._selectPi = this._selectPi.bind(this);
   }
 
   componentDidMount() {
+  }
+
+  _selectPi(indicator) {
+    this.props.selectPi(indicator);
   }
 
   render() {
 
     const enterAnimation = {
       animation: Animations.In,
-      stagger: 3000,
-      duration: 5000,
+      stagger: 0,
+      duration: 200,
       backwards: true,
       display: 'block',
       style: {
@@ -65,8 +70,8 @@ class PerformanceIndicatorList extends Component {
 
     const leaveAnimation = {
       animation: Animations.Out,
-      stagger: 3000,
-      duration: 5000,
+      stagger: 0,
+      duration: 200,
       backwards: true,
     };
 
@@ -76,28 +81,31 @@ class PerformanceIndicatorList extends Component {
 
     const chartdata = this.props.data;
     const performanceindicators = chartdata.map((indicator, i) => {
+      // console.log('indicator', indicator[0].name);
       const data = indicator[1].regions[0].aggregations.map((aggregation) => {
         return aggregation.score;
       });
       const values = indicator[1].regions[0].aggregations.map((v) => {
+        // console.log('v.value', v.value);
         return v.value;
       });
 
-      if(indicator[0].boundary_type_name === this.props.selectedZoomLevel) {
+      if (indicator[0].boundary_type_name === this.props.selectedZoomLevel) {
         return <PerformanceIndicator
                   key={i}
                   pid={i}
                   data={data}
                   values={values}
-                  referenceValue={indicator[0].reference_value}
-                  title={indicator[0].name} />;
-      } else {
+                  selectPi={this._selectPi}
+                  indicator={indicator[0]} />;
+      }
+      else {
         return <div key={i} />;
       }
     });
 
     return (
-      <div style={{ position: 'absolute', height: 800, width: 400, overflowY: 'scroll' }}>
+      <div style={{ position: 'absolute', height: 800, width: 400, overflowY: 'auto', msOverflowStyle: 'none' }}>
         <div className={styles.PerformanceIndicatorList}>
           <VelocityTransitionGroup component="div"
                                    className="flex-1"

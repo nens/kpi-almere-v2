@@ -62,6 +62,7 @@ class Map extends Component {
     }))
 
   render() {
+    if(this.props.data.length < 1) return <div/>;
     const scaleCenter = this.calculateScaleCenter(this.props.data.results);
     const projection = d3.geo.mercator()
       .scale(scaleCenter.scale)
@@ -72,6 +73,8 @@ class Map extends Component {
       ]);
 
     const pathGenerator = d3.geo.path().projection(projection);
+
+
 
     let paths = this.props.data.results.features.map((buurt, i) => {
       const colorClass = `${this.quantize(Math.random(0.15))}`;

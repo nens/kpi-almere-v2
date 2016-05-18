@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import d3 from 'd3';
-import _ from 'underscore';
 import Bar from './bar.jsx';
 
 class DataSeries extends Component {
@@ -34,8 +33,8 @@ class DataSeries extends Component {
       .rangeRoundBands([0, this.props.width], 0.8);
 
     let bars = [];
-    if(data.length > 50) {
-      bars = _.map(data, (point, i) => {
+    if (data.length > 50) {
+      bars = data.map((point, i) => {
         return (
           <Bar
             showValues={this.props.showValues}
@@ -49,8 +48,9 @@ class DataSeries extends Component {
             key={i} />
         );
       });
-    } else {
-      bars = _.map(data, (point, i) => {
+    }
+    else {
+      bars = data.map((point, i) => {
         return (
           <Bar
             showValues={this.props.showValues}
