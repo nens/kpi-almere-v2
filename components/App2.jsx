@@ -1,7 +1,12 @@
 import Stats from './Stats.jsx';
 import Map from './Map.jsx';
 import { connect } from 'react-redux';
-import { fetchPisIfNeeded, fetchRegionsifNeeded } from '../actions.jsx';
+import {
+  fetchPisIfNeeded,
+  fetchRegionsifNeeded,
+  setZoomLevel,
+  setRegion,
+} from '../actions.jsx';
 
 import Authentication from './Authentication.jsx';
 import PerformanceIndicatorList from './PerformanceIndicatorList.jsx';
@@ -30,15 +35,14 @@ class App extends Component {
   }
 
   _selectRegion(region) {
-    this.setState({
-      selectedRegion: region,
-    });
+    // this.setState({
+    //   selectedRegion: region,
+    // });
+    this.props.dispatch(setRegion(region));
   }
 
   _selectZoomLevel(zoomlevel) {
-    this.setState({
-      selectedZoomLevel: zoomlevel,
-    });
+    this.props.dispatch(setZoomLevel(zoomlevel));
   }
 
   _selectPi(indicator) {
@@ -49,8 +53,13 @@ class App extends Component {
   }
 
   render() {
+    // console.log('App is receiving these props:', this.props);
 
-    console.log('--------->', this.props);
+    const selectedRegionText = (this.props.region) ?
+      <span><i className="fa fa-building-o"></i>&nbsp;&nbsp;{this.props.region.properties.name || 'Onbekend'}</span> : '';
+
+    const selectedIndicatorText = (this.state.selectedIndicator) ?
+      <span><i className="fa fa-bar-chart"></i>&nbsp;&nbsp;{this.state.selectedIndicator.name || '...'}</span> : '';
 
     return (
      <Grid fluid>
@@ -64,25 +73,25 @@ class App extends Component {
           <Col md={8}>
             <BoundaryTypeSelect
               selectZoomLevel={this._selectZoomLevel}
-              selectedZoomLevel={this.state.selectedZoomLevel}
+              selectedZoomLevel={this.props.zoomlevel}
               zoomlevels={this.props.zoomlevels} />
 
             <Stats title={'Aantal wijken'} value={this.props.regions.count || 0} />
             <Stats title={'Aantal indicatoren'} value={this.props.indicators.length} />
 
-            <div>{this.state.selectedIndicator.name}</div>
-            <div>{_.get(this.state.selectedRegion, 'properties.name', '...')}</div>
+            <div>{selectedIndicatorText}</div>
+            <div>{selectedRegionText}</div>
 
             <Map
-              selectedZoomLevel={this.state.selectedZoomLevel}
+              selectedZoomLevel={this.props.zoomlevel}
               selectRegion={this._selectRegion}
-              selectedRegion={this.state.selectedRegion}
+              selectedRegion={this.props.region}
               data={this.props.regions}
             />
         </Col>
         <Col md={4}>
           <PerformanceIndicatorList
-            selectedZoomLevel={this.state.selectedZoomLevel}
+            selectedZoomLevel={this.props.zoomlevel}
             selectPi={this._selectPi}
             data={this.props.indicators}
           />
@@ -99,21 +108,15 @@ App.propTypes = {
 };
 
 function mapStateToProps(state) {
+  // This function maps the Redux state to React Props.
   const { pis } = state;
-
-  // const {
-  //   piData,
-  //   regions,
-  // } = pis || {
-  //   isFetching: true,
-  //   piData: [],
-  //   regions: [],
-  // };
 
   return {
     'indicators': pis.piData,
     'regions': pis.regions,
+    'region': pis.region,
     'zoomlevels': pis.zoomlevels,
+    'zoomlevel': pis.zoomlevel,
   };
 }
 

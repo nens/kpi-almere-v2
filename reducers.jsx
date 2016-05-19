@@ -4,6 +4,8 @@ import {
   RECEIVE_PIS,
   REQUEST_REGIONS,
   RECEIVE_REGIONS,
+  SET_ZOOMLEVEL,
+  SET_REGION,
 } from './actions.jsx';
 
 function pis(state = {
@@ -11,33 +13,36 @@ function pis(state = {
   didInvalidate: false,
   piData: [],
   regions: [],
+  zoomlevel: 'MUNICIPALITY',
 }, action) {
-
-  console.log('reducer pis() was called with state', state, 'and action', action);
-
+  // console.log('reducer pis() was called with state', state, 'and action', action);
   switch (action.type) {
   case REQUEST_PIS:
-    console.log('REQUEST_PIS was triggered');
     return Object.assign({}, state, {
       isFetching: true,
     });
   case RECEIVE_PIS:
-    console.log('RECEIVE_PIS was triggered');
     return Object.assign({}, state, {
       isFetching: false,
       piData: action.piData,
       zoomlevels: action.zoomlevels,
     });
   case REQUEST_REGIONS:
-    console.log('REQUEST_REGIONS');
     return Object.assign({}, state, {
       isFetching: true,
     });
   case RECEIVE_REGIONS:
-    console.log('RECEIVE_REGIONS');
     return Object.assign({}, state, {
       isFetching: false,
       regions: action.regions,
+    });
+  case SET_ZOOMLEVEL:
+    return Object.assign({}, state, {
+      zoomlevel: action.zoomlevel,
+    });
+  case SET_REGION:
+    return Object.assign({}, state, {
+      region: action.region,
     });
   default:
     return state;

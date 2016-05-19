@@ -32,7 +32,7 @@ class PerformanceIndicator extends Component {
       <div className={styles.PerformanceIndicator}>
         <p className={styles.title}
            onClick={() => this._handleSelectPi(this.props.indicator)}>
-             {this.props.indicator.name}
+           <i className="fa fa-bar-chart"></i>&nbsp;&nbsp;{this.props.indicator.name}
         </p>
         <div style={{ 'float': 'right' }}>
           <input onClick={this._handleClick}
@@ -44,7 +44,6 @@ class PerformanceIndicator extends Component {
           <label className={styles.showValuesLabel} htmlFor={this.props.pid}>Toon waardes</label>
         </div>
         <p className={styles.PerformanceIndicatorDigit}><CountTo to={this.props.indicator.reference_value} speed={500} /></p>
-
         <Chart width={400} height={100}>
              <DataSeries
                 showValues={this.state.showValues}

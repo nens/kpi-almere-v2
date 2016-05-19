@@ -62,7 +62,13 @@ class Map extends Component {
     }))
 
   render() {
-    if(this.props.data.length < 1) return <div/>;
+
+    console.log(this.props);
+
+    if (this.props.data.length < 1) {
+      return <div/>;
+    }
+
     const scaleCenter = this.calculateScaleCenter(this.props.data.results);
     const projection = d3.geo.mercator()
       .scale(scaleCenter.scale)
@@ -74,14 +80,17 @@ class Map extends Component {
 
     const pathGenerator = d3.geo.path().projection(projection);
 
-
-
     let paths = this.props.data.results.features.map((buurt, i) => {
+
+      const selectedColor = (this.props.selectedRegion && this.props.selectedRegion.id && buurt.id === this.props.selectedRegion.id) ? 'red': 'white';
+
       const colorClass = `${this.quantize(Math.random(0.15))}`;
       return <path
+              stroke={selectedColor}
               onClick={() => this._handleRegionClick(buurt)}
               d={pathGenerator(buurt.geometry)}
               className={styles[colorClass]}
+              style={{cursor:'pointer'}}
               key={i}>
             </path>;
     });
@@ -98,7 +107,7 @@ class Map extends Component {
                   cursor: 'pointer',
                 }}
                 className={styles.label}>
-                <p><i className="fa fa-circle"></i>&nbsp;&nbsp;{label.properties.name}</p>
+                <p><i className="fa fa-circle"></i>&nbsp;&nbsp;{label.properties.name || 'Onbekend'}</p>
               </div>;
     });
 

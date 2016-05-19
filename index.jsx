@@ -40,7 +40,8 @@ if (localStorage.getItem('exp') && new Date(localStorage.getItem('exp') * 1000) 
   window.location.href = `https://sso.lizard.net/jwt?next=${currentOrigin}&portal=${portal}`;
 }
 
-// Now start the application by rendering it into the root div
+// Start the application by rendering it into the root div,
+// while wrapping the root React Component in a Redux Provider
 // -----------------------------------------------------------
 
 const store = configureStore();

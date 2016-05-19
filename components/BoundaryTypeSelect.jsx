@@ -14,9 +14,7 @@ class BoundaryTypeSelect extends Component {
   }
 
   render() {
-    // console.log(' this.props.hasOwnProperty(zoomlevels) ------->',this.props.hasOwnProperty('zoomlevels'));
-    // console.log('===>>>>>>>>>', this.props.zoomlevels);
-    if(!this.props.zoomlevels) return <div/>;
+    if (!this.props.zoomlevels) return <div/>;
 
     const ZOOMLEVELS = {
       'DISTRICT': 'Wijk',
