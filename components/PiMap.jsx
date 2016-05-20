@@ -16,6 +16,35 @@ const style = {
 
 class Pimap extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+    this.redraw = this.redraw.bind(this);
+    // this._handleRegionClick = this._handleRegionClick.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.redraw);
+  }
+
+  // shouldComponentUpdate(nextProps) {
+  //   return !_.isEqual(this.props, nextProps);
+  // }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.redraw);
+  }
+
+  redraw() {
+    this.setState({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }
+
   render() {
     let choro = <div/>;
     if (this.props.data.results) {
@@ -45,12 +74,13 @@ class Pimap extends Component {
     const position = [initialLocation.lat, initialLocation.lng];
     return (
       <Map center={position}
+           zoomControl={false}
            zoom={initialLocation.zoom}
            style={{ position: 'absolute',
                     top: 0,
                     left: 0,
-                    width: window.innerWidth,
-                    height: window.innerHeight,
+                    width: this.state.width,
+                    height: this.state.height,
                   }}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
