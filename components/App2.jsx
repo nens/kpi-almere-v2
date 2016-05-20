@@ -1,11 +1,12 @@
 import Stats from './Stats.jsx';
-import Map from './Map.jsx';
+import Pimap from './PiMap.jsx';
 import { connect } from 'react-redux';
 import {
   fetchPisIfNeeded,
   fetchRegionsifNeeded,
   setZoomLevel,
   setRegion,
+  setIndicator,
 } from '../actions.jsx';
 
 import Authentication from './Authentication.jsx';
@@ -14,16 +15,11 @@ import BoundaryTypeSelect from './BoundaryTypeSelect.jsx';
 import styles from './App2.css';
 import { Grid, Row, Col } from 'react-bootstrap';
 import React, { Component, PropTypes } from 'react';
-import _ from 'lodash';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedRegion: '',
-      selectedIndicator: '',
-      selectedZoomLevel: 'DISTRICT',
-    };
+    this.state = {};
     this._selectPi = this._selectPi.bind(this);
     this._selectRegion = this._selectRegion.bind(this);
     this._selectZoomLevel = this._selectZoomLevel.bind(this);
@@ -35,9 +31,6 @@ class App extends Component {
   }
 
   _selectRegion(region) {
-    // this.setState({
-    //   selectedRegion: region,
-    // });
     this.props.dispatch(setRegion(region));
   }
 
@@ -46,31 +39,36 @@ class App extends Component {
   }
 
   _selectPi(indicator) {
-    // this.props.dispatch(requestPis());
-    this.setState({
-      selectedIndicator: indicator,
-    });
+    // this.setState({
+    //   selectedIndicator: indicator,
+    // });
+    this.props.dispatch(setIndicator(indicator));
   }
 
   render() {
     // console.log('App is receiving these props:', this.props);
 
     const selectedRegionText = (this.props.region) ?
-      <span><i className="fa fa-building-o"></i>&nbsp;&nbsp;{this.props.region.properties.name || 'Onbekend'}</span> : '';
+      <span>
+        <i className="fa fa-building-o"></i>&nbsp;&nbsp;{this.props.region.properties.name || 'Onbekend'}
+      </span> : '';
 
-    const selectedIndicatorText = (this.state.selectedIndicator) ?
-      <span><i className="fa fa-bar-chart"></i>&nbsp;&nbsp;{this.state.selectedIndicator.name || '...'}</span> : '';
+    const selectedIndicatorText = (this.props.indicator) ?
+      <span>
+        <i className="fa fa-bar-chart"></i>&nbsp;&nbsp;{this.props.indicator.name || '...'}
+      </span> : '';
 
     return (
      <Grid fluid>
-        <Row>
-          <Col md={11}/>
-          <Col md={1}>
-            <Authentication username={this.props.username} />
-          </Col>
-        </Row>
         <Row className={styles.Main}>
           <Col md={8}>
+            <Pimap
+              selectedZoomLevel={this.props.zoomlevel}
+              selectRegion={this._selectRegion}
+              selectedRegion={this.props.region}
+              data={this.props.regions}
+            />
+
             <BoundaryTypeSelect
               selectZoomLevel={this._selectZoomLevel}
               selectedZoomLevel={this.props.zoomlevel}
@@ -79,15 +77,10 @@ class App extends Component {
             <Stats title={'Aantal wijken'} value={this.props.regions.count || 0} />
             <Stats title={'Aantal indicatoren'} value={this.props.indicators.length} />
 
-            <div>{selectedIndicatorText}</div>
-            <div>{selectedRegionText}</div>
+            <div style={{ position: 'absolute', zIndex: 999998 }}>{selectedIndicatorText}</div>
+            <div style={{ position: 'absolute', zIndex: 999999 }}>{selectedRegionText}</div>
 
-            <Map
-              selectedZoomLevel={this.props.zoomlevel}
-              selectRegion={this._selectRegion}
-              selectedRegion={this.props.region}
-              data={this.props.regions}
-            />
+
         </Col>
         <Col md={4}>
           <PerformanceIndicatorList
@@ -104,7 +97,14 @@ class App extends Component {
 
 App.propTypes = {
   data: PropTypes.object,
+  dispatch: PropTypes.func,
+  indicator: PropTypes.any,
+  indicators: PropTypes.any,
+  region: PropTypes.any,
+  regions: PropTypes.any,
   username: PropTypes.string,
+  zoomlevel: PropTypes.any,
+  zoomlevels: PropTypes.any,
 };
 
 function mapStateToProps(state) {
@@ -113,6 +113,7 @@ function mapStateToProps(state) {
 
   return {
     'indicators': pis.piData,
+    'indicator': pis.indicator,
     'regions': pis.regions,
     'region': pis.region,
     'zoomlevels': pis.zoomlevels,

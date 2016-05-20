@@ -6,6 +6,7 @@ import {
   RECEIVE_REGIONS,
   SET_ZOOMLEVEL,
   SET_REGION,
+  SET_INDICATOR,
 } from './actions.jsx';
 
 function pis(state = {
@@ -43,6 +44,10 @@ function pis(state = {
   case SET_REGION:
     return Object.assign({}, state, {
       region: action.region,
+    });
+  case SET_INDICATOR:
+    return Object.assign({}, state, {
+      indicator: action.indicator,
     });
   default:
     return state;

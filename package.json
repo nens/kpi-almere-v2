@@ -21,6 +21,7 @@
     "react": "^0.14.7",
     "react-bootstrap": "0.28.3",
     "react-dom": "^0.14.7",
+    "react-leaflet": "0.10.1",
     "react-redux": "^4.2.1",
     "react-micro-bar-chart": "",
     "react-three-renderer": "",
@@ -39,7 +40,9 @@
     "react-count-to": "0.4.2",
     "react-addons-create-fragment": "0.14.7",
     "velocity-react": "",
-    "victory": "0.5.1"
+    "victory": "0.5.1",
+    "why-did-you-update": "",
+    "react-leaflet-choropleth": "git://github.com/LiveBy/react-leaflet-choropleth.git#master"
   },
   "devDependencies": {
     "babel-core": "^6.3.15",

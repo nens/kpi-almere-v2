@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 export const SET_ZOOMLEVEL = 'SET_ZOOMLEVEL';
 export const SET_REGION = 'SET_REGION';
+export const SET_INDICATOR = 'SET_INDICATOR';
 
 export const REQUEST_PIS = 'REQUEST_PIS';
 export const RECEIVE_PIS = 'RECEIVE_PIS';
@@ -31,7 +32,10 @@ function fetchPis() {
     dispatch(requestPis());
     const piEndpoint = $.ajax({
       type: 'GET',
-      url: `https://nxt.staging.lizard.net/api/v2/pi/?access_token=${localStorage.access_token}`,
+      url: 'https://nxt.staging.lizard.net/api/v2/pi/',
+      xhrFields: {
+        withCredentials: true,
+      },
       success: (data) => {
         return data;
       },
@@ -42,7 +46,10 @@ function fetchPis() {
       const piUrls = piResults.results.map((pi) => {
         return $.ajax({
           type: 'GET',
-          url: `${pi.url}?access_token=${localStorage.access_token}`,
+          url: `${pi.url}`,
+          xhrFields: {
+            withCredentials: true,
+          },
         });
       });
       Promise.all(piUrls).then((details) => {
@@ -65,10 +72,6 @@ export function fetchPisIfNeeded() {
   };
 }
 
-
-
-
-
 function requestRegions() {
   return {
     type: REQUEST_REGIONS,
@@ -90,7 +93,10 @@ function fetchRegions() {
     const regionEndpoint = $.ajax({
       type: 'GET',
       /* eslint-disable */
-      url: `https://nxt.staging.lizard.net/api/v2/regions/?type=9&within_portal_bounds=true&format=json&token=${localStorage.getItem('access_token')}`,
+      url: 'https://nxt.staging.lizard.net/api/v2/regions/?type=9&within_portal_bounds=true&format=json',
+      xhrFields: {
+        withCredentials: true
+      },
       /* eslint-enable */
       success: (data) => {
         return data;
@@ -108,8 +114,6 @@ export function fetchRegionsifNeeded() {
   };
 }
 
-
-
 export function setZoomLevel(zoomlevel) {
   return {
     type: SET_ZOOMLEVEL,
@@ -121,5 +125,12 @@ export function setRegion(region) {
   return {
     type: SET_REGION,
     region,
+  };
+}
+
+export function setIndicator(indicator) {
+  return {
+    type: SET_INDICATOR,
+    indicator,
   };
 }

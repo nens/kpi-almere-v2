@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
+import styles from './BoundaryTypeSelect.css';
 
 class BoundaryTypeSelect extends Component {
 
@@ -28,11 +29,13 @@ class BoundaryTypeSelect extends Component {
               {ZOOMLEVELS[zoomlevel] || zoomlevel.charAt(0).toUpperCase() + zoomlevel.slice(1).toLowerCase()}
              </Button>;
     });
-    return <ButtonToolbar>
-      <ButtonGroup bsSize="large">
-        {buttons}
-      </ButtonGroup>
-    </ButtonToolbar>;
+    return (
+      <ButtonToolbar className={styles.buttonToolbar}>
+        <ButtonGroup bsSize="large">
+          {buttons}
+        </ButtonGroup>
+      </ButtonToolbar>
+    );
   }
 }
 

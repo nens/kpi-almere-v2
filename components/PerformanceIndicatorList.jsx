@@ -48,6 +48,10 @@ class PerformanceIndicatorList extends Component {
     this._selectPi = this._selectPi.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.props, nextProps);
+  }
+
   componentDidMount() {
   }
 
