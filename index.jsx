@@ -34,7 +34,7 @@ const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <App username={localStorage.getItem('username')} />
+    <App />
   </Provider>,
   document.getElementById('root')
 );

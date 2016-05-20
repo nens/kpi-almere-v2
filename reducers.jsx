@@ -14,7 +14,7 @@ function pis(state = {
   didInvalidate: false,
   piData: [],
   regions: [],
-  zoomlevel: 'MUNICIPALITY',
+  zoomlevel: 'DISTRICT',
 }, action) {
   // console.log('reducer pis() was called with state', state, 'and action', action);
   switch (action.type) {

@@ -46,6 +46,12 @@ class Pimap extends Component {
   }
 
   render() {
+
+    const zoomlevelmapping = {
+      'DISTRICT': 12,
+      'MUNICIPALITY': 14,
+    }
+
     let choro = <div/>;
     if (this.props.data.results) {
       choro = <Choropleth
@@ -54,7 +60,7 @@ class Pimap extends Component {
           return feature.properties.area;
         }}
         visible={(feature) => {
-          console.log('feature', feature);
+          // console.log('feature', feature);
           return true;
         }}
         scale={['#b3cde0', '#011f4b']}
@@ -69,7 +75,7 @@ class Pimap extends Component {
     const initialLocation = {
       lat: 52.3741,
       lng: 5.2032,
-      zoom: 12,
+      zoom: zoomlevelmapping[this.props.selectedZoomLevel],
     };
     const position = [initialLocation.lat, initialLocation.lng];
     return (
