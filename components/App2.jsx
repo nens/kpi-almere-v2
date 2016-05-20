@@ -77,8 +77,8 @@ class App extends Component {
             <Stats title={'Aantal wijken'} value={this.props.regions.count || 0} />
             <Stats title={'Aantal indicatoren'} value={this.props.indicators.length} />
 
-            <div style={{ position: 'absolute', zIndex: 999998 }}>{selectedIndicatorText}</div>
-            <div style={{ position: 'absolute', zIndex: 999999 }}>{selectedRegionText}</div>
+            <div style={{ position: 'relative', zIndex: 999998 }}>{selectedIndicatorText}</div>
+            <div style={{ position: 'relative', zIndex: 999999 }}>{selectedRegionText}</div>
 
 
         </Col>

@@ -23,7 +23,7 @@ class Pimap extends Component {
       height: window.innerHeight,
     };
     this.redraw = this.redraw.bind(this);
-    // this._handleRegionClick = this._handleRegionClick.bind(this);
+    this.onEachFeature = this.onEachFeature.bind(this);
   }
 
   componentDidMount() {
@@ -45,12 +45,16 @@ class Pimap extends Component {
     });
   }
 
-  render() {
+  onEachFeature(feature) {
+    this.props.selectRegion(feature.layer.feature);
+  }
 
+  render() {
+    var self = this;
     const zoomlevelmapping = {
       'DISTRICT': 12,
       'MUNICIPALITY': 14,
-    }
+    };
 
     let choro = <div/>;
     if (this.props.data.results) {
@@ -60,16 +64,13 @@ class Pimap extends Component {
           return feature.properties.area;
         }}
         visible={(feature) => {
-          // console.log('feature', feature);
           return true;
         }}
         scale={['#b3cde0', '#011f4b']}
         steps={7}
         mode='e'
         style={style}
-        onEachFeature={(feature, layer) => layer.bindPopup(
-          `<span style='color:#000;'>${feature.properties.name || 'Onbekend'}</span>`
-        )}
+        onClick={this.onEachFeature.bind(self)}
       />;
     }
     const initialLocation = {
