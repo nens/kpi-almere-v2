@@ -121,7 +121,7 @@ class Pimap extends Component {
                     height: this.state.height,
                   }}>
         <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          attribution='&copy; <a href="http://mapbox.com/">MapBox</a> &copy; <a href="http://www.nelen-schuurmans.nl/">Nelen &amp; Schuurmans</a>'
           url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15h8o1l/{z}/{x}/{y}.png'
         />
         {choro}

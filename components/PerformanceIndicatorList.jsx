@@ -73,7 +73,6 @@ class PerformanceIndicatorList extends Component {
     });
   }
 
-
   _selectPi(indicator) {
     this.props.selectPi(indicator);
   }
@@ -138,6 +137,7 @@ class PerformanceIndicatorList extends Component {
 
     return (
       <div style={{ position: 'absolute', height: this.state.height, width: 500, overflowY: 'auto', msOverflowStyle: 'none' }}>
+        <div className={styles.backgroundBlur}/>
         <div className={styles.PerformanceIndicatorList}>
           <VelocityTransitionGroup component="div"
                                    className="flex-1"
