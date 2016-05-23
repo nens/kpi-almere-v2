@@ -87,13 +87,21 @@ function receiveRegions(regions) {
   };
 }
 
-function fetchRegions() {
+export function fetchRegions(type) {
+
+  const zoomlevelmapping = {
+    'DISTRICT': 9,
+    'MUNICIPALITY': 3,
+    'PROVINCE': 1,
+    'CADASTRE': 11,
+  };
+
   return dispatch => {
     dispatch(requestRegions());
     const regionEndpoint = $.ajax({
       type: 'GET',
       /* eslint-disable */
-      url: 'https://nxt.staging.lizard.net/api/v2/regions/?type=9&within_portal_bounds=true&format=json',
+      url: `https://nxt.staging.lizard.net/api/v2/regions/?type=${zoomlevelmapping[type] || 9}&within_portal_bounds=true&format=json`,
       xhrFields: {
         withCredentials: true
       },

@@ -45,19 +45,53 @@ class Pimap extends Component {
     });
   }
 
+  calculateScaleCenter(features) {
+    // Get the bounding box of the paths (in pixels!) and calculate a
+    // scale factor based on the size of the bounding box and the map
+    // size.
+    const bboxPath = d3.geo.bounds(features);
+    const scale = 25 / Math.max(
+        (bboxPath[1][0] - bboxPath[0][0]) / this.state.width,
+        (bboxPath[1][1] - bboxPath[0][1]) / this.state.height
+    );
+
+    // Get the bounding box of the features (in map units!) and use it
+    // to calculate the center of the features.
+    const bboxFeature = d3.geo.bounds(features);
+    const center = [
+      (bboxFeature[1][0] + bboxFeature[0][0]) / 2,
+      (bboxFeature[1][1] + bboxFeature[0][1]) / 2];
+
+    return {
+      scale,
+      center,
+    };
+  }
+
   onEachFeature(feature) {
     this.props.selectRegion(feature.layer.feature);
   }
 
   render() {
+
     var self = this;
     const zoomlevelmapping = {
       'DISTRICT': 12,
-      'MUNICIPALITY': 14,
+      'MUNICIPALITY': 10,
+    };
+
+    let initialLocation = {
+      lat: 52.3741,
+      lng: 5.2032,
+      zoom: zoomlevelmapping[this.props.selectedZoomLevel],
     };
 
     let choro = <div/>;
     if (this.props.data.results) {
+
+      initialLocation.lat = this.calculateScaleCenter(this.props.data.results).center[1];
+      initialLocation.lng = this.calculateScaleCenter(this.props.data.results).center[0];
+
       choro = <Choropleth
         data={this.props.data.results}
         valueProperty={(feature) => {
@@ -73,12 +107,9 @@ class Pimap extends Component {
         onClick={this.onEachFeature.bind(self)}
       />;
     }
-    const initialLocation = {
-      lat: 52.3741,
-      lng: 5.2032,
-      zoom: zoomlevelmapping[this.props.selectedZoomLevel],
-    };
+
     const position = [initialLocation.lat, initialLocation.lng];
+
     return (
       <Map center={position}
            zoomControl={false}

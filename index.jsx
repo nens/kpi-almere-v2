@@ -24,7 +24,9 @@ const piEndpoint = $.ajax({
 });
 
 Promise.all([piEndpoint]).then((data) => {
-  console.log('data[0].count', data[0].count);
+  // Count the available PI's. If zero, redirect to auth page...
+  // This is not a temporary measure. A new endpoint should be made for checking
+  // auth status from a serverless JS app such as this one...
   if (data[0].count === 0) {
     window.location.href = `https://nxt.staging.lizard.net/accounts/login?next=${window.location.href}`;
   }

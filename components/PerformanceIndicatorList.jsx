@@ -5,6 +5,7 @@ import 'velocity-animate/velocity.ui';
 import { VelocityTransitionGroup } from 'velocity-react';
 import velocityHelpers from 'velocity-react/velocity-helpers';
 import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
 
 const Animations = {
   // Register these with UI Pack so that we can use stagger later.
@@ -44,16 +45,34 @@ const Animations = {
 class PerformanceIndicatorList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+    this.redraw = this.redraw.bind(this);
     this._selectPi = this._selectPi.bind(this);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  componentDidMount() {
+    window.addEventListener('resize', this.redraw);
+  }
+
+  shouldComponentUpdate(nextProps) {
     return !_.isEqual(this.props, nextProps);
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.redraw);
   }
+
+  redraw() {
+    console.log('resize, redraw');
+    this.setState({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }
+
 
   _selectPi(indicator) {
     this.props.selectPi(indicator);
@@ -64,7 +83,7 @@ class PerformanceIndicatorList extends Component {
     const enterAnimation = {
       animation: Animations.In,
       stagger: 0,
-      duration: 200,
+      duration: 400,
       backwards: true,
       display: 'block',
       style: {
@@ -84,32 +103,41 @@ class PerformanceIndicatorList extends Component {
     };
 
     const chartdata = this.props.data;
-    const performanceindicators = chartdata.map((indicator, i) => {
-      // console.log('indicator', indicator[0].name);
-      const data = indicator[1].regions[0].aggregations.map((aggregation) => {
-        return aggregation.score;
-      });
-      const values = indicator[1].regions[0].aggregations.map((v) => {
-        // console.log('v.value', v.value);
-        return v.value;
-      });
 
-      if (indicator[0].boundary_type_name === this.props.selectedZoomLevel) {
+    let _performanceindicators = chartdata.map((indicator) => {
+      return indicator[1].regions.map((region) => {
+        return {
+          'boundary_type_name': indicator[0].boundary_type_name,
+          'name': indicator[0].name,
+          'aggregation_period': indicator[0].aggregation_period,
+          'reference_value': indicator[0].reference_value,
+          'region_name': region.region_name,
+          'series': region.aggregations.map((agg) => {
+            return {
+              'date': agg.date,
+              'value': agg.value,
+              'score': agg.score,
+            };
+          }),
+        };
+      });
+    });
+
+    _performanceindicators = _.flatten(_performanceindicators);
+    const performanceindicators = _performanceindicators.map((p, i) => {
+      if (p.boundary_type_name === this.props.selectedZoomLevel) {
         return <PerformanceIndicator
-                  key={i}
-                  pid={i}
-                  data={data}
-                  values={values}
-                  selectPi={this._selectPi}
-                  indicator={indicator[0]} />;
-      }
-      else {
-        return <div key={i} />;
+            series={p.series}
+            key={i}
+            pid={i}
+            selectPi={this._selectPi}
+            indicator={p}
+          />;
       }
     });
 
     return (
-      <div style={{ position: 'absolute', height: 800, width: 400, overflowY: 'auto', msOverflowStyle: 'none' }}>
+      <div style={{ position: 'absolute', height: this.state.height, width: 500, overflowY: 'auto', msOverflowStyle: 'none' }}>
         <div className={styles.PerformanceIndicatorList}>
           <VelocityTransitionGroup component="div"
                                    className="flex-1"

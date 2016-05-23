@@ -2,6 +2,7 @@ import Stats from './Stats.jsx';
 import Pimap from './PiMap.jsx';
 import { connect } from 'react-redux';
 import {
+  fetchRegions,
   fetchPisIfNeeded,
   fetchRegionsifNeeded,
   setZoomLevel,
@@ -35,13 +36,11 @@ class App extends Component {
   }
 
   _selectZoomLevel(zoomlevel) {
+    this.props.dispatch(fetchRegions(zoomlevel));
     this.props.dispatch(setZoomLevel(zoomlevel));
   }
 
   _selectPi(indicator) {
-    // this.setState({
-    //   selectedIndicator: indicator,
-    // });
     this.props.dispatch(setIndicator(indicator));
   }
 
@@ -55,7 +54,7 @@ class App extends Component {
 
     const selectedIndicatorText = (this.props.indicator) ?
       <span>
-        <i className="fa fa-bar-chart"></i>&nbsp;&nbsp;{this.props.indicator.name || '...'}
+        <i className="fa fa-area-chart"></i>&nbsp;&nbsp;{this.props.indicator.name || '...'}
       </span> : '';
 
     return (
@@ -74,12 +73,11 @@ class App extends Component {
               selectedZoomLevel={this.props.zoomlevel}
               zoomlevels={this.props.zoomlevels} />
 
-            <Stats title={'Aantal wijken'} value={this.props.regions.count || 0} />
+            <Stats title={'Aantal regios'} value={this.props.regions.count || 0} />
             <Stats title={'Aantal indicatoren'} value={this.props.indicators.length} />
 
-            <div style={{ position: 'relative', zIndex: 999998 }}>{selectedIndicatorText}</div>
-            <div style={{ position: 'relative', zIndex: 999999 }}>{selectedRegionText}</div>
-
+            <div style={{ position: 'relative' }}>{selectedIndicatorText}</div>
+            <div style={{ position: 'relative' }}>{selectedRegionText}</div>
 
         </Col>
         <Col md={4}>
