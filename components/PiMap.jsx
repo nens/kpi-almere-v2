@@ -23,7 +23,8 @@ class Pimap extends Component {
       height: window.innerHeight,
     };
     this.redraw = this.redraw.bind(this);
-    this.onEachFeature = this.onEachFeature.bind(this);
+    this.onFeatureClick = this.onFeatureClick.bind(this);
+    this.onFeatureHover = this.onFeatureHover.bind(this);
   }
 
   componentDidMount() {
@@ -68,11 +69,31 @@ class Pimap extends Component {
     };
   }
 
-  onEachFeature(feature) {
+  onFeatureClick(feature) {
     this.props.selectRegion(feature.layer.feature);
   }
 
+  onFeatureHover(feature) {
+    // console.log('-->', feature.layer.feature);
+  }
+
   render() {
+
+
+    const indicatorsSecondArrayValue = this.props.indicators.filter((indicator, i) => {
+      if (indicator[1].boundary_type_name === this.props.selectedZoomLevel && indicator[0].name === this.props.indicator.name) {
+        return indicator[1];
+      }
+    });
+
+    const mapColorConfig = indicatorsSecondArrayValue.map((ind) => {
+      return ind[1].regions.map((region) => {
+        return {
+          'region_name': region.region_name,
+          'last_score': region.aggregations[region.aggregations.length-1].score,
+        };
+      });
+    });
 
     var self = this;
     const zoomlevelmapping = {
@@ -95,7 +116,11 @@ class Pimap extends Component {
       choro = <Choropleth
         data={this.props.data.results}
         valueProperty={(feature) => {
-          return feature.properties.area;
+          for (let key in mapColorConfig[0]) {
+            if (mapColorConfig[0][key].region_name === feature.properties.name) {
+              return mapColorConfig[0][key].last_score;
+            }
+          }
         }}
         visible={(feature) => {
           return true;
@@ -104,7 +129,8 @@ class Pimap extends Component {
         steps={7}
         mode='e'
         style={style}
-        onClick={this.onEachFeature.bind(self)}
+        onClick={this.onFeatureClick.bind(self)}
+        onMouseOver={this.onFeatureHover.bind(self)}
       />;
     }
 

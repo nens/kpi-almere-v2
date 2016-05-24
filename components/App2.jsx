@@ -41,6 +41,7 @@ class App extends Component {
   }
 
   _selectPi(indicator) {
+    // console.log('coloring', indicator, 'on the map');
     this.props.dispatch(setIndicator(indicator));
   }
 
@@ -71,6 +72,8 @@ class App extends Component {
             selectRegion={this._selectRegion}
             selectedRegion={this.props.region}
             data={this.props.regions}
+            indicator={this.props.indicator}
+            indicators={this.props.indicators}
           />
         <Col sm={8} md={8}>
         </Col>

@@ -78,7 +78,6 @@ class PerformanceIndicatorList extends Component {
   }
 
   render() {
-
     const enterAnimation = {
       animation: Animations.In,
       stagger: 0,
@@ -127,12 +126,12 @@ class PerformanceIndicatorList extends Component {
       if (p.boundary_type_name === this.props.selectedZoomLevel) {
         if (this.props.region && this.props.region.properties.name === p.region_name) {
           return <PerformanceIndicator
-              series={p.series}
-              key={i}
-              pid={i}
-              selectPi={this._selectPi}
-              indicator={p}
-            />;
+                  series={p.series}
+                  key={i}
+                  pid={i}
+                  selectPi={this._selectPi}
+                  indicator={p}
+                />;
         };
       }
     });

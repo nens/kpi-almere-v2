@@ -50,7 +50,7 @@ class PerformanceIndicator extends Component {
       <div className={styles.PerformanceIndicator}>
         <p className={styles.title}
            onClick={() => this._handleSelectPi(this.props.indicator)}>
-           <i className="fa fa-area-chart"></i>&nbsp;&nbsp;{this.props.indicator.region_name}: {this.props.indicator.name}
+           <i className="fa fa-area-chart"></i>&nbsp;&nbsp;{this.props.indicator.name}
         </p>
         <div style={{ 'float': 'right' }}>
           <input onClick={this._handleClick}
@@ -60,8 +60,10 @@ class PerformanceIndicator extends Component {
                  id={this.props.pid}
                  name="check" />
           <label className={styles.showValuesLabel} htmlFor={this.props.pid}>Toon waardes</label>
+          &nbsp;&nbsp;
         </div>
-        <p className={styles.PerformanceIndicatorDigit}><CountTo to={this.props.indicator.reference_value} speed={500} /></p>
+          <i className="fa fa-cog"></i>
+
           <VictoryChart
             width={400}
             height={200}
