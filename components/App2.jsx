@@ -83,6 +83,7 @@ class App extends Component {
           <PerformanceIndicatorList
             selectedZoomLevel={this.props.zoomlevel}
             selectPi={this._selectPi}
+            region={this.props.region}
             data={this.props.indicators}
           />
         </Col>

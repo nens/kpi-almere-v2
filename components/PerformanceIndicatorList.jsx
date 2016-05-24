@@ -82,7 +82,7 @@ class PerformanceIndicatorList extends Component {
     const enterAnimation = {
       animation: Animations.In,
       stagger: 0,
-      duration: 400,
+      duration: 100,
       backwards: true,
       display: 'block',
       style: {
@@ -125,13 +125,15 @@ class PerformanceIndicatorList extends Component {
     _performanceindicators = _.flatten(_performanceindicators);
     const performanceindicators = _performanceindicators.map((p, i) => {
       if (p.boundary_type_name === this.props.selectedZoomLevel) {
-        return <PerformanceIndicator
-            series={p.series}
-            key={i}
-            pid={i}
-            selectPi={this._selectPi}
-            indicator={p}
-          />;
+        if (this.props.region && this.props.region.properties.name === p.region_name) {
+          return <PerformanceIndicator
+              series={p.series}
+              key={i}
+              pid={i}
+              selectPi={this._selectPi}
+              indicator={p}
+            />;
+        };
       }
     });
 

@@ -4,7 +4,7 @@ import CountTo from 'react-count-to';
 import DataSeries from './DataSeries.jsx';
 import Chart from './chart.jsx';
 import { VictoryChart, VictoryLine, VictoryAxis } from 'victory';
-import {XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries} from 'react-vis';
+
 
 class PerformanceIndicator extends Component {
   constructor(props) {
