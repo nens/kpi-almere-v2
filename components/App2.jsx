@@ -57,30 +57,29 @@ class App extends Component {
         <i className="fa fa-area-chart"></i>&nbsp;&nbsp;{this.props.indicator.name || '...'}
       </span> : '';
 
+
+      // <Stats title={'Aantal regios'} value={this.props.regions.count || 0} />
+      // <Stats title={'Aantal indicatoren'} value={this.props.indicators.length} />
+      //
+      // <div style={{ position: 'relative' }}>{selectedIndicatorText}</div>
+      // <div style={{ position: 'relative' }}>{selectedRegionText}</div>
     return (
      <Grid fluid>
         <Row className={styles.Main}>
-          <Col md={8}>
-            <Pimap
-              selectedZoomLevel={this.props.zoomlevel}
-              selectRegion={this._selectRegion}
-              selectedRegion={this.props.region}
-              data={this.props.regions}
-            />
-
-            <BoundaryTypeSelect
-              selectZoomLevel={this._selectZoomLevel}
-              selectedZoomLevel={this.props.zoomlevel}
-              zoomlevels={this.props.zoomlevels} />
-
-            <Stats title={'Aantal regios'} value={this.props.regions.count || 0} />
-            <Stats title={'Aantal indicatoren'} value={this.props.indicators.length} />
-
-            <div style={{ position: 'relative' }}>{selectedIndicatorText}</div>
-            <div style={{ position: 'relative' }}>{selectedRegionText}</div>
-
+          <Pimap
+            selectedZoomLevel={this.props.zoomlevel}
+            selectRegion={this._selectRegion}
+            selectedRegion={this.props.region}
+            data={this.props.regions}
+          />
+        <Col sm={8} md={8}>
         </Col>
-        <Col md={4}>
+        <Col sm={4} md={4} style={{ height: window.innerHeight, overflowY: 'auto', msOverflowStyle: 'none' }}>
+          <div className={styles.backgroundBlur}/>
+          <BoundaryTypeSelect
+            selectZoomLevel={this._selectZoomLevel}
+            selectedZoomLevel={this.props.zoomlevel}
+            zoomlevels={this.props.zoomlevels} />
           <PerformanceIndicatorList
             selectedZoomLevel={this.props.zoomlevel}
             selectPi={this._selectPi}

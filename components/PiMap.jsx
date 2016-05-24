@@ -122,7 +122,7 @@ class Pimap extends Component {
                   }}>
         <TileLayer
           attribution='&copy; <a href="http://mapbox.com/">MapBox</a> &copy; <a href="http://www.nelen-schuurmans.nl/">Nelen &amp; Schuurmans</a>'
-          url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15h8o1l/{z}/{x}/{y}.png'
+          url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa98k8k/{z}/{x}/{y}.png'
         />
         {choro}
       </Map>
