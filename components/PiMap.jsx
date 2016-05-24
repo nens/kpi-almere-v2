@@ -79,9 +79,8 @@ class Pimap extends Component {
 
   render() {
 
-
     const indicatorsSecondArrayValue = this.props.indicators.filter((indicator, i) => {
-      if (indicator[1].boundary_type_name === this.props.selectedZoomLevel && indicator[0].name === this.props.indicator.name) {
+      if (this.props.indicator && indicator[1].boundary_type_name === this.props.selectedZoomLevel && indicator[0].name === this.props.indicator.name) {
         return indicator[1];
       }
     });

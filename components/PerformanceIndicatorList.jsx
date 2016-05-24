@@ -66,7 +66,6 @@ class PerformanceIndicatorList extends Component {
   }
 
   redraw() {
-    console.log('resize, redraw');
     this.setState({
       width: window.innerWidth,
       height: window.innerHeight,
