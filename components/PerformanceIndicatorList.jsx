@@ -143,7 +143,12 @@ class PerformanceIndicatorList extends Component {
                                    style={groupStyle}
                                    enter={enterAnimation}
                                    leave={leaveAnimation}>
-            {performanceindicators}
+            {
+              (this.props.region) ? performanceindicators :
+              <div style={{
+                  padding: 20
+                }}>Selecteer s.v.p. een gebied</div>
+            }
           </VelocityTransitionGroup>
         </div>
       </div>
