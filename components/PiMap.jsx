@@ -124,7 +124,7 @@ class Pimap extends Component {
         visible={(feature) => {
           return true;
         }}
-        scale={['#b3cde0', '#011f4b']}
+        scale={['green', 'red']}
         steps={7}
         mode='e'
         style={style}
@@ -147,7 +147,7 @@ class Pimap extends Component {
                   }}>
         <TileLayer
           attribution='&copy; <a href="http://mapbox.com/">MapBox</a> &copy; <a href="http://www.nelen-schuurmans.nl/">Nelen &amp; Schuurmans</a>'
-          url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa98k8k/{z}/{x}/{y}.png'
+          url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15e647c/{z}/{x}/{y}.png'
         />
         {choro}
       </Map>

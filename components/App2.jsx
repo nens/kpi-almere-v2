@@ -76,6 +76,7 @@ class App extends Component {
             indicators={this.props.indicators}
           />
         <Col sm={8} md={8}>
+          
         </Col>
         <Col sm={4} md={4} style={{ height: window.innerHeight, overflowY: 'auto', msOverflowStyle: 'none' }}>
           <div className={styles.backgroundBlur}/>

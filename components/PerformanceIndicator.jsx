@@ -1,5 +1,6 @@
 import styles from './PerformanceIndicator.css';
 import React, { Component, PropTypes } from 'react';
+import { Label } from 'react-bootstrap';
 import CountTo from 'react-count-to';
 import DataSeries from './DataSeries.jsx';
 import Chart from './chart.jsx';
@@ -46,11 +47,16 @@ class PerformanceIndicator extends Component {
     const ind = (chartData.length-1)/2;
     const midDate = chartData[ind.toFixed()].x;
     const maxDate = chartData[chartData.length-1].x;
+    const lastValue = chartData[chartData.length-1].y;
+
     return (
       <div className={styles.PerformanceIndicator}>
         <p className={styles.title}
            onClick={() => this._handleSelectPi(this.props.indicator)}>
            <i className="fa fa-area-chart"></i>&nbsp;&nbsp;{this.props.indicator.name}
+          <span className="pull-right">
+            <Label bsStyle="default">{lastValue}</Label>
+          </span>
         </p>
         <div style={{ 'float': 'right' }}>
           <input onClick={this._handleClick}
@@ -63,11 +69,16 @@ class PerformanceIndicator extends Component {
           &nbsp;&nbsp;
         </div>
           <i className="fa fa-cog"></i>
-
           <VictoryChart
             width={400}
             height={200}
             standalone={true}
+            padding={{
+              top: 5,
+              bottom: 50,
+              left: 50,
+              right: 40
+            }}
             scale={{
               x: 'time'
             }}>
@@ -81,13 +92,23 @@ class PerformanceIndicator extends Component {
             <VictoryLine
               labels={['a','b','c']}
               animate={{duration: 500}}
-              interpolation='cardinal'
+              interpolation='basis'
               style={{
                 data: {
                   stroke: '#65B59A',
                 }
               }}
               data={chartData}/>
+            <VictoryLine
+              style={{
+                data: {stroke: "red", strokeWidth: 1}
+              }}
+              interpolation={"linear"}
+              data={[
+                {x: new Date(minDate), y: 6},
+                {x: new Date(maxDate), y: 6},
+              ]} />
+
           </VictoryChart>
       </div>
     );
