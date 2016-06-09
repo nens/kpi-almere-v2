@@ -7,12 +7,21 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 const style = {
   fillColor: '#F28F3B',
-  weight: 2,
+  weight: 1,
   opacity: 1,
   color: 'white',
-  dashArray: '3',
+  dashArray: '5',
   fillOpacity: 0.5,
 };
+
+const styleSelected = {
+  fillColor: '#F28F3B',
+  weight: 3,
+  opacity: 1,
+  color: 'white',
+  dashArray: '0',
+  fillOpacity: 0.5,
+}
 
 class Pimap extends Component {
 
@@ -127,7 +136,13 @@ class Pimap extends Component {
         scale={['green', 'red']}
         steps={7}
         mode='e'
-        style={style}
+        style={(feature) => {
+          try {
+            return (feature.id === this.props.selectedRegion.id) ? styleSelected : style;
+          } catch(e) {
+            return style;
+          }
+        }}
         onClick={this.onFeatureClick.bind(self)}
         onMouseOver={this.onFeatureHover.bind(self)}
       />;

@@ -130,6 +130,7 @@ class PerformanceIndicatorList extends Component {
                   pid={i}
                   selectPi={this._selectPi}
                   indicator={p}
+                  region={this.props.region}
                 />;
         };
       }
