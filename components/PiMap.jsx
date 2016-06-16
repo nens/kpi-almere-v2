@@ -97,6 +97,7 @@ class Pimap extends Component {
     const mapColorConfig = indicatorsSecondArrayValue.map((ind) => {
       return ind[1].regions.map((region) => {
         return {
+          'reference_value': ind[0].reference_value,
           'region_name': region.region_name,
           'last_score': region.aggregations[region.aggregations.length-1].score,
         };
@@ -126,7 +127,12 @@ class Pimap extends Component {
         valueProperty={(feature) => {
           for (let key in mapColorConfig[0]) {
             if (mapColorConfig[0][key].region_name === feature.properties.name) {
-              return mapColorConfig[0][key].last_score;
+              if (mapColorConfig[0][key].last_score > mapColorConfig[0][key].reference_value) {
+                return mapColorConfig[0][key].last_score;
+              }
+              else {
+                return mapColorConfig[0][key].reference_value;  
+              }
             }
           }
         }}
