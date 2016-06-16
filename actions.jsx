@@ -2,6 +2,8 @@
 import $ from 'jquery';
 import _ from 'lodash';
 
+export const SET_REFERENCE_VALUE_FOR_INDICATOR = 'SET_REFERENCE_VALUE_FOR_INDICATOR';
+
 export const SET_ZOOMLEVEL = 'SET_ZOOMLEVEL';
 export const SET_REGION = 'SET_REGION';
 export const SET_INDICATOR = 'SET_INDICATOR';
@@ -11,6 +13,7 @@ export const RECEIVE_PIS = 'RECEIVE_PIS';
 
 export const REQUEST_REGIONS = 'REQUEST_REGIONS';
 export const RECEIVE_REGIONS = 'RECEIVE_REGIONS';
+
 
 function requestPis() {
   return {
@@ -90,10 +93,10 @@ function receiveRegions(regions) {
 export function fetchRegions(type) {
 
   const zoomlevelmapping = {
+    'CADASTRE': 11,
     'DISTRICT': 9,
     'MUNICIPALITY': 3,
     'PROVINCE': 1,
-    'CADASTRE': 11,
   };
 
   return dispatch => {
@@ -140,5 +143,46 @@ export function setIndicator(indicator) {
   return {
     type: SET_INDICATOR,
     indicator,
+  };
+}
+
+function postReferenceValue(value, indicator) {
+  console.log('postReferenceValue()', value, indicator);
+  return {
+    type: SET_REFERENCE_VALUE_FOR_INDICATOR,
+    value,
+    indicator,
+  };
+
+  // const piEndpoint = $.ajax({
+  //   type: 'POST',
+  //   url: indicator.url,
+  //   data: {
+  //     reference_value: value
+  //   },
+  //   xhrFields: {
+  //     withCredentials: true,
+  //   },
+  //   success: (data) => {
+  //     console.log('success!!!', data);
+  //     return data;
+  //   },
+  //   error: (errormsg) => {
+  //     console.log('error!!!', errormsg);
+  //     return errormsg;
+  //   },
+  // });
+  // Promise.all([piEndpoint]).then(([piResults]) => {
+  //   return {
+  //     type: SET_REFERENCE_VALUE_FOR_INDICATOR,
+  //     value,
+  //     indicator,
+  //   };
+  // });
+}
+
+export function setReferenceValueForIndicator(value, indicator) {
+  return (dispatch) => {
+    dispatch(postReferenceValue(value, indicator));
   };
 }

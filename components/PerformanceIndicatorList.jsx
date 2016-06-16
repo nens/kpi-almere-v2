@@ -57,9 +57,9 @@ class PerformanceIndicatorList extends Component {
     window.addEventListener('resize', this.redraw);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !_.isEqual(this.props, nextProps);
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return !_.isEqual(this.props, nextProps);
+  // }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.redraw);
@@ -109,6 +109,7 @@ class PerformanceIndicatorList extends Component {
           'aggregation_period': indicator[0].aggregation_period,
           'reference_value': indicator[0].reference_value,
           'region_name': region.region_name,
+          'url': indicator[0].url,
           'series': region.aggregations.map((agg) => {
             return {
               'date': agg.date,
@@ -125,12 +126,14 @@ class PerformanceIndicatorList extends Component {
       if (p.boundary_type_name === this.props.selectedZoomLevel) {
         if (this.props.region && this.props.region.properties.name === p.region_name) {
           return <PerformanceIndicator
-                  series={p.series}
+                  dispatch={this.props.dispatch}
+                  indicator={p}
                   key={i}
                   pid={i}
-                  selectPi={this._selectPi}
-                  indicator={p}
                   region={this.props.region}
+                  selectedIndicator={this.props.selectedIndicator}
+                  selectPi={this._selectPi}
+                  series={p.series}
                 />;
         };
       }

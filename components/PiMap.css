@@ -36,3 +36,9 @@
 .label {
   font-size: .7em;
 }
+
+
+.crosshatch {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><path fill='#fff' d='M0 0h8v8h-8z'/><path d='M0 0l8 8zm8 0l-8 8z' stroke-width='.5' stroke='#aaa'/></svg>");
+  background-repeat: repeat;
+}

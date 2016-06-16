@@ -7,6 +7,7 @@ import {
   SET_ZOOMLEVEL,
   SET_REGION,
   SET_INDICATOR,
+  SET_REFERENCE_VALUE_FOR_INDICATOR,
 } from './actions.jsx';
 
 function pis(state = {
@@ -18,6 +19,15 @@ function pis(state = {
 }, action) {
   // console.log('reducer pis() was called with state', state, 'and action', action);
   switch (action.type) {
+  case SET_REFERENCE_VALUE_FOR_INDICATOR:
+    return Object.assign({}, state, {
+      piData: state.piData.map((item) => {
+        if (item[0].name === action.indicator.name) {
+          item[0].reference_value = action.value;
+        }
+        return item;
+      }),
+    });
   case REQUEST_PIS:
     return Object.assign({}, state, {
       isFetching: true,

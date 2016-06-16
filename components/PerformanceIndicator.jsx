@@ -4,8 +4,11 @@ import { Label } from 'react-bootstrap';
 import CountTo from 'react-count-to';
 import DataSeries from './DataSeries.jsx';
 import Chart from './chart.jsx';
+import VisualisationSettings from './VisualisationSettings.jsx';
 import { VictoryChart, VictoryLine, VictoryAxis } from 'victory';
 import {
+  Area,
+  AreaChart,
   CartesianGrid,
   Line,
   LineChart,
@@ -60,7 +63,9 @@ class PerformanceIndicator extends Component {
     const lastValue = linedata[linedata.length - 1].score;
 
     const visualisationOrBackside = (this.state.showBackside) ?
-      <div>Achterkant!</div>
+      <div>
+        <VisualisationSettings {...this.props} />
+      </div>
       :
       <LineChart width={400}
                  height={280}
@@ -70,7 +75,7 @@ class PerformanceIndicator extends Component {
        <YAxis/>
        <CartesianGrid strokeDasharray="3 3"/>
        <Tooltip/>
-       <ReferenceLine y={4} label="Max" stroke="red"/>
+       <ReferenceLine y={this.props.indicator.reference_value} label="" stroke="red"/>
        {(this.state.showValues) ? <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{r: 8}} isAnimationActive={true} /> : ''}
        <Line type="monotone" dataKey="score" stroke="#82ca9d" isAnimationActive={false} />
       </LineChart>;
@@ -83,8 +88,22 @@ class PerformanceIndicator extends Component {
              <Label bsStyle="default">{lastValue}</Label>
            </span>
            <ul className="list-unstyled">
-             <li className={styles.title}><i className="fa fa-area-chart"></i>&nbsp;&nbsp;{this.props.indicator.name}</li>
-             <li className={styles.title}><i className="fa fa-globe"></i>&nbsp;&nbsp;{this.props.region.properties.name}</li>
+             <li
+               className={styles.title}
+               style={{
+                 textDecoration: (
+                   this.props.selectedIndicator && this.props.selectedIndicator.name === this.props.indicator.name && this.props.selectedIndicator.region_name === this.props.indicator.region_name
+                 ) ? 'underline' : 'none'
+               }}>
+               <i className="fa fa-area-chart"></i>&nbsp;&nbsp;{this.props.indicator.name}</li>
+             <li
+               style={{
+                 textDecoration: (
+                   this.props.selectedIndicator && this.props.selectedIndicator.name === this.props.indicator.name && this.props.selectedIndicator.region_name === this.props.indicator.region_name
+                 ) ? 'underline' : 'none'
+               }}
+               className={styles.title}>
+               <i className="fa fa-globe"></i>&nbsp;&nbsp;{this.props.region.properties.name}</li>
            </ul>
         </div>
         <div style={{ 'float': 'right' }}>

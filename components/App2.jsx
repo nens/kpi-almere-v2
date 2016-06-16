@@ -75,9 +75,7 @@ class App extends Component {
             indicator={this.props.indicator}
             indicators={this.props.indicators}
           />
-        <Col sm={8} md={8}>
-          
-        </Col>
+        <Col sm={8} md={8}></Col>
         <Col sm={4} md={4} style={{ height: window.innerHeight, overflowY: 'auto', msOverflowStyle: 'none' }}>
           <div className={styles.backgroundBlur}/>
           <BoundaryTypeSelect
@@ -85,6 +83,8 @@ class App extends Component {
             selectedZoomLevel={this.props.zoomlevel}
             zoomlevels={this.props.zoomlevels} />
           <PerformanceIndicatorList
+            dispatch={this.props.dispatch}
+            selectedIndicator={this.props.indicator}
             selectedZoomLevel={this.props.zoomlevel}
             selectPi={this._selectPi}
             region={this.props.region}
