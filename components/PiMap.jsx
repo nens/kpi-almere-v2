@@ -6,8 +6,8 @@ import Choropleth from 'react-leaflet-choropleth';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 const style = {
-  fillColor: '#F28F3B',
-  weight: 1,
+  fillColor: '#fff',
+  weight: 2,
   opacity: 1,
   color: 'white',
   dashArray: '5',
@@ -15,8 +15,8 @@ const style = {
 };
 
 const styleSelected = {
-  fillColor: '#F28F3B',
-  weight: 3,
+  fillColor: '#fff',
+  weight: 8,
   opacity: 1,
   color: 'white',
   dashArray: '0',
@@ -70,7 +70,8 @@ class Pimap extends Component {
     const bboxFeature = d3.geo.bounds(features);
     const center = [
       (bboxFeature[1][0] + bboxFeature[0][0]) / 2,
-      (bboxFeature[1][1] + bboxFeature[0][1]) / 2];
+      (bboxFeature[1][1] + bboxFeature[0][1]) / 2,
+    ];
 
     return {
       scale,
@@ -83,7 +84,7 @@ class Pimap extends Component {
   }
 
   onFeatureHover(feature) {
-    // console.log('-->', feature.layer.feature);
+    console.log('-->', feature.layer.feature);
   }
 
   render() {
@@ -99,7 +100,8 @@ class Pimap extends Component {
         return {
           'reference_value': ind[0].reference_value,
           'region_name': region.region_name,
-          'last_score': region.aggregations[region.aggregations.length-1].score,
+          'last_score': region.aggregations[region.aggregations.length - 1].score,
+          'last_value': region.aggregations[region.aggregations.length - 1].value,
         };
       });
     });
@@ -119,19 +121,20 @@ class Pimap extends Component {
     let choro = <div/>;
     if (this.props.data.results) {
 
-      initialLocation.lat = this.calculateScaleCenter(this.props.data.results).center[1];
-      initialLocation.lng = this.calculateScaleCenter(this.props.data.results).center[0];
+      initialLocation.lat = this.calculateScaleCenter(this.props.data.results).center[1] - 0.05; // correction for almeres weird geometry
+      initialLocation.lng = this.calculateScaleCenter(this.props.data.results).center[0] + 0.05; // correction for almeres weird geometry
 
       choro = <Choropleth
         data={this.props.data.results}
         valueProperty={(feature) => {
           for (let key in mapColorConfig[0]) {
+            // console.log('---->', mapColorConfig[0][key]);
             if (mapColorConfig[0][key].region_name === feature.properties.name) {
-              if (mapColorConfig[0][key].last_score > mapColorConfig[0][key].reference_value) {
-                return mapColorConfig[0][key].last_score;
+              if (mapColorConfig[0][key].last_value > mapColorConfig[0][key].reference_value) {
+                return mapColorConfig[0][key].last_value;
               }
               else {
-                return mapColorConfig[0][key].reference_value;  
+                return mapColorConfig[0][key].reference_value;
               }
             }
           }

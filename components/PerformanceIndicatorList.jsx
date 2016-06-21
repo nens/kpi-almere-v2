@@ -139,21 +139,22 @@ class PerformanceIndicatorList extends Component {
       }
     });
 
+
+    // <VelocityTransitionGroup component="div"
+    //                          className="flex-1"
+    //                          style={groupStyle}
+    //                          enter={enterAnimation}
+    //                          leave={leaveAnimation}>
+    // </VelocityTransitionGroup>
     return (
       <div>
         <div className={styles.PerformanceIndicatorList}>
-          <VelocityTransitionGroup component="div"
-                                   className="flex-1"
-                                   style={groupStyle}
-                                   enter={enterAnimation}
-                                   leave={leaveAnimation}>
             {
               (this.props.region) ? performanceindicators :
               <div style={{
                   padding: 20
                 }}>Selecteer s.v.p. een gebied</div>
             }
-          </VelocityTransitionGroup>
         </div>
       </div>
     );
