@@ -5,6 +5,14 @@ import _ from 'lodash';
 import Choropleth from 'react-leaflet-choropleth';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
+document.onmousemove = function(e){
+    let infobox = document.getElementsByClassName('choro-popover')[0];
+    if(infobox) {
+      infobox.style.top = e.pageY;
+      infobox.style.left = e.pageX;
+    }
+}
+
 const style = {
   fillColor: '#000',
   weight: 2,
@@ -30,10 +38,13 @@ class Pimap extends Component {
     this.state = {
       width: window.innerWidth,
       height: window.innerHeight,
+      hovering: false,
+      hoverContent: '',
     };
     this.redraw = this.redraw.bind(this);
     this.onFeatureClick = this.onFeatureClick.bind(this);
     this.onFeatureHover = this.onFeatureHover.bind(this);
+    this.onFeatureHoverOut = this.onFeatureHoverOut.bind(this);
   }
 
   componentDidMount() {
@@ -84,7 +95,18 @@ class Pimap extends Component {
   }
 
   onFeatureHover(feature) {
+    this.setState({
+      hovering: true,
+      hoverContent: feature.layer.feature,
+    });
     console.log('-->', feature.layer.feature);
+  }
+
+  onFeatureHoverOut() {
+    console.log('--> hovering out...');
+    this.setState({
+      hovering: false
+    });
   }
 
   render() {
@@ -158,10 +180,23 @@ class Pimap extends Component {
         }}
         onClick={this.onFeatureClick.bind(self)}
         onMouseOver={this.onFeatureHover.bind(self)}
+        onMouseOut={this.onFeatureHoverOut.bind(self)}
       />;
     }
 
     const position = [initialLocation.lat, initialLocation.lng];
+
+    const hover = (this.state.hovering) ?
+    <div
+      className="choro-popover"
+      style={{
+        backgroundColor: '#353535',
+        padding: 20,
+        opacity: 0.9,
+        position: 'absolute',
+        zIndex: 999999,
+      }}>{this.state.hoverContent.properties.name}</div> :
+    <div/>;
 
     return (
       <Map center={position}
@@ -178,6 +213,7 @@ class Pimap extends Component {
           url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15e647c/{z}/{x}/{y}.png'
         />
         {choro}
+        {hover}
       </Map>
     );
   }
