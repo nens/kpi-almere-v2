@@ -75,6 +75,16 @@ class App extends Component {
             indicator={this.props.indicator}
             indicators={this.props.indicators}
           />
+        <div style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            padding: 20,
+            backgroundColor: '#353535',
+          }}
+          >
+          {(this.props.region) ? this.props.region.properties.name : 'Selecteer regio'} / {(this.props.indicator) ? this.props.indicator.name : 'Selecteer indicator'}
+        </div>
         <Col sm={8} md={8}></Col>
         <Col sm={4} md={4} style={{ height: window.innerHeight, overflowY: 'auto', msOverflowStyle: 'none' }}>
           <div className={styles.backgroundBlur}/>

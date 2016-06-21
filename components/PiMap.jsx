@@ -2,14 +2,15 @@ import styles from './PiMap.css';
 import React, { Component, PropTypes } from 'react';
 import d3 from 'd3';
 import _ from 'lodash';
+import $ from 'jquery';
 import Choropleth from 'react-leaflet-choropleth';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 document.onmousemove = function(e){
-    let infobox = document.getElementsByClassName('choro-popover')[0];
+    let infobox = $('.choro-popover')[0];
+    // console.log(infobox);
     if(infobox) {
-      infobox.style.top = e.pageY;
-      infobox.style.left = e.pageX;
+      $(infobox).css({top: e.pageY+15, left: e.pageX+15, position:'absolute'});;
     }
 }
 
