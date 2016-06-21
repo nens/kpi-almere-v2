@@ -61,7 +61,9 @@ class PerformanceIndicator extends Component {
     const linedata = this.props.series.map((item, i) => {
         return { time: item.date, value: item.value, score: item.score };
     });
-    const lastValue = linedata[linedata.length - 1].score;
+    const lastScore = linedata[linedata.length - 1].score;
+    const lastValue = linedata[linedata.length - 1].value;
+
 
     const visualisationOrBackside = (this.state.showBackside) ?
       <div>
@@ -89,7 +91,9 @@ class PerformanceIndicator extends Component {
         <div className={styles.divider}
            onClick={() => this._handleSelectPi(this.props.indicator)}>
            <span className="pull-right">
-             <Label bsStyle="default">{lastValue}</Label>
+             <Label bsStyle="default" style={{
+                 backgroundColor: (lastScore > this.props.indicator.reference_value) ? 'red' : 'green'
+               }}>{Math.round(lastScore)}</Label>
                <a target="_blank"
                   title="Bekijk in Lizard"
                   href="https://demo.lizard.net/nl/map/topography/point/@52.3731,5.1977,13/-2Days0Hours+0Days2Hours">

@@ -6,7 +6,7 @@ import Choropleth from 'react-leaflet-choropleth';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 const style = {
-  fillColor: '#fff',
+  fillColor: '#000',
   weight: 2,
   opacity: 1,
   color: 'white',
@@ -21,7 +21,7 @@ const styleSelected = {
   color: 'white',
   dashArray: '0',
   fillOpacity: 0.5,
-}
+};
 
 class Pimap extends Component {
 
@@ -121,11 +121,15 @@ class Pimap extends Component {
     let choro = <div/>;
     if (this.props.data.results) {
 
-      initialLocation.lat = this.calculateScaleCenter(this.props.data.results).center[1] - 0.05; // correction for almeres weird geometry
-      initialLocation.lng = this.calculateScaleCenter(this.props.data.results).center[0] + 0.05; // correction for almeres weird geometry
+      // +/- 0.05 correction for almeres weird geometry
+      initialLocation.lat = this.calculateScaleCenter(this.props.data.results).center[1] - 0.05;
+      initialLocation.lng = this.calculateScaleCenter(this.props.data.results).center[0] + 0.05;
+
+      let results = this.props.data.results;
+      results = results.features.filter(function(r) { if(r.properties.name) return r });
 
       choro = <Choropleth
-        data={this.props.data.results}
+        data={results}
         valueProperty={(feature) => {
           for (let key in mapColorConfig[0]) {
             // console.log('---->', mapColorConfig[0][key]);
