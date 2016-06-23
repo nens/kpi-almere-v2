@@ -140,13 +140,6 @@ class PerformanceIndicatorList extends Component {
       }
     });
 
-
-    // <VelocityTransitionGroup component="div"
-    //                          className="flex-1"
-    //                          style={groupStyle}
-    //                          enter={enterAnimation}
-    //                          leave={leaveAnimation}>
-    // </VelocityTransitionGroup>
     return (
       <div>
         <div className={styles.PerformanceIndicatorList}>

@@ -165,31 +165,31 @@ function postReferenceValue(value, indicator) {
     indicator,
   };
 
-  // const piEndpoint = $.ajax({
-  //   type: 'POST',
-  //   url: indicator.url,
-  //   data: {
-  //     reference_value: value
-  //   },
-  //   xhrFields: {
-  //     withCredentials: true,
-  //   },
-  //   success: (data) => {
-  //     console.log('success!!!', data);
-  //     return data;
-  //   },
-  //   error: (errormsg) => {
-  //     console.log('error!!!', errormsg);
-  //     return errormsg;
-  //   },
-  // });
-  // Promise.all([piEndpoint]).then(([piResults]) => {
-  //   return {
-  //     type: SET_REFERENCE_VALUE_FOR_INDICATOR,
-  //     value,
-  //     indicator,
-  //   };
-  // });
+  const piEndpoint = $.ajax({
+    type: 'POST',
+    url: indicator.url,
+    data: {
+      reference_value: value
+    },
+    xhrFields: {
+      withCredentials: true,
+    },
+    success: (data) => {
+      console.log('success!!!', data);
+      return data;
+    },
+    error: (errormsg) => {
+      console.log('error!!!', errormsg);
+      return errormsg;
+    },
+  });
+  Promise.all([piEndpoint]).then(([piResults]) => {
+    return {
+      type: SET_REFERENCE_VALUE_FOR_INDICATOR,
+      value,
+      indicator,
+    };
+  });
 }
 
 export function setReferenceValueForIndicator(value, indicator) {

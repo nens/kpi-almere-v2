@@ -64,18 +64,17 @@ class PerformanceIndicator extends Component {
         return { time: item.date, value: item.value, score: item.score };
     });
 
-    // console.log(JSON.stringify(linedata));
 
-    let interval = -3;
+    let interval = -3; // 3 months back by default
     switch (this.props.indicator.daterange) {
-      case '1M':
-        interval = -1;
-        break;
       case '3M':
         interval = -3;
         break;
       case '1Y':
         interval = -12;
+        break;
+      case '5Y':
+        interval = -60;
         break;
     }
 
@@ -90,7 +89,7 @@ class PerformanceIndicator extends Component {
         return linedataItem;
       }
     });
-
+    const customizedDomain = [0, 10];
     const visualisationOrBackside = (this.state.showBackside) ?
       <div>
         <VisualisationSettings {...this.props} />
@@ -99,9 +98,9 @@ class PerformanceIndicator extends Component {
       <ComposedChart width={500}
                  height={280}
                  data={linedata}
-                 margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+                 margin={{ top: 10, right: 0, left: -40, bottom: 0 }}>
        <XAxis dataKey="time" />
-       <YAxis yAxisId="left" stroke="#82ca9d" />
+       <YAxis yAxisId="left" stroke="#82ca9d" domain={customizedDomain} />
        <YAxis yAxisId="right" orientation="right" stroke="#8884d8" />
        <CartesianGrid strokeDasharray="3 3"/>
        <Tooltip/>
@@ -125,7 +124,7 @@ class PerformanceIndicator extends Component {
                }}>{Math.round(lastScore)}</Label>
                <a target="_blank"
                   title="Bekijk in Lizard"
-                  href="https://demo.lizard.net/nl/map/topography/point/@52.3731,5.1977,13/-2Days0Hours+0Days2Hours">
+                  href="https://flevoland.lizard.net/nl/map/topography,overrun/point@52.3351,5.4815,11/Oct,19,2011-Sep,15,2015">
                  <img
                    width="20"
                    style={{margin:'0px 0px 5px 5px'}}
@@ -168,6 +167,12 @@ class PerformanceIndicator extends Component {
             </li>
             <li
               style={{
+                fontWeight: (this.props.indicator.daterange === '5Y') ? 'bold' : ''
+              }}
+              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '5Y'))}>5Y
+            </li>
+            <li
+              style={{
                 fontWeight: (this.props.indicator.daterange === '1Y') ? 'bold' : ''
               }}
               onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '1Y'))}>1Y
@@ -177,12 +182,6 @@ class PerformanceIndicator extends Component {
                 fontWeight: (this.props.indicator.daterange === '3M') ? 'bold' : ''
               }}
               onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '3M'))}>3M
-            </li>
-            <li
-              style={{
-                fontWeight: (this.props.indicator.daterange === '1M') ? 'bold' : ''
-              }}
-              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '1M'))}>1M
             </li>
           </ul>
           {visualisationOrBackside}
