@@ -106,6 +106,7 @@ class PerformanceIndicatorList extends Component {
         return {
           'boundary_type_name': indicator[0].boundary_type_name,
           'name': indicator[0].name,
+          'daterange': indicator[0].daterange || '3M',
           'aggregation_period': indicator[0].aggregation_period,
           'reference_value': indicator[0].reference_value,
           'region_name': region.region_name,

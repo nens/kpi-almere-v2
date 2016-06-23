@@ -8,6 +8,7 @@ import {
   SET_REGION,
   SET_INDICATOR,
   SET_REFERENCE_VALUE_FOR_INDICATOR,
+  SET_DATERANGE_FOR_PI,
 } from './actions.jsx';
 
 function pis(state = {
@@ -19,6 +20,15 @@ function pis(state = {
 }, action) {
   // console.log('reducer pis() was called with state', state, 'and action', action);
   switch (action.type) {
+  case SET_DATERANGE_FOR_PI:
+    return Object.assign({}, state, {
+      piData: state.piData.map((item) => {
+        if (item[0].name === action.indicator.name) {
+          item[0].daterange = action.rangeType;
+        }
+        return item;
+      }),
+    });
   case SET_REFERENCE_VALUE_FOR_INDICATOR:
     return Object.assign({}, state, {
       piData: state.piData.map((item) => {

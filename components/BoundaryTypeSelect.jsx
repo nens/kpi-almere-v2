@@ -31,7 +31,7 @@ class BoundaryTypeSelect extends Component {
     });
     return (
       <ButtonToolbar className={styles.buttonToolbar}>
-        <ButtonGroup bsSize="large">
+        <ButtonGroup bsSize="small">
           {buttons}
         </ButtonGroup>
       </ButtonToolbar>

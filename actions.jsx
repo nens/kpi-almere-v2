@@ -14,6 +14,17 @@ export const RECEIVE_PIS = 'RECEIVE_PIS';
 export const REQUEST_REGIONS = 'REQUEST_REGIONS';
 export const RECEIVE_REGIONS = 'RECEIVE_REGIONS';
 
+export const SET_DATERANGE_FOR_PI = 'SET_DATERANGE_FOR_PI';
+
+export function setDaterangeForPI(indicator, region, rangeType) {
+
+  return {
+    type: SET_DATERANGE_FOR_PI,
+    indicator,
+    region,
+    rangeType,
+  };
+}
 
 function requestPis() {
   return {

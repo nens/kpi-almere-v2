@@ -15,7 +15,32 @@
     </div>
     <script src="dist/bundle.js"></script>
     <style>
-    body{background-color: #2C2F38;}
+    html {
+      width: 100%; }
+
+    body, html {
+      height: 100%; }
+      @media only screen and (max-width: 550px) {
+        body, html {
+          height: auto; }
+    body{
+      display: flex;
+      height: 100%;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-content: stretch;
+      align-items: stretch;
+      padding: 1em; }
+      @media only screen and (max-width: 875px) {
+        body {
+          flex-direction: column;
+          flex-wrap: nowrap;
+          align-content: flex-start;
+          align-items: default; } }
+      @media only screen and (max-width: 550px) {
+        body {
+          flex-wrap: wrap; }
+    }
     @import url(https://fonts.googleapis.com/css?family=Sintony:400,700);
     .rv-treemap {
       font-family: "Sintony", sans-serif;
@@ -155,7 +180,7 @@
     .rv-radial-chart__series--pie > path {
       stroke: #fff;
       stroke-width: 1px; }
-    
+
     </style>
   </body>
 </html>

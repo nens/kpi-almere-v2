@@ -18,6 +18,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import React, { Component, PropTypes } from 'react';
 
 class App extends Component {
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -64,30 +65,79 @@ class App extends Component {
       //
       // <div style={{ position: 'relative' }}>{selectedIndicatorText}</div>
       // <div style={{ position: 'relative' }}>{selectedRegionText}</div>
+  //   return (
+  //    <Grid fluid>
+  //       <Row className={styles.Main}>
+  //         <Pimap
+  //           selectedZoomLevel={this.props.zoomlevel}
+  //           selectRegion={this._selectRegion}
+  //           selectedRegion={this.props.region}
+  //           data={this.props.regions}
+  //           indicator={this.props.indicator}
+  //           indicators={this.props.indicators}
+  //         />
+        // <div style={{
+        //     position: 'absolute',
+        //     left: 0,
+        //     top: 0,
+        //     padding: 20,
+        //     backgroundColor: '#353535',
+        //   }}
+        //   >
+        //   {(this.props.region) ? this.props.region.properties.name : 'Selecteer regio'} / {(this.props.indicator) ? this.props.indicator.name : 'Selecteer indicator'}
+        // </div>
+  //       <Col sm={8} md={8}></Col>
+  //       <Col sm={4} md={4} style={{ height: window.innerHeight, overflowY: 'auto', msOverflowStyle: 'none' }}>
+  //         <div className={styles.backgroundBlur}/>
+          // <BoundaryTypeSelect
+          //   selectZoomLevel={this._selectZoomLevel}
+          //   selectedZoomLevel={this.props.zoomlevel}
+          //   zoomlevels={this.props.zoomlevels} />
+          // <PerformanceIndicatorList
+          //   dispatch={this.props.dispatch}
+          //   selectedIndicator={this.props.indicator}
+          //   selectedZoomLevel={this.props.zoomlevel}
+          //   selectPi={this._selectPi}
+          //   region={this.props.region}
+          //   data={this.props.indicators}
+          // />
+  //       </Col>
+  //     </Row>
+  //   </Grid>
+  // );
+
     return (
-     <Grid fluid>
-        <Row className={styles.Main}>
-          <Pimap
-            selectedZoomLevel={this.props.zoomlevel}
-            selectRegion={this._selectRegion}
-            selectedRegion={this.props.region}
-            data={this.props.regions}
-            indicator={this.props.indicator}
-            indicators={this.props.indicators}
-          />
+      <div>
         <div style={{
             position: 'absolute',
             left: 0,
             top: 0,
             padding: 20,
             backgroundColor: '#353535',
+            zIndeX: 99999,
           }}
           >
           {(this.props.region) ? this.props.region.properties.name : 'Selecteer regio'} / {(this.props.indicator) ? this.props.indicator.name : 'Selecteer indicator'}
         </div>
-        <Col sm={8} md={8}></Col>
-        <Col sm={4} md={4} style={{ height: window.innerHeight, overflowY: 'auto', msOverflowStyle: 'none' }}>
-          <div className={styles.backgroundBlur}/>
+
+      <div style={{
+        display: 'flex',
+        height: '100%',
+      }}>
+        <div className={styles.FlexContainerWrap}>
+            <div className={styles.FlexContainer} style={{height: window.innerHeight}}>
+             <Pimap
+                 selectedZoomLevel={this.props.zoomlevel}
+                 selectRegion={this._selectRegion}
+                 selectedRegion={this.props.region}
+                 data={this.props.regions}
+                 indicator={this.props.indicator}
+                 indicators={this.props.indicators}
+               />
+            </div>
+        </div>
+
+        <aside className={styles.Sidebar}>
           <BoundaryTypeSelect
             selectZoomLevel={this._selectZoomLevel}
             selectedZoomLevel={this.props.zoomlevel}
@@ -100,10 +150,10 @@ class App extends Component {
             region={this.props.region}
             data={this.props.indicators}
           />
-        </Col>
-      </Row>
-    </Grid>
-  );
+        </aside>
+      </div>
+      </div>
+    );
   }
 }
 

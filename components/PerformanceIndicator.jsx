@@ -1,16 +1,19 @@
 import styles from './PerformanceIndicator.css';
 import React, { Component, PropTypes } from 'react';
 import { Label } from 'react-bootstrap';
+import d3 from 'd3';
 import CountTo from 'react-count-to';
 import DataSeries from './DataSeries.jsx';
 import Chart from './chart.jsx';
 import VisualisationSettings from './VisualisationSettings.jsx';
 import { VictoryChart, VictoryLine, VictoryAxis } from 'victory';
+
 import {
   Area,
   AreaChart,
   Brush,
   CartesianGrid,
+  ComposedChart,
   Line,
   LineChart,
   ReferenceLine,
@@ -18,6 +21,12 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import {
+  setDaterangeForPI,
+} from '../actions.jsx';
+
+
 
 class PerformanceIndicator extends Component {
   constructor(props) {
@@ -51,47 +60,67 @@ class PerformanceIndicator extends Component {
   }
 
   render() {
-    const chartData = this.props.series.map((cd) => {
-      return {
-        x: new Date(cd.date),
-        y: cd.score,
-      };
-    });
-
-    const linedata = this.props.series.map((item, i) => {
+    let linedata = this.props.series.map((item, i) => {
         return { time: item.date, value: item.value, score: item.score };
     });
+
+    // console.log(JSON.stringify(linedata));
+
+    let interval = -3;
+    switch (this.props.indicator.daterange) {
+      case '1M':
+        interval = -1;
+        break;
+      case '3M':
+        interval = -3;
+        break;
+      case '1Y':
+        interval = -12;
+        break;
+    }
+
+    const lastDate = new Date(linedata[linedata.length-1].time);
+    const timeBack = d3.time.month.offset(lastDate, interval);
+
     const lastScore = linedata[linedata.length - 1].score;
     const lastValue = linedata[linedata.length - 1].value;
 
+    linedata = linedata.filter((linedataItem) => {
+      if (new Date(linedataItem.time) >= timeBack && new Date(linedataItem.time) <= lastDate) {
+        return linedataItem;
+      }
+    });
 
     const visualisationOrBackside = (this.state.showBackside) ?
       <div>
         <VisualisationSettings {...this.props} />
       </div>
       :
-      <LineChart width={400}
+      <ComposedChart width={500}
                  height={280}
                  data={linedata}
-                 margin={{ top: 15, right: 0, left: 0, bottom: 0 }}>
+                 margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
        <XAxis dataKey="time" />
        <YAxis yAxisId="left" stroke="#82ca9d" />
        <YAxis yAxisId="right" orientation="right" stroke="#8884d8" />
        <CartesianGrid strokeDasharray="3 3"/>
        <Tooltip/>
-       <Brush dataKey='score' height={30} stroke="#82ca9d"/>
+
        <ReferenceLine y={this.props.indicator.reference_value} label="" yAxisId="right" stroke="red"/>
        {(this.state.showValues) ?
-       <Line type="monotone" yAxisId="right" dataKey="value" stroke="#8884d8" dot={false} activeDot={{r: 8}} isAnimationActive={false} /> : ''}
-       <Line type="monotone" yAxisId="left" dataKey="score" stroke="#82ca9d" isAnimationActive={false} dot={false} />
-      </LineChart>;
+       <Area type="monotone" yAxisId="right" dataKey="value" fill="#8884d8" stroke={false} dot={false} activeDot={{r: 8}} isAnimationActive={false} /> :
+       <Area type="monotone" yAxisId="left" dataKey="score" fill="#82ca9d" stroke={false} isAnimationActive={false} dot={false} />
+      }
+      </ComposedChart>;
+      // <Brush dataKey='score' height={20} stroke="#82ca9d" travellerWidth={10}/>
 
     return (
       <div className={styles.PerformanceIndicator}>
         <div className={styles.divider}
            onClick={() => this._handleSelectPi(this.props.indicator)}>
            <span className="pull-right">
-             <Label bsStyle="default" style={{
+             <Label style={{
+                 fontSize: '0.95em',
                  backgroundColor: (lastScore > this.props.indicator.reference_value) ? 'red' : 'green'
                }}>{Math.round(lastScore)}</Label>
                <a target="_blank"
@@ -104,20 +133,20 @@ class PerformanceIndicator extends Component {
                </a>
            </span>
 
-           <ul className="list-unstyled">
+           <ul className="list-unstyled" style={{ borderBottom: '1px solid #3D3F4B' }}>
              <li
                className={styles.title}
                style={{
-                 textDecoration: (
+                 fontWeight: (
                    this.props.selectedIndicator && this.props.selectedIndicator.name === this.props.indicator.name && this.props.selectedIndicator.region_name === this.props.indicator.region_name
-                 ) ? 'underline' : 'none'
+                 ) ? 'bold' : ''
                }}>
                <i className="fa fa-area-chart"></i>&nbsp;&nbsp;{this.props.indicator.name}</li>
              <li
                style={{
-                 textDecoration: (
+                 fontWeight: (
                    this.props.selectedIndicator && this.props.selectedIndicator.name === this.props.indicator.name && this.props.selectedIndicator.region_name === this.props.indicator.region_name
-                 ) ? 'underline' : 'none'
+                 ) ? 'bold' : ''
                }}
                className={styles.title}>
                <i className="fa fa-globe"></i>&nbsp;&nbsp;{this.props.region.properties.name}</li>
@@ -133,26 +162,36 @@ class PerformanceIndicator extends Component {
           <label className={styles.showValuesLabel} htmlFor={this.props.pid}>Toon waardes</label>
           &nbsp;&nbsp;
         </div>
-          <i className="fa fa-cog"
-             style={{ cursor: 'pointer' }}
-             onClick={this._handleCogClick}>
-          </i>
+          <ul className="list-unstyled list-inline" style={{ cursor: 'pointer' }}>
+            <li><i className="fa fa-cog"
+                   onClick={this._handleCogClick}></i>
+            </li>
+            <li
+              style={{
+                fontWeight: (this.props.indicator.daterange === '1Y') ? 'bold' : ''
+              }}
+              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '1Y'))}>1Y
+            </li>
+            <li
+              style={{
+                fontWeight: (this.props.indicator.daterange === '3M') ? 'bold' : ''
+              }}
+              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '3M'))}>3M
+            </li>
+            <li
+              style={{
+                fontWeight: (this.props.indicator.daterange === '1M') ? 'bold' : ''
+              }}
+              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '1M'))}>1M
+            </li>
+          </ul>
           {visualisationOrBackside}
       </div>
     );
   }
 }
 
-//<Chart width={400} height={0}>
-    //  <DataSeries
-        // showValues={this.state.showValues}
-        // data={this.props.data}
-        // values={this.props.values}
-        // width={400}
-        // height={100}
-        // color={'#65B59A'}
-      // />
- // </Chart>
+
 
 PerformanceIndicator.propTypes = {
   series: PropTypes.array.isRequired,
@@ -161,54 +200,3 @@ PerformanceIndicator.propTypes = {
 };
 
 export default PerformanceIndicator;
-
-
-
-
-
-
-
-
-
-//
-//
-// <VictoryChart
-//   width={400}
-//   height={200}
-//   standalone={true}
-//   padding={{
-//     top: 5,
-//     bottom: 50,
-//     left: 50,
-//     right: 40
-//   }}
-//   scale={{
-//     x: 'time'
-//   }}>
-//   <VictoryAxis
-//     tickValues={[
-//       minDate,
-//       midDate,
-//       maxDate,
-//     ]}
-//     tickFormat={(x) => x.getFullYear()}/>
-//   <VictoryLine
-//     labels={['a','b','c']}
-//     animate={{duration: 500}}
-//     interpolation='basis'
-//     style={{
-//       data: {
-//         stroke: '#65B59A',
-//       }
-//     }}
-//     data={chartData}/>
-//   <VictoryLine
-//     style={{
-//       data: {stroke: "red", strokeWidth: 1}
-//     }}
-//     interpolation={"linear"}
-//     data={[
-//       {x: new Date(minDate), y: 6},
-//       {x: new Date(maxDate), y: 6},
-//     ]} />
-// </VictoryChart>

@@ -1,13 +1,12 @@
 .PerformanceIndicator {
 	padding: 20px;
 	margin: 10px 0 0 0;
-	width: 400px;
+	width: 500px;
 }
 .title {
   cursor: pointer;
 	text-transform: uppercase;
-	border-bottom: 1px solid #3D3F4B;
-	color: #ACAFCB;
+	color: #000;
 	font-weight: 300;
 	font-size: 1em;
 }
