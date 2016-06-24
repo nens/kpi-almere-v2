@@ -60,6 +60,8 @@ class Pimap extends Component {
     window.removeEventListener('resize', this.redraw);
   }
 
+
+
   redraw() {
     this.setState({
       width: window.innerWidth,
@@ -109,13 +111,14 @@ class Pimap extends Component {
   }
 
   render() {
-    console.log('-------->', this.props.data);
     const indicatorsSecondArrayValue = this.props.indicators.filter((indicator, i) => {
-      if (this.props.indicator && indicator[1].boundary_type_name === this.props.selectedZoomLevel && indicator[0].name === this.props.indicator.name) {
+      if (this.props.indicator &&
+        indicator[1].boundary_type_name === this.props.selectedZoomLevel &&
+        indicator[0].name === this.props.indicator.name) {
         return indicator[1];
       }
     });
-
+    // console.log('indicatorsSecondArrayValue', indicatorsSecondArrayValue);
     const mapColorConfig = indicatorsSecondArrayValue.map((ind) => {
       return ind[1].regions.map((region) => {
         return {
@@ -126,6 +129,8 @@ class Pimap extends Component {
         };
       });
     });
+
+    // console.log('mapColorConfig', mapColorConfig);
 
     var self = this;
     const zoomlevelmapping = {
@@ -139,36 +144,40 @@ class Pimap extends Component {
       zoom: zoomlevelmapping[this.props.selectedZoomLevel],
     };
 
-    let choro = <div/>;
-    if (this.props.data.results) {
+    let choropleth = <div/>;
+    if (this.props.regions.results) {
 
       // +/- 0.05 correction for almeres weird geometry
-      initialLocation.lat = this.calculateScaleCenter(this.props.data.results).center[1] - 0.07;
-      initialLocation.lng = this.calculateScaleCenter(this.props.data.results).center[0] + 0.11;
+      initialLocation.lat = this.calculateScaleCenter(this.props.regions.results).center[1] - 0.07;
+      initialLocation.lng = this.calculateScaleCenter(this.props.regions.results).center[0] + 0.11;
 
-      let results = this.props.data.results;
-      results = results.features.filter(function(r) { if(r.properties.name) return r });
+      let results = this.props.regions.results.features.filter((feature) => {
+        if (feature.properties.name) {
+          return feature;
+        }
+      });
 
-      choro = <Choropleth
+      choropleth = <Choropleth
         data={results}
         valueProperty={(feature) => {
-          for (let key in mapColorConfig[0]) {
-            // console.log('---->', mapColorConfig[0][key]);
+          let returnValue = 0;
+          for (const key in mapColorConfig[0]) {
             if (mapColorConfig[0][key].region_name === feature.properties.name) {
-              if (mapColorConfig[0][key].last_value > mapColorConfig[0][key].reference_value) {
-                return mapColorConfig[0][key].last_value;
+              if (mapColorConfig[0][key].last_score < mapColorConfig[0][key].reference_value) {
+                returnValue = mapColorConfig[0][key].last_score;
               }
               else {
-                return mapColorConfig[0][key].reference_value;
+                returnValue = mapColorConfig[0][key].reference_value;
               }
             }
           }
+          return returnValue;
         }}
         visible={(feature) => {
           return true;
         }}
-        scale={['green', 'red']}
-        steps={7}
+        scale={['red', 'green']}
+        steps={10}
         mode='e'
         style={(feature) => {
           try {
@@ -195,7 +204,7 @@ class Pimap extends Component {
         opacity: 0.9,
         position: 'absolute',
         zIndex: 999999,
-      }}>{this.state.hoverContent.properties.name}</div> :
+      }}>{(this.state.hoverContent) ? this.state.hoverContent.properties.name : 'Geen informatie beschikbaar'}</div> :
     <div/>;
 
     return (
@@ -209,10 +218,10 @@ class Pimap extends Component {
                     height: this.state.height,
                   }}>
         <TileLayer
-          attribution='&copy; <a href="http://mapbox.com/">MapBox</a> &copy; <a href="http://www.nelen-schuurmans.nl/">Nelen &amp; Schuurmans</a>'
+          attribution=''
           url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15e647c/{z}/{x}/{y}.png'
         />
-        {choro}
+        {choropleth}
         {hover}
       </Map>
     );

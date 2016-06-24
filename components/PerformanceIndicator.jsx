@@ -92,7 +92,9 @@ class PerformanceIndicator extends Component {
     const customizedDomain = [0, 10];
     const visualisationOrBackside = (this.state.showBackside) ?
       <div>
-        <VisualisationSettings {...this.props} />
+        <VisualisationSettings
+          handleCogClick={this._handleCogClick}
+          {...this.props} />
       </div>
       :
       <ComposedChart width={500}

@@ -1,5 +1,6 @@
 import PerformanceIndicator from './PerformanceIndicator.jsx';
 import styles from './PerformanceIndicatorList.css';
+import { Well, } from 'react-bootstrap';
 import 'velocity-animate';
 import 'velocity-animate/velocity.ui';
 import { VelocityTransitionGroup } from 'velocity-react';
@@ -77,28 +78,6 @@ class PerformanceIndicatorList extends Component {
   }
 
   render() {
-    const enterAnimation = {
-      animation: Animations.In,
-      stagger: 0,
-      duration: 100,
-      backwards: true,
-      display: 'block',
-      style: {
-        display: 'none',
-      },
-    };
-
-    const leaveAnimation = {
-      animation: Animations.Out,
-      stagger: 0,
-      duration: 200,
-      backwards: true,
-    };
-
-    const groupStyle = {
-      margin: '10px 0',
-    };
-
     const chartdata = this.props.data;
 
     let _performanceindicators = chartdata.map((indicator) => {
@@ -136,7 +115,7 @@ class PerformanceIndicatorList extends Component {
                   selectPi={this._selectPi}
                   series={p.series}
                 />;
-        };
+        }
       }
     });
 
@@ -145,9 +124,10 @@ class PerformanceIndicatorList extends Component {
         <div className={styles.PerformanceIndicatorList}>
             {
               (this.props.region) ? performanceindicators :
-              <div style={{
-                  padding: 20
-                }}>Selecteer s.v.p. een gebied</div>
+              <Well style={{
+                  padding: 20,
+              }}>Selecteer s.v.p. een gebied
+              </Well>
             }
         </div>
       </div>

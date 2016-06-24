@@ -1,4 +1,3 @@
-import Stats from './Stats.jsx';
 import Pimap from './PiMap.jsx';
 import { connect } from 'react-redux';
 import {
@@ -9,12 +8,9 @@ import {
   setRegion,
   setIndicator,
 } from '../actions.jsx';
-
-import Authentication from './Authentication.jsx';
 import PerformanceIndicatorList from './PerformanceIndicatorList.jsx';
 import BoundaryTypeSelect from './BoundaryTypeSelect.jsx';
 import styles from './App2.css';
-import { Grid, Row, Col } from 'react-bootstrap';
 import React, { Component, PropTypes } from 'react';
 
 class App extends Component {
@@ -37,8 +33,8 @@ class App extends Component {
   }
 
   _selectZoomLevel(zoomlevel) {
-    this.props.dispatch(fetchRegions(zoomlevel));
     this.props.dispatch(setZoomLevel(zoomlevel));
+    this.props.dispatch(fetchRegions(zoomlevel));
   }
 
   _selectPi(indicator) {
@@ -47,77 +43,18 @@ class App extends Component {
   }
 
   render() {
-    // console.log('App is receiving these props:', this.props);
-
-    const selectedRegionText = (this.props.region) ?
-      <span>
-        <i className="fa fa-building-o"></i>&nbsp;&nbsp;{this.props.region.properties.name || 'Onbekend'}
-      </span> : '';
-
-    const selectedIndicatorText = (this.props.indicator) ?
-      <span>
-        <i className="fa fa-area-chart"></i>&nbsp;&nbsp;{this.props.indicator.name || '...'}
-      </span> : '';
-
-
-      // <Stats title={'Aantal regios'} value={this.props.regions.count || 0} />
-      // <Stats title={'Aantal indicatoren'} value={this.props.indicators.length} />
-      //
-      // <div style={{ position: 'relative' }}>{selectedIndicatorText}</div>
-      // <div style={{ position: 'relative' }}>{selectedRegionText}</div>
-  //   return (
-  //    <Grid fluid>
-  //       <Row className={styles.Main}>
-  //         <Pimap
-  //           selectedZoomLevel={this.props.zoomlevel}
-  //           selectRegion={this._selectRegion}
-  //           selectedRegion={this.props.region}
-  //           data={this.props.regions}
-  //           indicator={this.props.indicator}
-  //           indicators={this.props.indicators}
-  //         />
-        // <div style={{
-        //     position: 'absolute',
-        //     left: 0,
-        //     top: 0,
-        //     padding: 20,
-        //     backgroundColor: '#353535',
-        //   }}
-        //   >
-        //   {(this.props.region) ? this.props.region.properties.name : 'Selecteer regio'} / {(this.props.indicator) ? this.props.indicator.name : 'Selecteer indicator'}
-        // </div>
-  //       <Col sm={8} md={8}></Col>
-  //       <Col sm={4} md={4} style={{ height: window.innerHeight, overflowY: 'auto', msOverflowStyle: 'none' }}>
-  //         <div className={styles.backgroundBlur}/>
-          // <BoundaryTypeSelect
-          //   selectZoomLevel={this._selectZoomLevel}
-          //   selectedZoomLevel={this.props.zoomlevel}
-          //   zoomlevels={this.props.zoomlevels} />
-          // <PerformanceIndicatorList
-          //   dispatch={this.props.dispatch}
-          //   selectedIndicator={this.props.indicator}
-          //   selectedZoomLevel={this.props.zoomlevel}
-          //   selectPi={this._selectPi}
-          //   region={this.props.region}
-          //   data={this.props.indicators}
-          // />
-  //       </Col>
-  //     </Row>
-  //   </Grid>
-  // );
-
     return (
       <div>
         <div style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            padding: 20,
-            backgroundColor: '#353535',
-            zIndeX: 99999,
-          }}
-          >
-          {(this.props.region) ? this.props.region.properties.name : 'Selecteer regio'} / {(this.props.indicator) ? this.props.indicator.name : 'Selecteer indicator'}
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          padding: 20,
+          backgroundColor: '#353535',
+          zIndeX: 99999,
+        }}>
+          {(this.props.region) ? this.props.region.properties.name : 'Selecteer regio'} / {(this.props.indicator) ?
+          this.props.indicator.name : 'Selecteer indicator'}
         </div>
 
       <div style={{
@@ -125,12 +62,12 @@ class App extends Component {
         height: '100%',
       }}>
         <div className={styles.FlexContainerWrap}>
-            <div className={styles.FlexContainer} style={{height: window.innerHeight}}>
+            <div className={styles.FlexContainer} style={{ height: window.innerHeight }}>
              <Pimap
                  selectedZoomLevel={this.props.zoomlevel}
                  selectRegion={this._selectRegion}
                  selectedRegion={this.props.region}
-                 data={this.props.regions}
+                 regions={this.props.regions}
                  indicator={this.props.indicator}
                  indicators={this.props.indicators}
                />
