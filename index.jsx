@@ -7,11 +7,6 @@ import configureStore from './configureStore.jsx';
 import App from './components/App2.jsx';
 import $ from 'jquery';
 
-// import {whyDidYouUpdate} from 'why-did-you-update';
-// if (process.env.NODE_ENV !== 'production') {
-//   whyDidYouUpdate(React);
-// }
-
 const piEndpoint = $.ajax({
   type: 'GET',
   url: 'https://nxt.staging.lizard.net/api/v2/pi/',

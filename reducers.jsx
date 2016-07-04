@@ -1,52 +1,63 @@
+import guid from './lib/guid.jsx';
 import { combineReducers } from 'redux';
 import {
-  REQUEST_PIS,
-  RECEIVE_PIS,
-  REQUEST_REGIONS,
+  RECEIVE_INDICATORS,
   RECEIVE_REGIONS,
-  SET_ZOOMLEVEL,
+  REQUEST_INDICATORS,
+  REQUEST_REGIONS,
+  SELECT_INDICATOR,
+  SET_DATERANGE_FOR_PI,
   SET_REGION,
   SET_INDICATOR,
-  SET_REFERENCE_VALUE_FOR_INDICATOR,
-  SET_DATERANGE_FOR_PI,
 } from './actions.jsx';
 
-function pis(state = {
+function indicators(state = {
   isFetching: false,
   didInvalidate: false,
   piData: [],
   regions: [],
+  indicators: [],
   zoomlevel: 'DISTRICT',
 }, action) {
-  // console.log('reducer pis() was called with state', state, 'and action', action);
+  // console.log('reducer indicators() was called with state', state, 'and action', action);
   switch (action.type) {
   case SET_DATERANGE_FOR_PI:
     return Object.assign({}, state, {
-      piData: state.piData.map((item) => {
-        if (item[0].name === action.indicator.name) {
-          item[0].daterange = action.rangeType;
-        }
-        return item;
+      indicators: state.indicators.map((item) => {
+        return {
+          name: item.name,
+          regions: item.regions.map((region) => {
+            if (region.id === action.selectedIndicatorItem.id && region.active === true) {
+              region.daterange = action.rangeType;
+            }
+            return region;
+          }),
+        };
       }),
     });
-  case SET_REFERENCE_VALUE_FOR_INDICATOR:
+  case SELECT_INDICATOR:
     return Object.assign({}, state, {
-      piData: state.piData.map((item) => {
-        if (item[0].name === action.indicator.name) {
-          item[0].reference_value = action.value;
-        }
-        return item;
+      indicators: state.indicators.map((item) => {
+        return {
+          name: item.name,
+          regions: item.regions.map((region) => {
+            if (region.id === action.indicator.id) {
+              region.selected = true;
+              return region;
+            }
+            region.selected = false;
+            return region;
+          }),
+        };
       }),
     });
-  case REQUEST_PIS:
+  case SET_REGION:
     return Object.assign({}, state, {
-      isFetching: true,
+      region: action.region,
     });
-  case RECEIVE_PIS:
+  case SET_INDICATOR:
     return Object.assign({}, state, {
-      isFetching: false,
-      piData: action.piData,
-      zoomlevels: action.zoomlevels,
+      indicator: action.indicator,
     });
   case REQUEST_REGIONS:
     return Object.assign({}, state, {
@@ -57,17 +68,36 @@ function pis(state = {
       isFetching: false,
       regions: action.regions,
     });
-  case SET_ZOOMLEVEL:
+  case REQUEST_INDICATORS:
     return Object.assign({}, state, {
-      zoomlevel: action.zoomlevel,
+      isFetching: true,
     });
-  case SET_REGION:
+  case RECEIVE_INDICATORS:
     return Object.assign({}, state, {
-      region: action.region,
-    });
-  case SET_INDICATOR:
-    return Object.assign({}, state, {
-      indicator: action.indicator,
+      isFetching: false,
+      indicators: action.piData.map((item) => {
+        return {
+          name: item[0].name,
+          regions: item[1].regions.map((region) => {
+            const splittedRegionUrl = region.region_url.split('/');
+            const regionId = Number(splittedRegionUrl[splittedRegionUrl.length - 2]);
+            return {
+              name: item[0].name,
+              id: guid(),
+              aggregationPeriod: item[0].aggregation_period,
+              boundaryTypeId: item[0].boundary_type_id,
+              boundaryTypeName: item[0].boundary_type_name,
+              referenceValue: item[0].reference_value,
+              regionName: region.region_name,
+              regionUrl: region.region_url,
+              regionId,
+              series: region.aggregations,
+              daterange: '3M',
+            };
+          }),
+        };
+      }),
+      zoomlevels: action.zoomlevels,
     });
   default:
     return state;
@@ -75,7 +105,7 @@ function pis(state = {
 }
 
 const rootReducer = combineReducers({
-  pis,
+  indicators,
 });
 
 export default rootReducer;

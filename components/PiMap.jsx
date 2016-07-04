@@ -1,9 +1,11 @@
 import styles from './PiMap.css';
 import React, { Component, PropTypes } from 'react';
+import zoomlevelLookup from './zoomlevelLookup.jsx';
 import d3 from 'd3';
 import _ from 'lodash';
 import $ from 'jquery';
 import Choropleth from 'react-leaflet-choropleth';
+import GeoJsonUpdatable from '../lib/GeoJsonUpdatable.jsx';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 document.onmousemove = function(e){
@@ -13,6 +15,17 @@ document.onmousemove = function(e){
       $(infobox).css({top: e.pageY+15, left: e.pageX+15, position:'absolute'});;
     }
 }
+
+function getColor(d) {
+  return d > 10 ? '#800026' :
+    d > 8 ? '#BD0026' :
+    d > 6 ? '#E31A1C' :
+    d > 4 ? '#FC4E2A' :
+    d > 2 ? '#FD8D3C' :
+    d > 1 ? 'rgb(86,221,84)' :
+    'grey';
+}
+
 
 const style = {
   fillColor: '#000',
@@ -41,7 +54,9 @@ class Pimap extends Component {
       height: window.innerHeight,
       hovering: false,
       hoverContent: '',
+      zoomlevel: undefined,
     };
+    this._setZoomlevel = this._setZoomlevel.bind(this);
     this.redraw = this.redraw.bind(this);
     this.onFeatureClick = this.onFeatureClick.bind(this);
     this.onFeatureHover = this.onFeatureHover.bind(this);
@@ -68,6 +83,21 @@ class Pimap extends Component {
       height: window.innerHeight,
     });
   }
+
+
+  _setZoomlevel(zoomlevel) {
+    if (zoomlevel === this.state.zoomlevel) {
+      this.setState({
+        zoomlevel: undefined,
+      });
+    }
+    else {
+      this.setState({
+        zoomlevel,
+      });
+    }
+  }
+
 
   calculateScaleCenter(features) {
     // Get the bounding box of the paths (in pixels!) and calculate a
@@ -110,27 +140,80 @@ class Pimap extends Component {
     });
   }
 
-  render() {
-    const indicatorsSecondArrayValue = this.props.indicators.filter((indicator, i) => {
-      if (this.props.indicator &&
-        indicator[1].boundary_type_name === this.props.selectedZoomLevel &&
-        indicator[0].name === this.props.indicator.name) {
-        return indicator[1];
-      }
-    });
-    // console.log('indicatorsSecondArrayValue', indicatorsSecondArrayValue);
-    const mapColorConfig = indicatorsSecondArrayValue.map((ind) => {
-      return ind[1].regions.map((region) => {
-        return {
-          'reference_value': ind[0].reference_value,
-          'region_name': region.region_name,
-          'last_score': region.aggregations[region.aggregations.length - 1].score,
-          'last_value': region.aggregations[region.aggregations.length - 1].value,
-        };
+  onEachFeature(feature, layer) {
+    const _activeIndicatorItems = _.flattenDeep(this.props.indicators.indicators.map((indicator) => {
+      return indicator.regions.filter((region) => {
+        if (region.active) {
+          return region;
+        }
+        return false;
       });
-    });
+    }));
 
-    // console.log('mapColorConfig', mapColorConfig);
+    const selectedIndicatorItem = _activeIndicatorItems.filter((indicator) => {
+      if (indicator.selected === true && indicator.active === true) {
+        return indicator;
+      }
+      return false;
+    })[0];
+
+    const lastScore = _activeIndicatorItems.map((activeIndicatorItem) => {
+      if (activeIndicatorItem.regionName === feature.properties.name &&
+          activeIndicatorItem.boundaryTypeName === feature.properties.type) {
+            return activeIndicatorItem.series[activeIndicatorItem.series.length - 1].score;
+      }
+    }).filter(n => {
+      if(n) return n;
+      return false;
+    })[0];
+
+    let weight = 1;
+    // if (feature.properties.name === selectedIndicatorItem.regionName) {
+    //   weight = 10;
+    // }
+
+    layer.on('click', (e) => {
+      console.log(feature);
+      this.props.selectRegion(feature);
+    })
+    layer.setStyle({
+      color: '#fff',
+      opacity: 1,
+      weight: weight,
+      // fillColor: 'rgb(86,221,84)',
+      fillColor: getColor(lastScore),
+      fillOpacity: 1,
+    });
+    console.log('%c %s %s', `background: ${getColor(lastScore)}; color: #ffffff`, feature.properties.name, lastScore);
+  }
+
+  render() {
+
+    // Filter indicator items for active bool
+    const _activeIndicatorItems = _.flattenDeep(this.props.indicators.indicators.map((indicator) => {
+      return indicator.regions.filter((region) => {
+        if (region.active) {
+          return region;
+        }
+        return false;
+      });
+    }));
+
+    const selectedIndicatorItem = _activeIndicatorItems.filter((indicator) => {
+      if (indicator.selected === true && indicator.active === true) {
+        return indicator;
+      }
+      return false;
+    })[0];
+
+
+
+    let zoom = 11;
+    if (selectedIndicatorItem && selectedIndicatorItem.boundaryTypeName === 'DISTRICT') {
+      zoom = 11;
+    } else if (selectedIndicatorItem && selectedIndicatorItem.boundaryTypeName === 'MUNICIPALITY') {
+      zoom = 9;
+    }
 
     var self = this;
     const zoomlevelmapping = {
@@ -141,56 +224,21 @@ class Pimap extends Component {
     let initialLocation = {
       lat: 52.3741,
       lng: 5.2032,
-      zoom: zoomlevelmapping[this.props.selectedZoomLevel],
+      zoom: zoom,
     };
 
-    let choropleth = <div/>;
-    if (this.props.regions.results) {
 
-      // +/- 0.05 correction for almeres weird geometry
-      initialLocation.lat = this.calculateScaleCenter(this.props.regions.results).center[1] - 0.07;
-      initialLocation.lng = this.calculateScaleCenter(this.props.regions.results).center[0] + 0.11;
 
-      let results = this.props.regions.results.features.filter((feature) => {
-        if (feature.properties.name) {
-          return feature;
-        }
-      });
-
-      choropleth = <Choropleth
-        data={results}
-        valueProperty={(feature) => {
-          let returnValue = 0;
-          for (const key in mapColorConfig[0]) {
-            if (mapColorConfig[0][key].region_name === feature.properties.name) {
-              if (mapColorConfig[0][key].last_score < mapColorConfig[0][key].reference_value) {
-                returnValue = mapColorConfig[0][key].last_score;
-              }
-              else {
-                returnValue = mapColorConfig[0][key].reference_value;
-              }
-            }
-          }
-          return returnValue;
-        }}
-        visible={(feature) => {
-          return true;
-        }}
-        scale={['red', 'green']}
-        steps={10}
-        mode='e'
-        style={(feature) => {
-          try {
-            return (feature.id === this.props.selectedRegion.id) ? styleSelected : style;
-          } catch(e) {
-            return style;
-          }
-        }}
-        onClick={this.onFeatureClick.bind(self)}
-        onMouseOver={this.onFeatureHover.bind(self)}
-        onMouseOut={this.onFeatureHoverOut.bind(self)}
-      />;
-    }
+    // // +/- 0.05 correction for almeres weird geometry
+    // initialLocation.lat = this.calculateScaleCenter(this.props.regions.results).center[1] - 0.07;
+    // initialLocation.lng = this.calculateScaleCenter(this.props.regions.results).center[0] + 0.11;
+    //
+    // let results = this.props.regions.results.features.filter((feature) => {
+    //   if (feature.properties.name) {
+    //     return feature;
+    //   }
+    // });
+    //
 
     const position = [initialLocation.lat, initialLocation.lng];
 
@@ -207,22 +255,29 @@ class Pimap extends Component {
       }}>{(this.state.hoverContent) ? this.state.hoverContent.properties.name : 'Geen informatie beschikbaar'}</div> :
     <div/>;
 
+    console.log('----->', this.props.indicators);
     return (
-      <Map center={position}
-           zoomControl={false}
-           zoom={initialLocation.zoom}
+      <Map
+           center={position}
+           zoomControl
+           zoom={(this.state.zoomlevel) ? this.state.zoomlevel : initialLocation.zoom}
+           scrollWheelZoom={false}
+           keyboard={false}
+           boxZoom={false}
            style={{ position: 'absolute',
                     top: 0,
                     left: 0,
-                    width: this.state.width,
-                    height: this.state.height,
+                    width: '100%',
+                    height: this.state.height - 100,
                   }}>
         <TileLayer
           attribution=''
           url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15e647c/{z}/{x}/{y}.png'
         />
-        {choropleth}
-        {hover}
+        <GeoJsonUpdatable
+          data={this.props.indicators.regions.results}
+          onEachFeature={this.onEachFeature.bind(this)}
+        />
       </Map>
     );
   }

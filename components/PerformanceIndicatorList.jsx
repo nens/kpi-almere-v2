@@ -78,19 +78,22 @@ class PerformanceIndicatorList extends Component {
   }
 
   render() {
-    const chartdata = this.props.data;
 
-    let _performanceindicators = chartdata.map((indicator) => {
-      return indicator[1].regions.map((region) => {
+
+    let _performanceindicators = this.props.indicators.indicators.map((indicator) => {
+      return indicator.regions.map((region) => {
         return {
-          'boundary_type_name': indicator[0].boundary_type_name,
-          'name': indicator[0].name,
-          'daterange': indicator[0].daterange || '3M',
-          'aggregation_period': indicator[0].aggregation_period,
-          'reference_value': indicator[0].reference_value,
-          'region_name': region.region_name,
-          'url': indicator[0].url,
-          'series': region.aggregations.map((agg) => {
+          'boundaryTypeName': region.boundaryTypeName,
+          'name': region.name,
+          'daterange': region.daterange || '3M',
+          'aggregationPeriod': region.aggregationPeriod,
+          'referenceValue': region.referenceValue,
+          'regionName': region.regionName,
+          'id': region.id,
+          'regionId': region.regionId,
+          'selected': region.selected,
+          'url': region.regionUrl,
+          'series': region.series.map((agg) => {
             return {
               'date': agg.date,
               'value': agg.value,
@@ -103,40 +106,29 @@ class PerformanceIndicatorList extends Component {
 
     _performanceindicators = _.flatten(_performanceindicators);
     const performanceindicators = _performanceindicators.map((p, i) => {
-      if (p.boundary_type_name === this.props.selectedZoomLevel) {
-        if (this.props.region && this.props.region.properties.name === p.region_name) {
-          return <PerformanceIndicator
-                  dispatch={this.props.dispatch}
-                  indicator={p}
-                  key={i}
-                  pid={i}
-                  region={this.props.region}
-                  selectedIndicator={this.props.selectedIndicator}
-                  selectPi={this._selectPi}
-                  series={p.series}
-                />;
-        }
-      }
+      return <PerformanceIndicator
+              dispatch={this.props.dispatch}
+              indicator={p}
+              key={i}
+              pid={i}
+              region={this.props.region}
+              selectedIndicator={this.props.selectedIndicator}
+              selectPi={this._selectPi}
+              series={p.series}
+            />;
     });
 
     return (
-      <div>
-        <div className={styles.PerformanceIndicatorList}>
-            {
-              (this.props.region) ? performanceindicators :
-              <Well style={{
-                  padding: 20,
-              }}>Selecteer s.v.p. een gebied
-              </Well>
-            }
-        </div>
+      <div style={{
+          height: this.state.height - 100,
+          overflowY: 'scroll',
+        }}>
+          {performanceindicators}
       </div>
     );
   }
 }
 
-PerformanceIndicatorList.propTypes = {
-  data: PropTypes.array,
-};
+PerformanceIndicatorList.propTypes = {};
 
 export default PerformanceIndicatorList;

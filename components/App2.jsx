@@ -1,13 +1,13 @@
 import Pimap from './PiMap.jsx';
 import { connect } from 'react-redux';
 import {
-  fetchRegions,
-  fetchPisIfNeeded,
-  fetchRegionsifNeeded,
+  fetchIndicatorsIfNeeded,
+  fetchRegionsIfNeeded,
   setZoomLevel,
   setRegion,
-  setIndicator,
+  selectIndicator,
 } from '../actions.jsx';
+import { Grid, Row, Col, Clearfix, } from 'react-bootstrap';
 import PerformanceIndicatorList from './PerformanceIndicatorList.jsx';
 import BoundaryTypeSelect from './BoundaryTypeSelect.jsx';
 import styles from './App2.css';
@@ -24,8 +24,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(fetchRegionsifNeeded());
-    this.props.dispatch(fetchPisIfNeeded());
+    this.props.dispatch(fetchIndicatorsIfNeeded());
+    this.props.dispatch(fetchRegionsIfNeeded());
   }
 
   _selectRegion(region) {
@@ -39,57 +39,56 @@ class App extends Component {
 
   _selectPi(indicator) {
     // console.log('coloring', indicator, 'on the map');
-    this.props.dispatch(setIndicator(indicator));
+    this.props.dispatch(selectIndicator(indicator));
   }
 
   render() {
     return (
-      <div>
-        <div style={{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          padding: 20,
-          backgroundColor: '#353535',
-          zIndeX: 99999,
-        }}>
-          {(this.props.region) ? this.props.region.properties.name : 'Selecteer regio'} / {(this.props.indicator) ?
-          this.props.indicator.name : 'Selecteer indicator'}
-        </div>
-
-      <div style={{
-        display: 'flex',
-        height: '100%',
-      }}>
-        <div className={styles.FlexContainerWrap}>
-            <div className={styles.FlexContainer} style={{ height: window.innerHeight }}>
-             <Pimap
-                 selectedZoomLevel={this.props.zoomlevel}
-                 selectRegion={this._selectRegion}
-                 selectedRegion={this.props.region}
-                 regions={this.props.regions}
-                 indicator={this.props.indicator}
-                 indicators={this.props.indicators}
-               />
-            </div>
-        </div>
-
-        <aside className={styles.Sidebar}>
-          <BoundaryTypeSelect
-            selectZoomLevel={this._selectZoomLevel}
-            selectedZoomLevel={this.props.zoomlevel}
-            zoomlevels={this.props.zoomlevels} />
-          <PerformanceIndicatorList
-            dispatch={this.props.dispatch}
-            selectedIndicator={this.props.indicator}
-            selectedZoomLevel={this.props.zoomlevel}
-            selectPi={this._selectPi}
-            region={this.props.region}
-            data={this.props.indicators}
-          />
-        </aside>
-      </div>
-      </div>
+      <Grid fluid={true}>
+        <Row>
+          <Col md={10}>
+            <h2 style={{
+                fontFamily: '"Lato", "sans-serif"',
+                fontWeight: '100',
+              }}>
+              PI Dashboard
+            </h2>
+          </Col>
+          <Col md={2}>
+            <BoundaryTypeSelect
+              selectZoomLevel={this._selectZoomLevel}
+              selectedZoomLevel={this.props.zoomlevel}
+              zoomlevels={this.props.zoomlevels}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={6}>
+            <PerformanceIndicatorList
+              dispatch={this.props.dispatch}
+              selectedIndicator={this.props.indicator}
+              selectedZoomLevel={this.props.zoomlevel}
+              selectPi={this._selectPi}
+              region={this.props.region}
+              indicators={this.props.indicators}
+            />
+          </Col>
+          <Col md={6}>
+            <BoundaryTypeSelect
+              selectZoomLevel={this._selectZoomLevel}
+              {...this.props}
+            />
+            <Pimap
+                selectedZoomLevel={this.props.zoomlevel}
+                selectRegion={this._selectRegion}
+                selectedRegion={this.props.region}
+                regions={this.props.regions}
+                indicator={this.props.indicator}
+                indicators={this.props.indicators}
+              />
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }
@@ -108,16 +107,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   // This function maps the Redux state to React Props.
-  const { pis } = state;
-
-  return {
-    'indicators': pis.piData,
-    'indicator': pis.indicator,
-    'regions': pis.regions,
-    'region': pis.region,
-    'zoomlevels': pis.zoomlevels,
-    'zoomlevel': pis.zoomlevel,
-  };
+  return {'indicators': state.indicators};
 }
 
 export default connect(mapStateToProps)(App);

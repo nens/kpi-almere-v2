@@ -2,49 +2,51 @@
 import $ from 'jquery';
 import _ from 'lodash';
 
-export const SET_REFERENCE_VALUE_FOR_INDICATOR = 'SET_REFERENCE_VALUE_FOR_INDICATOR';
-
-export const SET_ZOOMLEVEL = 'SET_ZOOMLEVEL';
-export const SET_REGION = 'SET_REGION';
-export const SET_INDICATOR = 'SET_INDICATOR';
-
-export const REQUEST_PIS = 'REQUEST_PIS';
-export const RECEIVE_PIS = 'RECEIVE_PIS';
-
-export const REQUEST_REGIONS = 'REQUEST_REGIONS';
+export const RECEIVE_INDICATORS = 'RECEIVE_INDICATORS';
 export const RECEIVE_REGIONS = 'RECEIVE_REGIONS';
-
+export const REQUEST_INDICATORS = 'REQUEST_INDICATORS';
+export const REQUEST_REGIONS = 'REQUEST_REGIONS';
+export const SELECT_INDICATOR = 'SELECT_INDICATOR';
 export const SET_DATERANGE_FOR_PI = 'SET_DATERANGE_FOR_PI';
+export const SET_INDICATOR = 'SET_INDICATOR';
+export const SET_REGION = 'SET_REGION';
 
-export function setDaterangeForPI(indicator, region, rangeType) {
 
+
+export function setDaterangeForPI(selectedIndicatorItem, rangeType) {
   return {
     type: SET_DATERANGE_FOR_PI,
-    indicator,
-    region,
+    selectedIndicatorItem,
     rangeType,
   };
 }
 
-function requestPis() {
+export function selectIndicator(indicator) {
   return {
-    type: REQUEST_PIS,
+    type: SELECT_INDICATOR,
+    indicator,
   };
 }
 
-function receivePis(pidata, zoomlevels) {
+function requestIndicators() {
   return {
-    type: RECEIVE_PIS,
-    piData: pidata,
+    type: REQUEST_INDICATORS,
+  };
+}
+
+function receiveIndicators(piData, zoomlevels) {
+  return {
+    type: RECEIVE_INDICATORS,
+    piData,
     zoomlevels,
     receivedAt: Date.now(),
   };
 }
 
-function fetchPis() {
+export function fetchIndicators() {
   return dispatch => {
-    dispatch(requestPis());
-    const piEndpoint = $.ajax({
+    dispatch(requestIndicators());
+    const indicatorEndpoint = $.ajax({
       type: 'GET',
       url: 'https://nxt.staging.lizard.net/api/v2/pi/',
       xhrFields: {
@@ -54,37 +56,67 @@ function fetchPis() {
         return data;
       },
     });
-
-    Promise.all([piEndpoint]).then(([piResults]) => {
+    Promise.all([indicatorEndpoint]).then(([indicatorResults]) => {
       // Now, get the details for every PI object
-      const piUrls = piResults.results.map((pi) => {
+      const urls = indicatorResults.results.map((indicator) => {
         return $.ajax({
           type: 'GET',
-          url: `${pi.url}`,
+          url: `${indicator.url}`,
           xhrFields: {
             withCredentials: true,
           },
         });
       });
-      Promise.all(piUrls).then((details) => {
-
+      Promise.all(urls).then((details) => {
         // Combine the pi detail with the pi parent
-        const merged = _.zip(piResults.results, details);
-        const zoomlevels = _.uniq(piResults.results.map((piresult) => {
+        const piData = _.zip(indicatorResults.results, details);
+        const zoomlevels = _.uniq(indicatorResults.results.map((piresult) => {
           return piresult.boundary_type_name;
         }));
-        // console.log('Done fetching indicators...');
-        return dispatch(receivePis(merged, zoomlevels));
+        return dispatch(receiveIndicators(piData, zoomlevels));
       });
     });
   };
 }
 
-export function fetchPisIfNeeded() {
-  return (dispatch) => {
-    return dispatch(fetchPis());
+function shouldFetchIndicators(state) {
+  if (state.indicators.indicators.length > 0) {
+    return false;
+  }
+  return true;
+}
+
+export function fetchIndicatorsIfNeeded() {
+  return (dispatch, getState) => {
+    if (shouldFetchIndicators(getState())) {
+      return dispatch(fetchIndicators());
+    }
   };
 }
+
+
+
+
+
+
+
+
+export function setRegion(region) {
+  return {
+    type: SET_REGION,
+    region,
+  };
+}
+
+export function setIndicator(indicator) {
+  return {
+    type: SET_INDICATOR,
+    indicator,
+  };
+}
+
+
+
 
 function requestRegions() {
   return {
@@ -130,70 +162,8 @@ export function fetchRegions(type) {
   };
 }
 
-export function fetchRegionsifNeeded() {
+export function fetchRegionsIfNeeded() {
   return (dispatch) => {
     return dispatch(fetchRegions());
-  };
-}
-
-export function setZoomLevel(zoomlevel) {
-  return {
-    type: SET_ZOOMLEVEL,
-    zoomlevel,
-  };
-}
-
-export function setRegion(region) {
-  return {
-    type: SET_REGION,
-    region,
-  };
-}
-
-export function setIndicator(indicator) {
-  return {
-    type: SET_INDICATOR,
-    indicator,
-  };
-}
-
-function postReferenceValue(value, indicator) {
-  console.log('postReferenceValue()', value, indicator);
-  return {
-    type: SET_REFERENCE_VALUE_FOR_INDICATOR,
-    value,
-    indicator,
-  };
-
-  const piEndpoint = $.ajax({
-    type: 'POST',
-    url: indicator.url,
-    data: {
-      reference_value: value
-    },
-    xhrFields: {
-      withCredentials: true,
-    },
-    success: (data) => {
-      console.log('success!!!', data);
-      return data;
-    },
-    error: (errormsg) => {
-      console.log('error!!!', errormsg);
-      return errormsg;
-    },
-  });
-  Promise.all([piEndpoint]).then(([piResults]) => {
-    return {
-      type: SET_REFERENCE_VALUE_FOR_INDICATOR,
-      value,
-      indicator,
-    };
-  });
-}
-
-export function setReferenceValueForIndicator(value, indicator) {
-  return (dispatch) => {
-    dispatch(postReferenceValue(value, indicator));
   };
 }
