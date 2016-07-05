@@ -9,12 +9,11 @@ import {
   SET_DATERANGE_FOR_PI,
   SET_REGION,
   SET_INDICATOR,
+  SET_ZOOMLEVEL,
 } from './actions.jsx';
 
 function indicators(state = {
   isFetching: false,
-  didInvalidate: false,
-  piData: [],
   regions: [],
   indicators: [],
   zoomlevel: 'DISTRICT',
@@ -27,7 +26,7 @@ function indicators(state = {
         return {
           name: item.name,
           regions: item.regions.map((region) => {
-            if (region.id === action.selectedIndicatorItem.id && region.active === true) {
+            if (region.id === action.indicatorId) {
               region.daterange = action.rangeType;
             }
             return region;
@@ -42,7 +41,12 @@ function indicators(state = {
           name: item.name,
           regions: item.regions.map((region) => {
             if (region.id === action.indicator.id) {
-              region.selected = true;
+              if (region.selected === true) {
+                region.selected = false;
+              }
+              else {
+                region.selected = true;
+              }
               return region;
             }
             region.selected = false;
@@ -50,6 +54,10 @@ function indicators(state = {
           }),
         };
       }),
+    });
+  case SET_ZOOMLEVEL:
+    return Object.assign({}, state, {
+      zoomlevel: action.zoomlevel,
     });
   case SET_REGION:
     return Object.assign({}, state, {
@@ -78,6 +86,7 @@ function indicators(state = {
       indicators: action.piData.map((item) => {
         return {
           name: item[0].name,
+          id: guid(),
           regions: item[1].regions.map((region) => {
             const splittedRegionUrl = region.region_url.split('/');
             const regionId = Number(splittedRegionUrl[splittedRegionUrl.length - 2]);

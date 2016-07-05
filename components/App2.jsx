@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
   fetchIndicatorsIfNeeded,
   fetchRegionsIfNeeded,
+  fetchRegions,
   setZoomLevel,
   setRegion,
   selectIndicator,
@@ -33,6 +34,7 @@ class App extends Component {
   }
 
   _selectZoomLevel(zoomlevel) {
+    console.log('_selectZoomLevel', zoomlevel);
     this.props.dispatch(setZoomLevel(zoomlevel));
     this.props.dispatch(fetchRegions(zoomlevel));
   }
@@ -40,6 +42,7 @@ class App extends Component {
   _selectPi(indicator) {
     // console.log('coloring', indicator, 'on the map');
     this.props.dispatch(selectIndicator(indicator));
+    this.props.dispatch(fetchRegions(this.props.zoomlevel));
   }
 
   render() {
@@ -57,20 +60,15 @@ class App extends Component {
           <Col md={2}>
             <BoundaryTypeSelect
               selectZoomLevel={this._selectZoomLevel}
-              selectedZoomLevel={this.props.zoomlevel}
-              zoomlevels={this.props.zoomlevels}
+              {...this.props}
             />
           </Col>
         </Row>
         <Row>
           <Col md={6}>
             <PerformanceIndicatorList
-              dispatch={this.props.dispatch}
-              selectedIndicator={this.props.indicator}
-              selectedZoomLevel={this.props.zoomlevel}
               selectPi={this._selectPi}
-              region={this.props.region}
-              indicators={this.props.indicators}
+              {...this.props}
             />
           </Col>
           <Col md={6}>
@@ -79,13 +77,9 @@ class App extends Component {
               {...this.props}
             />
             <Pimap
-                selectedZoomLevel={this.props.zoomlevel}
-                selectRegion={this._selectRegion}
-                selectedRegion={this.props.region}
-                regions={this.props.regions}
-                indicator={this.props.indicator}
-                indicators={this.props.indicators}
-              />
+              selectRegion={this._selectRegion}
+              {...this.props}
+            />
           </Col>
         </Row>
       </Grid>
@@ -107,7 +101,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   // This function maps the Redux state to React Props.
-  return {'indicators': state.indicators};
+  return { 'indicators': state.indicators };
 }
 
 export default connect(mapStateToProps)(App);

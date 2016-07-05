@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Nav, NavItem, Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
-import styles from './BoundaryTypeSelect.css';
+import { Nav, NavItem } from 'react-bootstrap';
 
 class BoundaryTypeSelect extends Component {
 
@@ -15,10 +14,10 @@ class BoundaryTypeSelect extends Component {
   }
 
   render() {
-
-    if (!this.props.indicators) return <div/>;
-    if (!this.props.indicators.zoomlevels) return <div/>;
-
+    if (this.props.indicators === undefined ||
+        this.props.indicators.zoomlevels === undefined) {
+      return <div/>;
+    }
 
     const ZOOMLEVELS = {
       'DISTRICT': 'Wijk',
@@ -27,16 +26,14 @@ class BoundaryTypeSelect extends Component {
 
     return (
       <Nav
-        style={{
-          marginTop: 10,
-        }}
+        style={{ marginTop: 10 }}
         bsStyle="tabs"
-        activeKey={this.props.indicators.selectedZoomLevel}>
+        activeKey={this.props.indicators.zoomlevel}>
         {this.props.indicators.zoomlevels.map((zoomlevel, i) => {
           return <NavItem
             key={i}
             onClick={() => this._handleClick(zoomlevel)}
-            active={(this.props.indicators.selectedZoomLevel === zoomlevel) ? true : false}
+            active={(this.props.indicators.zoomlevel === zoomlevel) ? true : false}
             eventKey={zoomlevel}>
             {ZOOMLEVELS[zoomlevel] || zoomlevel.charAt(0).toUpperCase() + zoomlevel.slice(1).toLowerCase()}
           </NavItem>;
@@ -47,6 +44,8 @@ class BoundaryTypeSelect extends Component {
 }
 
 BoundaryTypeSelect.propTypes = {
+  indicators: PropTypes.any,
+  selectZoomLevel: PropTypes.func,
   zoomlevels: PropTypes.array,
 };
 

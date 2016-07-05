@@ -10,13 +10,16 @@ export const SELECT_INDICATOR = 'SELECT_INDICATOR';
 export const SET_DATERANGE_FOR_PI = 'SET_DATERANGE_FOR_PI';
 export const SET_INDICATOR = 'SET_INDICATOR';
 export const SET_REGION = 'SET_REGION';
+export const SET_ZOOMLEVEL = 'SET_ZOOMLEVEL';
 
 
 
-export function setDaterangeForPI(selectedIndicatorItem, rangeType) {
+
+
+export function setDaterangeForPI(indicatorId, rangeType) {
   return {
     type: SET_DATERANGE_FOR_PI,
-    selectedIndicatorItem,
+    indicatorId,
     rangeType,
   };
 }
@@ -165,5 +168,17 @@ export function fetchRegions(type) {
 export function fetchRegionsIfNeeded() {
   return (dispatch) => {
     return dispatch(fetchRegions());
+  };
+}
+
+
+
+
+
+
+export function setZoomLevel(zoomlevel) {
+  return {
+    type: SET_ZOOMLEVEL,
+    zoomlevel,
   };
 }

@@ -61,7 +61,7 @@ class PerformanceIndicator extends Component {
   }
 
   render() {
-    let linedata = this.props.series.map((item, i) => {
+    let linedata = this.props.indicator.series.map((item, i) => {
         return { time: item.date, value: item.value, score: item.score };
     });
 
@@ -109,12 +109,12 @@ class PerformanceIndicator extends Component {
             };
             return `${d.toLocaleDateString('nl-NL', options)}`;
           }} />
-         <YAxis yAxisId="left" stroke="#82ca9d" domain={[0, 10]} />
-         <YAxis yAxisId="right" orientation="right" stroke="#8884d8" />
+         <YAxis yAxisId="left"  domain={[0, 10]} />
+         <YAxis yAxisId="right" orientation="right" />
          <CartesianGrid strokeDasharray="3 3"/>
          <Tooltip/>
 
-         <ReferenceLine y={this.props.indicator.reference_value} label="" yAxisId="right" stroke="red"/>
+         <ReferenceLine y={this.props.indicator.referenceValue} label="" yAxisId="right" stroke="red"/>
          {(this.state.showValues) ?
            <Area type="monotone" yAxisId="right" dataKey="value" fill="#8884d8" stroke={false} dot={false} activeDot={{r: 8}} isAnimationActive={false} /> :
            <Area type="monotone" yAxisId="left" dataKey="score" fill="#82ca9d" stroke={false} isAnimationActive={false} dot={false} />
@@ -129,11 +129,7 @@ class PerformanceIndicator extends Component {
             onClick={() => this._handleSelectPi(this.props.indicator)}
             style={{
             cursor:'pointer',
-            fontWeight: (
-              this.props.selectedIndicator &&
-              this.props.selectedIndicator.name === this.props.indicator.name &&
-              this.props.selectedIndicator.region_name === this.props.indicator.region_name
-            ) ? 'bold' : '',
+            fontWeight: (this.props.indicator.selected) ? 'bold' : '',
           }}>
           <span className="pull-right">
             <Label style={{
@@ -175,33 +171,28 @@ class PerformanceIndicator extends Component {
               style={{
                 fontWeight: (this.props.indicator.daterange === '5Y') ? 'bold' : ''
               }}
-              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '5Y'))}>5Y
+              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator.id, '5Y'))}>5Y
             </li>
             <li
               style={{
                 fontWeight: (this.props.indicator.daterange === '1Y') ? 'bold' : ''
               }}
-              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '1Y'))}>1Y
+              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator.id, '1Y'))}>1Y
             </li>
             <li
               style={{
                 fontWeight: (this.props.indicator.daterange === '3M') ? 'bold' : ''
               }}
-              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator, this.props.region, '3M'))}>3M
+              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator.id, '3M'))}>3M
             </li>
           </ul>
-
           {visualisationOrBackside}
-
       </Panel>
     );
   }
 }
 
-
-
 PerformanceIndicator.propTypes = {
-  series: PropTypes.array.isRequired,
   pid: PropTypes.number,
   values: PropTypes.array,
 };

@@ -79,7 +79,6 @@ class PerformanceIndicatorList extends Component {
 
   render() {
 
-
     let _performanceindicators = this.props.indicators.indicators.map((indicator) => {
       return indicator.regions.map((region) => {
         return {
@@ -107,14 +106,10 @@ class PerformanceIndicatorList extends Component {
     _performanceindicators = _.flatten(_performanceindicators);
     const performanceindicators = _performanceindicators.map((p, i) => {
       return <PerformanceIndicator
-              dispatch={this.props.dispatch}
+              {...this.props}
               indicator={p}
               key={i}
-              pid={i}
-              region={this.props.region}
-              selectedIndicator={this.props.selectedIndicator}
               selectPi={this._selectPi}
-              series={p.series}
             />;
     });
 
@@ -129,6 +124,8 @@ class PerformanceIndicatorList extends Component {
   }
 }
 
-PerformanceIndicatorList.propTypes = {};
+PerformanceIndicatorList.propTypes = {
+  series: PropTypes.any,
+};
 
 export default PerformanceIndicatorList;

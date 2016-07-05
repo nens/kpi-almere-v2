@@ -141,72 +141,86 @@ class Pimap extends Component {
   }
 
   onEachFeature(feature, layer) {
-    const _activeIndicatorItems = _.flattenDeep(this.props.indicators.indicators.map((indicator) => {
+
+    let selectedIndicatorItem = undefined;
+    const selectedIndicator = this.props.indicators.indicators.filter((indicator) => {
       return indicator.regions.filter((region) => {
-        if (region.active) {
+        if (region.selected === true) {
+          selectedIndicatorItem = region;
           return region;
         }
-        return false;
+        else {
+          return false;
+        }
       });
-    }));
-
-    const selectedIndicatorItem = _activeIndicatorItems.filter((indicator) => {
-      if (indicator.selected === true && indicator.active === true) {
-        return indicator;
-      }
-      return false;
-    })[0];
-
-    const lastScore = _activeIndicatorItems.map((activeIndicatorItem) => {
-      if (activeIndicatorItem.regionName === feature.properties.name &&
-          activeIndicatorItem.boundaryTypeName === feature.properties.type) {
-            return activeIndicatorItem.series[activeIndicatorItem.series.length - 1].score;
-      }
-    }).filter(n => {
-      if(n) return n;
-      return false;
-    })[0];
-
-    let weight = 1;
-    // if (feature.properties.name === selectedIndicatorItem.regionName) {
-    //   weight = 10;
-    // }
-
-    layer.on('click', (e) => {
-      console.log(feature);
-      this.props.selectRegion(feature);
-    })
-    layer.setStyle({
-      color: '#fff',
-      opacity: 1,
-      weight: weight,
-      // fillColor: 'rgb(86,221,84)',
-      fillColor: getColor(lastScore),
-      fillOpacity: 1,
     });
-    console.log('%c %s %s', `background: ${getColor(lastScore)}; color: #ffffff`, feature.properties.name, lastScore);
+
+    const featureId = feature.id;
+    const featureName = feature.properties.name;
+
+    // console.log('feature in onEachFeature', feature);
+    // console.log('featureId in onEachFeature', featureId);
+    // console.log('featureName in onEachFeature', featureName);
+
+    if(selectedIndicatorItem) {
+
+      const indicatorName = selectedIndicatorItem.name;
+
+      const activeIndicator = this.props.indicators.indicators.filter((indicator) => {
+        if (indicator.name === indicatorName) {
+          return indicator;
+        }
+      });
+
+      const colorme = activeIndicator[0].regions.filter((region) => {
+        if (region.regionId === featureId) {
+          return region;
+        }
+      })[0];
+
+      let myScore = 0;
+      if (colorme) {
+        myScore = colorme.series[colorme.series.length - 1].score;
+      }
+
+
+      let weight = 1;
+      if (selectedIndicatorItem && feature.id === selectedIndicatorItem.regionId) {
+        weight = 10;
+      }
+
+      layer.on('click', () => {
+        this.props.selectRegion(feature);
+      });
+
+      layer.setStyle({
+        color: '#fff',
+        opacity: 1,
+        weight,
+        fillColor: getColor(myScore),
+        fillOpacity: 1,
+      });
+      console.log('%c %s %s', `background: ${getColor(myScore)}; color: #ffffff`, feature.properties.name, myScore);
+
+    }
+
+
   }
 
   render() {
 
-    // Filter indicator items for active bool
-    const _activeIndicatorItems = _.flattenDeep(this.props.indicators.indicators.map((indicator) => {
+    let selectedIndicatorItem;
+    this.props.indicators.indicators.filter((indicator) => {
       return indicator.regions.filter((region) => {
-        if (region.active) {
+        if (region.selected === true) {
+          selectedIndicatorItem = region;
           return region;
         }
-        return false;
+        else {
+          return false;
+        }
       });
-    }));
-
-    const selectedIndicatorItem = _activeIndicatorItems.filter((indicator) => {
-      if (indicator.selected === true && indicator.active === true) {
-        return indicator;
-      }
-      return false;
-    })[0];
-
-
+    });
 
     let zoom = 11;
     if (selectedIndicatorItem && selectedIndicatorItem.boundaryTypeName === 'DISTRICT') {
@@ -227,19 +241,6 @@ class Pimap extends Component {
       zoom: zoom,
     };
 
-
-
-    // // +/- 0.05 correction for almeres weird geometry
-    // initialLocation.lat = this.calculateScaleCenter(this.props.regions.results).center[1] - 0.07;
-    // initialLocation.lng = this.calculateScaleCenter(this.props.regions.results).center[0] + 0.11;
-    //
-    // let results = this.props.regions.results.features.filter((feature) => {
-    //   if (feature.properties.name) {
-    //     return feature;
-    //   }
-    // });
-    //
-
     const position = [initialLocation.lat, initialLocation.lng];
 
     const hover = (this.state.hovering) ?
@@ -255,7 +256,7 @@ class Pimap extends Component {
       }}>{(this.state.hoverContent) ? this.state.hoverContent.properties.name : 'Geen informatie beschikbaar'}</div> :
     <div/>;
 
-    console.log('----->', this.props.indicators);
+
     return (
       <Map
            center={position}
