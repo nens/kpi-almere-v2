@@ -1,0 +1,1 @@
+{"locale": "nl_NL", "boundary_types": ["MUNICIPALITY", "DISTRICT"], "pis": [{"url": "localhost:9000/api/v2/pi/1/", "boundary_type": 3, "name": "test"}, {"url": "localhost:9000/api/v2/pi/2/", "boundary_type": 9, "name": "test2"}], "js_debug": true, "spatial_bounds": {"west": 7.093634182242981, "east": 7.189627065646156, "north": 53.16077371511509, "south": 53.05917518667337}}

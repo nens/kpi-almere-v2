@@ -1,6 +1,12 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var definePlugin = new webpack.DefinePlugin({
+  'process.env': {
+    'NODE_ENV': '"production"'
+  },
+});
+
 var config = {
   // We change to normal source mapping
   devtool: 'source-map',
@@ -16,9 +22,9 @@ var config = {
         loaders: [ 'babel' ],
         exclude: /node_modules/,
         include: __dirname
-      },     
+      },
       {
-        test: /\.css$/, 
+        test: /\.css$/,
         loader: "style-loader!css-loader?modules"
       },
       {
@@ -29,7 +35,7 @@ var config = {
         test: /\.js$/,
         loader: 'transform/cacheable?brfs'
       },
-      { test: /\.(png|jpg|svg|woff|eot|ttf|otf)$/, 
+      { test: /\.(png|jpg|svg|woff|eot|ttf|otf)$/,
         loader: 'url-loader?limit=100000'
       }
     ]

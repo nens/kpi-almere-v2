@@ -1,3 +1,18 @@
+Todo
+----
+
+- Kleuren op basis v/d waarde (grafiekdiv)
+- Url lizardlogo kloppend maken
+- Collapse/expand van series div
+- Globale tijdsinstelling ipv per serie
+- Kleuren v/d kaart kloppend obv waarde (niet score)
+
+
+
+
+
+
+
 lizard-kpi
 ==========
 
@@ -10,7 +25,7 @@ Other goals are:
  * A visually attractive PI dashboard
 
  * A fast UI
- 
+
  * Readable codebase and stable front-end performance (ie. minimal amount of bugs)
 
 

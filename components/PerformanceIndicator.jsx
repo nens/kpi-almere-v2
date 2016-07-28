@@ -1,12 +1,9 @@
 import styles from './PerformanceIndicator.css';
 import React, { Component, PropTypes } from 'react';
 import { Label, Panel, } from 'react-bootstrap';
-import d3 from 'd3';
-import CountTo from 'react-count-to';
-import DataSeries from './DataSeries.jsx';
-import Chart from './chart.jsx';
+import * as d3 from 'd3';
 import VisualisationSettings from './VisualisationSettings.jsx';
-import { VictoryChart, VictoryLine, VictoryAxis } from 'victory';
+
 
 import {
   Area,
@@ -66,13 +63,13 @@ class PerformanceIndicator extends Component {
     });
 
 
-    let interval = -3; // 3 months back by default
+    let interval = -12; // 3 months back by default
     switch (this.props.indicator.daterange) {
-      case '3M':
-        interval = -3;
-        break;
       case '1Y':
         interval = -12;
+        break;
+      case '3Y':
+        interval = -36;
         break;
       case '5Y':
         interval = -60;
@@ -80,7 +77,7 @@ class PerformanceIndicator extends Component {
     }
 
     const lastDate = new Date(linedata[linedata.length-1].time);
-    const timeBack = d3.time.month.offset(lastDate, interval);
+    const timeBack = d3.timeMonth.offset(lastDate, interval);
 
     const lastScore = linedata[linedata.length - 1].score;
     const lastValue = linedata[linedata.length - 1].value;
@@ -100,29 +97,25 @@ class PerformanceIndicator extends Component {
       <ResponsiveContainer height={200}>
         <ComposedChart
           data={linedata}
-          margin={{ top: 10, right: -40, left: -40, bottom: 0 }}>
+          margin={{ top: 10, right: -30, left: -40, bottom: 0 }}>
           <XAxis dataKey="time" tickFormatter={(tick) => {
             const d = new Date(tick);
             const options = {
               year: '2-digit',
-              month: 'numeric',
+              month: 'short',
             };
             return `${d.toLocaleDateString('nl-NL', options)}`;
           }} />
-         <YAxis yAxisId="left"  domain={[0, 10]} />
+         <YAxis yAxisId="left"  domain={[1, 10]} />
          <YAxis yAxisId="right" orientation="right" />
-         <CartesianGrid strokeDasharray="3 3"/>
-         <Tooltip/>
-
+         <Tooltip />
          <ReferenceLine y={this.props.indicator.referenceValue} label="" yAxisId="right" stroke="red"/>
          {(this.state.showValues) ?
-           <Area type="monotone" yAxisId="right" dataKey="value" fill="#8884d8" stroke={false} dot={false} activeDot={{r: 8}} isAnimationActive={false} /> :
-           <Area type="monotone" yAxisId="left" dataKey="score" fill="#82ca9d" stroke={false} isAnimationActive={false} dot={false} />
+           <Area type="monotone" yAxisId="right" dataKey="value" fill="#8884d8"  dot={false} activeDot={{r: 8}} isAnimationActive={false} /> :
+           <Area type="monotone" yAxisId="left" dataKey="score" fill="#82ca9d"  isAnimationActive={false} dot={false} />
         }
         </ComposedChart>
       </ResponsiveContainer>;
-      // <Brush dataKey='score' height={20} stroke="#82ca9d" travellerWidth={10}/>
-
 
       const header = (
         <div
@@ -146,7 +139,7 @@ class PerformanceIndicator extends Component {
               </a>
           </span>
           {this.props.indicator.name}<br/>
-          <span style={{fontSize:'.7em'}}><i className="fa fa-globe"></i>&nbsp;&nbsp;{this.props.indicator.regionName}</span>
+
         </div>
       );
     return (
@@ -175,15 +168,15 @@ class PerformanceIndicator extends Component {
             </li>
             <li
               style={{
-                fontWeight: (this.props.indicator.daterange === '1Y') ? 'bold' : ''
+                fontWeight: (this.props.indicator.daterange === '3Y') ? 'bold' : ''
               }}
-              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator.id, '1Y'))}>1Y
+              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator.id, '3Y'))}>3Y
             </li>
             <li
               style={{
-                fontWeight: (this.props.indicator.daterange === '3M') ? 'bold' : ''
+                fontWeight: (this.props.indicator.daterange === '1Y') ? 'bold' : ''
               }}
-              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator.id, '3M'))}>3M
+              onClick={() => this.props.dispatch(setDaterangeForPI(this.props.indicator.id, '1Y'))}>1Y
             </li>
           </ul>
           {visualisationOrBackside}

@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from './configureStore.jsx';
-import App from './components/App2.jsx';
+import App from './components/App.jsx';
 import $ from 'jquery';
 
 const piEndpoint = $.ajax({

@@ -15,6 +15,7 @@ import {
 function indicators(state = {
   isFetching: false,
   regions: [],
+  region: undefined,
   indicators: [],
   zoomlevel: 'DISTRICT',
 }, action) {
@@ -101,7 +102,7 @@ function indicators(state = {
               regionUrl: region.region_url,
               regionId,
               series: region.aggregations,
-              daterange: '3M',
+              daterange: '1Y',
             };
           }),
         };

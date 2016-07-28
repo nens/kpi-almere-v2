@@ -1,7 +1,7 @@
 /* globals Promise:true */
 import $ from 'jquery';
 import _ from 'lodash';
-
+import config from './config.jsx';
 export const RECEIVE_INDICATORS = 'RECEIVE_INDICATORS';
 export const RECEIVE_REGIONS = 'RECEIVE_REGIONS';
 export const REQUEST_INDICATORS = 'REQUEST_INDICATORS';
@@ -11,10 +11,6 @@ export const SET_DATERANGE_FOR_PI = 'SET_DATERANGE_FOR_PI';
 export const SET_INDICATOR = 'SET_INDICATOR';
 export const SET_REGION = 'SET_REGION';
 export const SET_ZOOMLEVEL = 'SET_ZOOMLEVEL';
-
-
-
-
 
 export function setDaterangeForPI(indicatorId, rangeType) {
   return {
@@ -51,7 +47,7 @@ export function fetchIndicators() {
     dispatch(requestIndicators());
     const indicatorEndpoint = $.ajax({
       type: 'GET',
-      url: 'https://nxt.staging.lizard.net/api/v2/pi/',
+      url: `${config.apiBaseUrl}/api/v2/pi/`,
       xhrFields: {
         withCredentials: true,
       },
@@ -150,7 +146,7 @@ export function fetchRegions(type) {
     const regionEndpoint = $.ajax({
       type: 'GET',
       /* eslint-disable */
-      url: `https://nxt.staging.lizard.net/api/v2/regions/?type=${zoomlevelmapping[type] || 9}&within_portal_bounds=true&format=json`,
+      url: `${config.apiBaseUrl}/api/v2/regions/?type=${zoomlevelmapping[type] || 9}&within_portal_bounds=true&format=json`,
       xhrFields: {
         withCredentials: true
       },
@@ -170,10 +166,6 @@ export function fetchRegionsIfNeeded() {
     return dispatch(fetchRegions());
   };
 }
-
-
-
-
 
 
 export function setZoomLevel(zoomlevel) {

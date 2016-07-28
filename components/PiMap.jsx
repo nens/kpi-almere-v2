@@ -142,67 +142,73 @@ class Pimap extends Component {
 
   onEachFeature(feature, layer) {
 
-    let selectedIndicatorItem = undefined;
-    const selectedIndicator = this.props.indicators.indicators.filter((indicator) => {
-      return indicator.regions.filter((region) => {
-        if (region.selected === true) {
-          selectedIndicatorItem = region;
-          return region;
-        }
-        else {
-          return false;
-        }
-      });
-    });
-
+    console.log('feature', feature);
     const featureId = feature.id;
     const featureName = feature.properties.name;
 
-    // console.log('feature in onEachFeature', feature);
-    // console.log('featureId in onEachFeature', featureId);
-    // console.log('featureName in onEachFeature', featureName);
 
-    if(selectedIndicatorItem) {
-
-      const indicatorName = selectedIndicatorItem.name;
-
-      const activeIndicator = this.props.indicators.indicators.filter((indicator) => {
-        if (indicator.name === indicatorName) {
-          return indicator;
-        }
-      });
-
-      const colorme = activeIndicator[0].regions.filter((region) => {
-        if (region.regionId === featureId) {
-          return region;
-        }
-      })[0];
-
-      let myScore = 0;
-      if (colorme) {
-        myScore = colorme.series[colorme.series.length - 1].score;
-      }
-
-
-      let weight = 1;
-      if (selectedIndicatorItem && feature.id === selectedIndicatorItem.regionId) {
-        weight = 10;
-      }
+    // let selectedIndicatorItem = (this.props.indicators.region) ? this.props.indicators.region : undefined;
+    // // const selectedIndicator = this.props.indicators.indicators.filter((indicator) => {
+    // //   return indicator.regions.filter((region) => {
+    // //     if (region.selected === true) {
+    // //       selectedIndicatorItem = region;
+    // //       return region;
+    // //     }
+    // //     else {
+    // //       return false;
+    // //     }
+    // //   });
+    // // });
+    //
+    // const featureId = feature.id;
+    // const featureName = feature.properties.name;
+    //
+    // // console.log('feature in onEachFeature', feature);
+    // // console.log('featureId in onEachFeature', featureId);
+    // // console.log('featureName in onEachFeature', featureName);
+    //
+    // if(selectedIndicatorItem) {
+    //
+    //   const indicatorName = selectedIndicatorItem.name;
+    //
+    //   const activeIndicator = this.props.indicators.indicators.filter((indicator) => {
+    //     if (indicator.name === indicatorName) {
+    //       return indicator;
+    //     }
+    //   });
+    //
+    //   const colorme = activeIndicator[0].regions.filter((region) => {
+    //     if (region.regionId === featureId) {
+    //       return region;
+    //     }
+    //   })[0];
+    //
+    //   let myScore = 0;
+    //   if (colorme) {
+    //     myScore = colorme.series[colorme.series.length - 1].score;
+    //   }
+    //
+    //
+    //   let weight = 1;
+    //   if (selectedIndicatorItem && feature.id === selectedIndicatorItem.regionId) {
+    //     weight = 10;
+    //   }
 
       layer.on('click', () => {
+        console.log('clicked', feature);
         this.props.selectRegion(feature);
       });
 
       layer.setStyle({
         color: '#fff',
         opacity: 1,
-        weight,
-        fillColor: getColor(myScore),
+        weight: 1,
+        fillColor: getColor(2),
         fillOpacity: 1,
       });
-      console.log('%c %s %s', `background: ${getColor(myScore)}; color: #ffffff`, feature.properties.name, myScore);
+      // console.log('%c %s %s', `background: ${getColor(myScore)}; color: #ffffff`, feature.properties.name, myScore);
 
-    }
+    // }
 
 
   }
@@ -210,17 +216,6 @@ class Pimap extends Component {
   render() {
 
     let selectedIndicatorItem;
-    this.props.indicators.indicators.filter((indicator) => {
-      return indicator.regions.filter((region) => {
-        if (region.selected === true) {
-          selectedIndicatorItem = region;
-          return region;
-        }
-        else {
-          return false;
-        }
-      });
-    });
 
     let zoom = 11;
     if (selectedIndicatorItem && selectedIndicatorItem.boundaryTypeName === 'DISTRICT') {
@@ -269,7 +264,7 @@ class Pimap extends Component {
                     top: 0,
                     left: 0,
                     width: '100%',
-                    height: this.state.height - 100,
+                    height: 500,
                   }}>
         <TileLayer
           attribution=''
