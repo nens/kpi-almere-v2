@@ -6,6 +6,7 @@ import {
   REQUEST_INDICATORS,
   REQUEST_REGIONS,
   SELECT_INDICATOR,
+  SET_DATERANGE,
   SET_DATERANGE_FOR_PI,
   SET_REGION,
   SET_INDICATOR,
@@ -13,14 +14,19 @@ import {
 } from './actions.jsx';
 
 function indicators(state = {
-  isFetching: false,
-  regions: [],
-  region: undefined,
+  daterange: '1Y',
   indicators: [],
+  isFetching: false,
+  region: undefined,
+  regions: [],
   zoomlevel: 'DISTRICT',
 }, action) {
   // console.log('reducer indicators() was called with state', state, 'and action', action);
   switch (action.type) {
+  case SET_DATERANGE:
+    return Object.assign({}, state, {
+      daterange: action.rangeType,
+    });
   case SET_DATERANGE_FOR_PI:
     return Object.assign({}, state, {
       indicators: state.indicators.map((item) => {

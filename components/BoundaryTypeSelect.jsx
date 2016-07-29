@@ -26,7 +26,7 @@ class BoundaryTypeSelect extends Component {
 
     return (
       <Nav
-        style={{ marginTop: 10 }}
+        className='pull-right'
         bsStyle="tabs"
         activeKey={this.props.indicators.zoomlevel}>
         {this.props.indicators.zoomlevels.map((zoomlevel, i) => {

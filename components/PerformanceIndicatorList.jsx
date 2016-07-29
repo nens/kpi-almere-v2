@@ -1,9 +1,6 @@
 import PerformanceIndicator from './PerformanceIndicator.jsx';
-import styles from './PerformanceIndicatorList.css';
-import { Well, } from 'react-bootstrap';
 import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
-
 
 class PerformanceIndicatorList extends Component {
   constructor(props) {
@@ -19,10 +16,6 @@ class PerformanceIndicatorList extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.redraw);
   }
-
-  // shouldComponentUpdate(nextProps) {
-  //   return !_.isEqual(this.props, nextProps);
-  // }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.redraw);
@@ -62,11 +55,9 @@ class PerformanceIndicatorList extends Component {
                 'score': agg.score,
               };
             }),
-          }
+          };
         }
-        else {
-          return false;
-        }
+        return false;
       });
     });
 
@@ -82,9 +73,9 @@ class PerformanceIndicatorList extends Component {
 
     return (
       <div style={{
-          height: this.state.height - 100,
-          overflowY: 'scroll',
-        }}>
+        height: this.state.height - 100,
+        overflowY: 'scroll',
+      }}>
           {performanceindicators}
       </div>
     );
@@ -92,6 +83,8 @@ class PerformanceIndicatorList extends Component {
 }
 
 PerformanceIndicatorList.propTypes = {
+  indicators: PropTypes.any,
+  selectPi: PropTypes.any,
   series: PropTypes.any,
 };
 

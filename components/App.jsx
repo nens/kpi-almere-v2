@@ -2,7 +2,7 @@ const logo = require('./logo.png');
 const loadingIndicator = require('./loading.svg');
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
-import { Button, Grid, Row, Col, Label } from 'react-bootstrap';
+import { Button, Grid, Row, Col, Label, Modal } from 'react-bootstrap';
 import Pimap from './PiMap.jsx';
 import PerformanceIndicatorList from './PerformanceIndicatorList.jsx';
 import BoundaryTypeSelect from './BoundaryTypeSelect.jsx';
@@ -20,15 +20,27 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showInfo: false,
+    };
     this._selectPi = this._selectPi.bind(this);
     this._selectRegion = this._selectRegion.bind(this);
     this._selectZoomLevel = this._selectZoomLevel.bind(this);
+    this.openInfo = this.openInfo.bind(this);
+    this.closeInfo = this.closeInfo.bind(this);
   }
 
   componentDidMount() {
     this.props.dispatch(fetchIndicatorsIfNeeded());
     this.props.dispatch(fetchRegionsIfNeeded());
+  }
+
+  openInfo() {
+    this.setState({ showInfo: true });
+  }
+
+  closeInfo() {
+    this.setState({ showInfo: false });
   }
 
   _selectRegion(region) {
@@ -48,40 +60,45 @@ class App extends Component {
 
   render() {
     return (
+      <div>
       <Grid>
         <Row>
-          <Col md={6}>
+          <Col md={12}>
             <div
               style={{
                 margin: '10px 0px 0 0',
               }}
-              className='pull-right'><h3>Dashboard Prestatieindicatoren</h3>
-            <Button bsSize='xsmall' className='pull-right'>
-              <i className='fa fa-info-circle'></i>&nbsp;Informatie
+              className='pull-right'>
+              <Button
+                onClick={this.openInfo}
+                bsSize='xsmall'
+                className='pull-right'>
+                <i className='fa fa-info-circle'></i>&nbsp;Informatie
               </Button>
+              <br/>
+              <h3 style={{
+                fontFamily: '"Lato", "sans-serif"',
+                fontWeight: '100',
+              }}>Dashboard Prestatieindicatoren</h3>
             </div>
-            <h2 style={{
-              fontFamily: '"Lato", "sans-serif"',
-              fontWeight: '100',
-            }}>
-            <img src={logo} style={{ width: 150}} />
+            <img src={logo} style={{ width: 150, padding: '10px 0 0 0' }} />
                {(this.props.indicators.isFetching) ? <img src={loadingIndicator}/> : ''}
-
-            </h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={6}>
+            <h4>
+              <Label bsStyle='info'>
+              Geselecteerd:&nbsp;
+              {(this.props.indicators.region) ? this.props.indicators.region.properties.name : ''}
+              </Label>
+            </h4>
           </Col>
           <Col md={6}>
             <BoundaryTypeSelect
               selectZoomLevel={this._selectZoomLevel}
               {...this.props}
             />
-            <div>
-            <h4>
-              <Label>
-              Geselecteerd:&nbsp;
-              {(this.props.indicators.region) ? this.props.indicators.region.properties.name : ''}
-            </Label></h4>
-            </div>
-
           </Col>
         </Row>
         <Row>
@@ -99,6 +116,22 @@ class App extends Component {
           </Col>
         </Row>
       </Grid>
+      <Modal
+        show={this.state.showInfo}
+        onHide={this.closeInfo}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Gemeente Almere Performanceindicator Dashboard
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.closeInfo}>Sluiten</Button>
+        </Modal.Footer>
+      </Modal>
+      </div>
     );
   }
 }

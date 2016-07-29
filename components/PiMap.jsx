@@ -6,15 +6,7 @@ import _ from 'lodash';
 import $ from 'jquery';
 import Choropleth from 'react-leaflet-choropleth';
 import GeoJsonUpdatable from '../lib/GeoJsonUpdatable.jsx';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-
-document.onmousemove = function(e){
-    let infobox = $('.choro-popover')[0];
-    // console.log(infobox);
-    if(infobox) {
-      $(infobox).css({top: e.pageY+15, left: e.pageX+15, position:'absolute'});;
-    }
-}
+import { Map, TileLayer, Popup } from 'react-leaflet';
 
 function getColor(d) {
   return d > 10 ? '#800026' :
@@ -25,7 +17,6 @@ function getColor(d) {
     d > 1 ? 'rgb(86,221,84)' :
     'grey';
 }
-
 
 const style = {
   fillColor: '#000',
@@ -67,15 +58,9 @@ class Pimap extends Component {
     window.addEventListener('resize', this.redraw);
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   return !_.isEqual(this.props, nextProps);
-  // }
-
   componentWillUnmount() {
     window.removeEventListener('resize', this.redraw);
   }
-
-
 
   redraw() {
     this.setState({
@@ -83,7 +68,6 @@ class Pimap extends Component {
       height: window.innerHeight,
     });
   }
-
 
   _setZoomlevel(zoomlevel) {
     if (zoomlevel === this.state.zoomlevel) {
@@ -97,7 +81,6 @@ class Pimap extends Component {
       });
     }
   }
-
 
   calculateScaleCenter(features) {
     // Get the bounding box of the paths (in pixels!) and calculate a
@@ -136,16 +119,14 @@ class Pimap extends Component {
 
   onFeatureHoverOut() {
     this.setState({
-      hovering: false
+      hovering: false,
     });
   }
 
   onEachFeature(feature, layer) {
 
-    console.log('feature', feature);
     const featureId = feature.id;
     const featureName = feature.properties.name;
-
 
     // let selectedIndicatorItem = (this.props.indicators.region) ? this.props.indicators.region : undefined;
     // // const selectedIndicator = this.props.indicators.indicators.filter((indicator) => {
@@ -194,23 +175,19 @@ class Pimap extends Component {
     //     weight = 10;
     //   }
 
-      layer.on('click', () => {
-        console.log('clicked', feature);
-        this.props.selectRegion(feature);
-      });
+    layer.on('click', () => {
+      this.props.selectRegion(feature);
+    });
 
-      layer.setStyle({
-        color: '#fff',
-        opacity: 1,
-        weight: 1,
-        fillColor: getColor(2),
-        fillOpacity: 1,
-      });
-      // console.log('%c %s %s', `background: ${getColor(myScore)}; color: #ffffff`, feature.properties.name, myScore);
-
-    // }
-
-
+    layer.setStyle({
+      color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#fff',
+      opacity: 1,
+      weight: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? 5 : 1,
+      dashArray: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '5, 10' : 1,
+      fillColor: getColor(2),
+      fillOpacity: 1,
+    });
+    // console.log('%c %s %s', `background: ${getColor(myScore)}; color: #ffffff`, feature.properties.name, myScore);
   }
 
   render() {
@@ -238,19 +215,13 @@ class Pimap extends Component {
 
     const position = [initialLocation.lat, initialLocation.lng];
 
-    const hover = (this.state.hovering) ?
-    <div
-      className="choro-popover"
-      style={{
-        backgroundColor: '#353535',
-        padding: 20,
-        color: '#fff',
-        opacity: 0.9,
-        position: 'absolute',
-        zIndex: 999999,
-      }}>{(this.state.hoverContent) ? this.state.hoverContent.properties.name : 'Geen informatie beschikbaar'}</div> :
-    <div/>;
-
+    const filteredFeatures = (this.props.indicators.regions.results) ?
+      this.props.indicators.regions.results.features.filter((feature) => {
+        if (feature.properties.name !== '') {
+          return feature;
+        }
+        return false;
+      }) : [];
 
     return (
       <Map
@@ -271,7 +242,7 @@ class Pimap extends Component {
           url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15e647c/{z}/{x}/{y}.png'
         />
         <GeoJsonUpdatable
-          data={this.props.indicators.regions.results}
+          data={filteredFeatures}
           onEachFeature={this.onEachFeature.bind(this)}
         />
       </Map>
@@ -281,8 +252,9 @@ class Pimap extends Component {
 
 Pimap.propTypes = {
   data: PropTypes.any,
-  selectRegion: PropTypes.func,
+  indicators: PropTypes.any,
   selectedRegion: PropTypes.any,
+  selectRegion: PropTypes.func,
 };
 
 export default Pimap;
