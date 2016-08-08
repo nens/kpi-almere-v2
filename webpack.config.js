@@ -1,4 +1,5 @@
 var path = require('path');
+var IgnorePlugin =  require("webpack").IgnorePlugin;
 var webpack = require('webpack');
 
 module.exports = {
@@ -13,9 +14,10 @@ module.exports = {
     publicPath: '/dist/'
   },
   plugins: [
+    new IgnorePlugin(/(^fs$|xlsx|xls|^path$)/),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),    
+    new webpack.NoErrorsPlugin(),
   ],
   module: {
     loaders: [
@@ -24,9 +26,9 @@ module.exports = {
         loaders: [ 'babel' ],
         exclude: /node_modules/,
         include: __dirname
-      },      
+      },
       {
-        test: /\.css$/, 
+        test: /\.css$/,
         loader: "style-loader!css-loader?modules"
       },
       {
@@ -37,7 +39,7 @@ module.exports = {
         test: /\.js$/,
         loader: 'transform/cacheable?brfs'
       },
-      { test: /\.(png|jpg|svg|woff|eot|ttf|otf)$/, 
+      { test: /\.(png|jpg|svg|woff|eot|ttf|otf)$/,
         loader: 'url-loader?limit=100000'
       }
     ]

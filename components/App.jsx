@@ -6,6 +6,7 @@ import { Button, Grid, Row, Col, Label, Modal } from 'react-bootstrap';
 import Pimap from './PiMap.jsx';
 import PerformanceIndicatorList from './PerformanceIndicatorList.jsx';
 import BoundaryTypeSelect from './BoundaryTypeSelect.jsx';
+import NotificationSystem from 'react-notification-system';
 
 import {
   fetchIndicatorsIfNeeded,
@@ -13,7 +14,6 @@ import {
   fetchRegions,
   setZoomLevel,
   setRegion,
-  selectIndicator,
 } from '../actions.jsx';
 
 class App extends Component {
@@ -23,16 +23,31 @@ class App extends Component {
     this.state = {
       showInfo: false,
     };
-    this._selectPi = this._selectPi.bind(this);
     this._selectRegion = this._selectRegion.bind(this);
     this._selectZoomLevel = this._selectZoomLevel.bind(this);
     this.openInfo = this.openInfo.bind(this);
     this.closeInfo = this.closeInfo.bind(this);
+    this._addNotification = this._addNotification.bind(this);
+    this._notificationSystem = null;
   }
 
   componentDidMount() {
+    this._notificationSystem = this.refs.notificationSystem;
     this.props.dispatch(fetchIndicatorsIfNeeded());
     this.props.dispatch(fetchRegionsIfNeeded());
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.indicators.errormessage) {
+      this._addNotification(newProps.indicators.errormessage.message, newProps.indicators.errormessage.level);
+    }
+  }
+
+  _addNotification(message, level) {
+    this._notificationSystem.addNotification({
+      message,
+      level,
+    });
   }
 
   openInfo() {
@@ -50,12 +65,6 @@ class App extends Component {
   _selectZoomLevel(zoomlevel) {
     this.props.dispatch(setZoomLevel(zoomlevel));
     this.props.dispatch(fetchRegions(zoomlevel));
-  }
-
-  _selectPi(indicator) {
-    // console.log('coloring', indicator, 'on the map');
-    this.props.dispatch(selectIndicator(indicator));
-    this.props.dispatch(fetchRegions(this.props.zoomlevel));
   }
 
   render() {
@@ -104,7 +113,6 @@ class App extends Component {
         <Row>
           <Col md={6}>
             <PerformanceIndicatorList
-              selectPi={this._selectPi}
               {...this.props}
             />
           </Col>
@@ -116,6 +124,7 @@ class App extends Component {
           </Col>
         </Row>
       </Grid>
+
       <Modal
         show={this.state.showInfo}
         onHide={this.closeInfo}>
@@ -125,12 +134,18 @@ class App extends Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+           nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+           velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+           proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.closeInfo}>Sluiten</Button>
         </Modal.Footer>
       </Modal>
+
+      <NotificationSystem ref="notificationSystem" />
       </div>
     );
   }

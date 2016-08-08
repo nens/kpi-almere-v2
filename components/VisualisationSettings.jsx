@@ -15,7 +15,7 @@ export default class VisualisationSettings extends Component {
   }
 
   handleChange(e) {
-    this.props.dispatch(setReferenceValueForIndicator(e.target.value, this.props.indicator));
+    this.props.dispatch(setReferenceValueForIndicator(this.props.indicator.id, e.target.value));
   }
 
   render() {
@@ -27,7 +27,7 @@ export default class VisualisationSettings extends Component {
                  min="0"
                  className="form-control"
                  onChange={this.handleChange}
-                 value={this.props.indicator.reference_value}
+                 value={this.props.indicator.referenceValue}
                  id="exampleInputEmail1"
                  placeholder=""/>
                <br/>

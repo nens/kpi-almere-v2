@@ -4,7 +4,6 @@ import zoomlevelLookup from './zoomlevelLookup.jsx';
 import d3 from 'd3';
 import _ from 'lodash';
 import $ from 'jquery';
-import Choropleth from 'react-leaflet-choropleth';
 import GeoJsonUpdatable from '../lib/GeoJsonUpdatable.jsx';
 import { Map, TileLayer, Popup } from 'react-leaflet';
 
@@ -179,12 +178,24 @@ class Pimap extends Component {
       this.props.selectRegion(feature);
     });
 
+    let selectedIndicator;
+    let lastValue;
+    let lastScore;
+    try {
+      const selection1 = _.filter(this.props.indicators.indicators, { regions: [{selected: true}]});
+      const selection2 = _.filter(selection1[0].regions, {regionId: feature.id});
+      selectedIndicator = selection2[0];
+      lastValue = selectedIndicator.series[selectedIndicator.series.length - 1].value;
+      lastScore = selectedIndicator.series[selectedIndicator.series.length - 1].score;
+    } catch(e) {}
+
+
     layer.setStyle({
       color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#fff',
       opacity: 1,
       weight: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? 5 : 1,
       dashArray: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '5, 10' : 1,
-      fillColor: getColor(2),
+      fillColor: getColor(lastScore),
       fillOpacity: 1,
     });
     // console.log('%c %s %s', `background: ${getColor(myScore)}; color: #ffffff`, feature.properties.name, myScore);

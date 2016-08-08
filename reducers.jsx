@@ -1,6 +1,7 @@
 import guid from './lib/guid.jsx';
 import { combineReducers } from 'redux';
 import {
+  CLEAR_ERROR,
   RECEIVE_INDICATORS,
   RECEIVE_REGIONS,
   REQUEST_INDICATORS,
@@ -8,13 +9,17 @@ import {
   SELECT_INDICATOR,
   SET_DATERANGE,
   SET_DATERANGE_FOR_PI,
+  SET_REFERENCEVALUE_FOR_INDICATOR,
   SET_REGION,
   SET_INDICATOR,
   SET_ZOOMLEVEL,
+  SHOW_ERROR,
 } from './actions.jsx';
 
 function indicators(state = {
   daterange: '1Y',
+  errormessage: undefined,
+  indicator: undefined,
   indicators: [],
   isFetching: false,
   region: undefined,
@@ -23,10 +28,36 @@ function indicators(state = {
 }, action) {
   // console.log('reducer indicators() was called with state', state, 'and action', action);
   switch (action.type) {
+  case CLEAR_ERROR:
+    return Object.assign({}, state, {
+      errormessage: undefined,
+    });
+  case SHOW_ERROR:
+    return Object.assign({}, state, {
+      errormessage: {
+        'message': action.message,
+        'level': action.level,
+      },
+    });
   case SET_DATERANGE:
     return Object.assign({}, state, {
       daterange: action.rangeType,
     });
+  case SET_REFERENCEVALUE_FOR_INDICATOR:
+    return Object.assign({}, state, {
+      indicators: state.indicators.map((item) => {
+        return {
+          name: item.name,
+          regions: item.regions.map((region) => {
+            if (region.selected === true) {
+              region.referenceValue = action.referenceValue;
+            }
+            return region;
+          }),
+        };
+      }),
+    });
+
   case SET_DATERANGE_FOR_PI:
     return Object.assign({}, state, {
       indicators: state.indicators.map((item) => {
@@ -43,6 +74,7 @@ function indicators(state = {
     });
   case SELECT_INDICATOR:
     return Object.assign({}, state, {
+      indicator: action.indicator,
       indicators: state.indicators.map((item) => {
         return {
           name: item.name,
