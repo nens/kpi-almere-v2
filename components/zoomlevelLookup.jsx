@@ -9,6 +9,6 @@ export default {
   },
   'NEIGHBOURHOOD': {
     'human_readable': 'Buurt',
-    'zoomlevel': 10,
+    'zoomlevel': 12,
   },
 };

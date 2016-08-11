@@ -217,7 +217,7 @@ export function fetchRegions(type) {
     const regionEndpoint = $.ajax({
       type: 'GET',
       /* eslint-disable */
-      url: `${config.apiBaseUrl}/api/v2/regions/?type=${zoomlevelmapping[type] || 9}&within_portal_bounds=true&format=json`,
+      url: `${config.apiBaseUrl}/api/v2/regions/?type=${zoomlevelmapping[type] || 9}&within_portal_bounds=true&format=json&page_size=0`,
       xhrFields: {
         withCredentials: true
       },
@@ -227,7 +227,9 @@ export function fetchRegions(type) {
       },
     });
     Promise.all([regionEndpoint]).then(([regionResults]) => {
-      return dispatch(receiveRegions(regionResults));
+      let regions = {};
+      regions.results = regionResults
+      return dispatch(receiveRegions(regions));
     });
   };
 }
