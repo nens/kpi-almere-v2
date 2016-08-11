@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 class BoundaryTypeSelect extends Component {
 
@@ -22,6 +23,7 @@ class BoundaryTypeSelect extends Component {
     const ZOOMLEVELS = {
       'DISTRICT': 'Wijk',
       'MUNICIPALITY': 'Gemeente',
+      'NEIGHBOURHOOD': 'Buurt',
     };
 
     return (

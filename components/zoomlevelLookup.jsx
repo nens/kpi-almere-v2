@@ -7,4 +7,8 @@ export default {
     'human_readable': 'Gemeente',
     'zoomlevel': 9,
   },
+  'NEIGHBOURHOOD': {
+    'human_readable': 'Buurt',
+    'zoomlevel': 10,
+  },
 };

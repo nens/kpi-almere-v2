@@ -17,6 +17,8 @@ import {
 } from './actions.jsx';
 
 function indicators(state = {
+  bbox: undefined,
+  centroid: undefined,
   daterange: '1Y',
   errormessage: undefined,
   indicator: undefined,
@@ -57,7 +59,6 @@ function indicators(state = {
         };
       }),
     });
-
   case SET_DATERANGE_FOR_PI:
     return Object.assign({}, state, {
       indicators: state.indicators.map((item) => {
@@ -113,6 +114,8 @@ function indicators(state = {
   case RECEIVE_REGIONS:
     return Object.assign({}, state, {
       isFetching: false,
+      bbox: action.bbox,
+      centroid: action.centroid,
       regions: action.regions,
     });
   case REQUEST_INDICATORS:

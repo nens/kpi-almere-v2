@@ -1,11 +1,13 @@
 import styles from './PiMap.css';
 import React, { Component, PropTypes } from 'react';
+import centroid from 'turf-centroid';
 import zoomlevelLookup from './zoomlevelLookup.jsx';
 import d3 from 'd3';
+import L from 'leaflet';
 import _ from 'lodash';
 import $ from 'jquery';
 import GeoJsonUpdatable from '../lib/GeoJsonUpdatable.jsx';
-import { Map, TileLayer, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker } from 'react-leaflet';
 
 function getColor(d) {
   return d > 10 ? '#800026' :
@@ -51,11 +53,14 @@ class Pimap extends Component {
     this.onFeatureClick = this.onFeatureClick.bind(this);
     this.onFeatureHover = this.onFeatureHover.bind(this);
     this.onFeatureHoverOut = this.onFeatureHoverOut.bind(this);
+    this.handleMapClick = this.handleMapClick.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.redraw);
   }
+
+  componentWillMount() {}
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.redraw);
@@ -103,6 +108,10 @@ class Pimap extends Component {
       scale,
       center,
     };
+  }
+
+  handleMapClick(feature) {
+    this.props.selectRegion(feature);
   }
 
   onFeatureClick(feature) {
@@ -218,9 +227,10 @@ class Pimap extends Component {
       'MUNICIPALITY': 10,
     };
 
+    // A better way may be to use the bounding box instead of the centroid.
     let initialLocation = {
-      lat: 52.3741,
-      lng: 5.2032,
+      lat: (this.props.indicators.centroid) ? this.props.indicators.centroid.geometry.coordinates[1] : 52.3741,
+      lng: (this.props.indicators.centroid) ? this.props.indicators.centroid.geometry.coordinates[0] : 5.2032,
       zoom: zoom,
     };
 
@@ -234,8 +244,22 @@ class Pimap extends Component {
         return false;
       }) : [];
 
+      const markers = (filteredFeatures) ?
+        filteredFeatures.map((feature, i) => {
+          const center = centroid(feature.geometry);
+          return <Marker
+            key={i}
+            onClick={() => self.handleMapClick(feature)}
+            icon={new L.DivIcon({
+              className: styles.mapLabel,
+              html: `<i class="fa fa-circle"></i>&nbsp;${feature.properties.name.substr(0, 10)}...`,
+            })}
+            position={[center.geometry.coordinates[1], center.geometry.coordinates[0]]} />;
+        }) : [];
+
     return (
       <Map
+           ref='map'
            center={position}
            zoomControl
            zoom={(this.state.zoomlevel) ? this.state.zoomlevel : initialLocation.zoom}
@@ -256,6 +280,7 @@ class Pimap extends Component {
           data={filteredFeatures}
           onEachFeature={this.onEachFeature.bind(this)}
         />
+        {markers}
       </Map>
     );
   }

@@ -1,5 +1,6 @@
 import styles from './PerformanceIndicator.css';
 import React, { Component, PropTypes } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import {
   Label,
   Panel,
@@ -21,6 +22,13 @@ import {
   setDaterange,
   selectIndicator,
 } from '../actions.jsx';
+
+const messages = defineMessages({
+  showvalues: {
+    id: 'performanceindicator.showvalues',
+    defaultMessage: 'Show values',
+  },
+});
 
 class PerformanceIndicator extends Component {
   constructor(props) {
@@ -181,7 +189,9 @@ class PerformanceIndicator extends Component {
                  value="None"
                  id={this.props.pid}
                  name="check" />
-          <label className={styles.showValuesLabel} htmlFor={this.props.pid}>Toon waardes</label>
+          <label className={styles.showValuesLabel} htmlFor={this.props.pid}>
+            <FormattedMessage {...messages.showvalues} />
+          </label>
           &nbsp;&nbsp;
         </div>
           <ul className="list-unstyled list-inline" style={{ cursor: 'pointer' }}>

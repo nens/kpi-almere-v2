@@ -2,6 +2,8 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import config from './config.jsx';
+import bbox from 'turf-bbox';
+import centroid from 'turf-centroid';
 
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 export const RECEIVE_INDICATORS = 'RECEIVE_INDICATORS';
@@ -194,6 +196,8 @@ function receiveRegions(regions) {
   return {
     type: RECEIVE_REGIONS,
     regions,
+    bbox: bbox(regions.results),
+    centroid: centroid(regions.results),
     receivedAt: Date.now(),
   };
 }
@@ -205,6 +209,7 @@ export function fetchRegions(type) {
     'DISTRICT': 9,
     'MUNICIPALITY': 3,
     'PROVINCE': 1,
+    'NEIGHBOURHOOD': 10,
   };
 
   return dispatch => {

@@ -6,6 +6,16 @@ import { Provider } from 'react-redux';
 import configureStore from './configureStore.jsx';
 import App from './components/App.jsx';
 import $ from 'jquery';
+import {
+    addLocaleData,
+    injectIntl,
+    IntlProvider,
+    FormattedRelative,
+} from 'react-intl';
+import en from 'react-intl/locale-data/en';
+import nl from 'react-intl/locale-data/nl';
+import messages from './messages.jsx';
+addLocaleData([...en, ...nl]);
 
 const piEndpoint = $.ajax({
   type: 'GET',
@@ -30,8 +40,15 @@ Promise.all([piEndpoint]).then((data) => {
 const store = configureStore();
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <IntlProvider
+    messages={messages.nl}
+    locale='nl'>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </IntlProvider>,
   document.getElementById('root')
 );
+
+
+//

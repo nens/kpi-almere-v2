@@ -7,6 +7,7 @@ import Pimap from './PiMap.jsx';
 import PerformanceIndicatorList from './PerformanceIndicatorList.jsx';
 import BoundaryTypeSelect from './BoundaryTypeSelect.jsx';
 import NotificationSystem from 'react-notification-system';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import {
   fetchIndicatorsIfNeeded,
@@ -15,6 +16,21 @@ import {
   setZoomLevel,
   setRegion,
 } from '../actions.jsx';
+
+const messages = defineMessages({
+  selected: {
+    id: 'app.selected',
+    defaultMessage: 'Selected',
+  },
+  apptitle: {
+    id: 'app.apptitle',
+    defaultMessage: 'Dashboard Performance Indicators',
+  },
+  infobutton: {
+    id: 'app.infobutton',
+    defaultMessage: 'Information',
+  },
+});
 
 class App extends Component {
 
@@ -82,13 +98,13 @@ class App extends Component {
                 onClick={this.openInfo}
                 bsSize='xsmall'
                 className='pull-right'>
-                <i className='fa fa-info-circle'></i>&nbsp;Informatie
+                <i className='fa fa-info-circle'></i>&nbsp;<FormattedMessage {...messages.infobutton} />
               </Button>
               <br/>
               <h3 style={{
                 fontFamily: '"Lato", "sans-serif"',
                 fontWeight: '100',
-              }}>Dashboard Prestatieindicatoren</h3>
+              }}><FormattedMessage {...messages.apptitle} /></h3>
             </div>
             <img src={logo} style={{ width: 150, padding: '10px 0 0 0' }} />
                {(this.props.indicators.isFetching) ? <img src={loadingIndicator}/> : ''}
@@ -98,7 +114,7 @@ class App extends Component {
           <Col md={6}>
             <h4>
               <Label bsStyle='info'>
-              Geselecteerd:&nbsp;
+              <FormattedMessage {...messages.selected} />:&nbsp;
               {(this.props.indicators.region) ? this.props.indicators.region.properties.name : ''}
               </Label>
             </h4>
