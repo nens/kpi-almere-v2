@@ -1,0 +1,14 @@
+[
+  {
+    "id": "app.selected",
+    "defaultMessage": "Selected"
+  },
+  {
+    "id": "app.apptitle",
+    "defaultMessage": "Dashboard Performance Indicators"
+  },
+  {
+    "id": "app.infobutton",
+    "defaultMessage": "Information"
+  }
+]
