@@ -143,7 +143,6 @@ class Pimap extends Component {
       lastScore = selectedIndicator.series[selectedIndicator.series.length - 1].score;
     } catch(e) {}
 
-
     layer.setStyle({
       color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#fff',
       opacity: 1,

@@ -6,6 +6,7 @@ import bbox from 'turf-bbox';
 import centroid from 'turf-centroid';
 
 export const CLEAR_ERROR = 'CLEAR_ERROR';
+export const CLEAR_MAP_SELECTION = 'CLEAR_MAP_SELECTION';
 export const RECEIVE_INDICATORS = 'RECEIVE_INDICATORS';
 export const RECEIVE_REGIONS = 'RECEIVE_REGIONS';
 export const REQUEST_INDICATORS = 'REQUEST_INDICATORS';
@@ -22,6 +23,12 @@ export const SHOW_ERROR = 'SHOW_ERROR';
 export function clearError() {
   return {
     type: CLEAR_ERROR,
+  };
+}
+
+export function clearMapSelection() {
+  return {
+    type: CLEAR_MAP_SELECTION,
   };
 }
 

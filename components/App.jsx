@@ -10,6 +10,7 @@ import NotificationSystem from 'react-notification-system';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import {
+  clearMapSelection,
   fetchIndicatorsIfNeeded,
   fetchRegionsIfNeeded,
   fetchRegions,
@@ -55,6 +56,7 @@ class App extends Component {
     this._selectZoomLevel = this._selectZoomLevel.bind(this);
     this.openInfo = this.openInfo.bind(this);
     this.closeInfo = this.closeInfo.bind(this);
+    this.handleClearSelection = this.handleClearSelection.bind(this);
     this._addNotification = this._addNotification.bind(this);
     this._notificationSystem = null;
   }
@@ -76,6 +78,10 @@ class App extends Component {
       message,
       level,
     });
+  }
+
+  handleClearSelection() {
+    this.props.dispatch(clearMapSelection());
   }
 
   openInfo() {
@@ -126,8 +132,9 @@ class App extends Component {
           <Col md={6}>
             <h4>
               <Label bsStyle='info'>
-              <FormattedMessage {...messages.selected} />:&nbsp;
-              {(this.props.indicators.region) ? this.props.indicators.region.properties.name : ''}
+              <FormattedMessage {...messages.selected} />:&nbsp;&nbsp;
+              {(this.props.indicators.region) ? `${this.props.indicators.region.properties.name}` : '---'}&nbsp;
+              {(this.props.indicators.region) ? <i style={{ cursor: 'pointer' }} onClick={this.handleClearSelection} className='fa fa-times'></i>: ''}
               </Label>
             </h4>
           </Col>

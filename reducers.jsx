@@ -2,6 +2,7 @@ import guid from './lib/guid.jsx';
 import { combineReducers } from 'redux';
 import {
   CLEAR_ERROR,
+  CLEAR_MAP_SELECTION,
   RECEIVE_INDICATORS,
   RECEIVE_REGIONS,
   REQUEST_INDICATORS,
@@ -34,6 +35,20 @@ function indicators(state = {
     return Object.assign({}, state, {
       errormessage: undefined,
     });
+  case CLEAR_MAP_SELECTION:
+    return Object.assign({}, state, {
+      region: undefined,
+      indicators: state.indicators.map((item) => {
+        return {
+          name: item.name,
+          regions: item.regions.map((region) => {
+            region.selected = false;
+            return region;
+          }),
+        };
+      }),
+    });
+
   case SHOW_ERROR:
     return Object.assign({}, state, {
       errormessage: {
