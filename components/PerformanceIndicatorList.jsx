@@ -73,7 +73,7 @@ class PerformanceIndicatorList extends Component {
 
     return (
       <div style={{
-        height: this.state.height - 100,
+        minHeight: 200,
         overflowY: 'scroll',
       }}>
           {performanceindicators}

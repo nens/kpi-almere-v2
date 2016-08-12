@@ -190,7 +190,7 @@ class PerformanceIndicator extends Component {
                  id={this.props.pid}
                  name="check" />
           <label className={styles.showValuesLabel} htmlFor={this.props.pid}>
-            <FormattedMessage {...messages.showvalues} />
+            <FormattedMessage {...messages.showvalues}>{(message) => <span>{message}</span>}</FormattedMessage>
           </label>
           &nbsp;&nbsp;
         </div>

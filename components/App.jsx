@@ -30,6 +30,18 @@ const messages = defineMessages({
     id: 'app.infobutton',
     defaultMessage: 'Information',
   },
+  infoModalClose: {
+    id: 'app.infomodalclose',
+    defaultMessage: 'Close',
+  },
+  infoModalBody: {
+    id: 'app.infomodalbody',
+    defaultMessage: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+  },
+  infoModalTitle: {
+    id: 'app.infomodaltitle',
+    defaultMessage: 'Information',
+  },
 });
 
 class App extends Component {
@@ -146,18 +158,14 @@ class App extends Component {
         onHide={this.closeInfo}>
         <Modal.Header closeButton>
           <Modal.Title>
-            Gemeente Almere Performanceindicator Dashboard
+            <FormattedMessage {...messages.infoModalTitle} />
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-           nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-           velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-           proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          <FormattedMessage {...messages.infoModalBody} />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.closeInfo}>Sluiten</Button>
+          <Button onClick={this.closeInfo}><FormattedMessage {...messages.infoModalClose} /></Button>
         </Modal.Footer>
       </Modal>
 
