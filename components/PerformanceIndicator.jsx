@@ -1,5 +1,6 @@
 import styles from './PerformanceIndicator.css';
 import React, { Component, PropTypes } from 'react';
+import getColor from '../lib/getColor.jsx';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import {
   Label,
@@ -163,7 +164,7 @@ class PerformanceIndicator extends Component {
           <span className="pull-right">
             <Label style={{
               fontSize: '0.95em',
-              backgroundColor: (lastScore > this.props.indicator.referenceValue) ? 'red' : 'green',
+              backgroundColor: (lastScore > this.props.indicator.referenceValue) ? 'red' : getColor(lastScore),
             }}>{Math.round(lastScore)}</Label>
             <span
                  onClick={() => window.open('https://flevoland.lizard.net/nl/map/topography,overrun/point@52.3351,5.4815,11/Oct,19,2011-Sep,15,2015', '_blank')}>
