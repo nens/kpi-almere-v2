@@ -1,0 +1,18 @@
+[
+  {
+    "id": "visualisationsettings.referencevalue",
+    "defaultMessage": "Reference value"
+  },
+  {
+    "id": "visualisationsettings.currentreferencevalue",
+    "defaultMessage": "Current Reference value"
+  },
+  {
+    "id": "visualisationsettings.applyrefvalbutton",
+    "defaultMessage": "Apply"
+  },
+  {
+    "id": "visualisationsettings.closerefvalbutton",
+    "defaultMessage": "Close"
+  }
+]

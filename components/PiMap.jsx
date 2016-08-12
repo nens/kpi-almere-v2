@@ -10,13 +10,43 @@ import GeoJsonUpdatable from '../lib/GeoJsonUpdatable.jsx';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 
 function getColor(d) {
-  return d > 10 ? '#800026' :
-    d > 8 ? '#BD0026' :
-    d > 6 ? '#E31A1C' :
-    d > 4 ? '#FC4E2A' :
-    d > 2 ? '#FD8D3C' :
-    d > 1 ? 'rgb(86,221,84)' :
-    'grey';
+  d = Math.floor(Number(d));
+  if (d === 0) {
+    return 'grey';
+  }
+  else
+  if (d >= 1 && d <= 2) {
+    return '#d73027';
+  }
+  else
+  if (d >= 2 && d <= 3) {
+    return '#f46d43';
+  }
+  else
+  if (d >= 3 && d <= 4) {
+    return '#fdae61';
+  }
+  else
+  if (d >= 4 && d <= 5) {
+    return '#fee08b';
+  }
+  else
+  if (d >= 5 && d <= 6) {
+    return '#ffffbf';
+  }
+  else
+  if (d >= 6 && d <= 7) {
+    return '#d9ef8b';
+  }
+  else
+  if (d >= 7 && d <= 8) {
+    return '#a6d96a';
+  }
+  else
+  if (d >= 8 && d <= 9) {
+    return '#66bd63';
+  }
+  return '#1a9850';
 }
 
 const style = {
@@ -136,53 +166,6 @@ class Pimap extends Component {
     const featureId = feature.id;
     const featureName = feature.properties.name;
 
-    // let selectedIndicatorItem = (this.props.indicators.region) ? this.props.indicators.region : undefined;
-    // // const selectedIndicator = this.props.indicators.indicators.filter((indicator) => {
-    // //   return indicator.regions.filter((region) => {
-    // //     if (region.selected === true) {
-    // //       selectedIndicatorItem = region;
-    // //       return region;
-    // //     }
-    // //     else {
-    // //       return false;
-    // //     }
-    // //   });
-    // // });
-    //
-    // const featureId = feature.id;
-    // const featureName = feature.properties.name;
-    //
-    // // console.log('feature in onEachFeature', feature);
-    // // console.log('featureId in onEachFeature', featureId);
-    // // console.log('featureName in onEachFeature', featureName);
-    //
-    // if(selectedIndicatorItem) {
-    //
-    //   const indicatorName = selectedIndicatorItem.name;
-    //
-    //   const activeIndicator = this.props.indicators.indicators.filter((indicator) => {
-    //     if (indicator.name === indicatorName) {
-    //       return indicator;
-    //     }
-    //   });
-    //
-    //   const colorme = activeIndicator[0].regions.filter((region) => {
-    //     if (region.regionId === featureId) {
-    //       return region;
-    //     }
-    //   })[0];
-    //
-    //   let myScore = 0;
-    //   if (colorme) {
-    //     myScore = colorme.series[colorme.series.length - 1].score;
-    //   }
-    //
-    //
-    //   let weight = 1;
-    //   if (selectedIndicatorItem && feature.id === selectedIndicatorItem.regionId) {
-    //     weight = 10;
-    //   }
-
     layer.on('click', () => {
       this.props.selectRegion(feature);
     });
@@ -207,7 +190,7 @@ class Pimap extends Component {
       fillColor: getColor(lastScore),
       fillOpacity: 1,
     });
-    // console.log('%c %s %s', `background: ${getColor(myScore)}; color: #ffffff`, feature.properties.name, myScore);
+    console.log('%c %s %s', `background: ${getColor(lastScore)}; color: #ffffff`, feature.properties.name, lastScore);
   }
 
   render() {
