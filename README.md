@@ -18,6 +18,8 @@ Demo
 Screenshot (August 2016)
 ========================
 
+![Screenshot](https://raw.githubusercontent.com/nens/kpi-almere-v2/master/screenshot-august-2016.jpg)
+
 
 
 Technical
