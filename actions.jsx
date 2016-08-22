@@ -59,9 +59,9 @@ export function setReferenceValueForIndicator(indicatorId, referenceValue) {
   return dispatch => {
     dispatch(setReferenceValue(indicatorId, referenceValue));
     const referenceValueEndpoint = $.ajax({
-      type: 'POST',
+      type: 'PUT', // Must be PUT because its an update!
       /* eslint-disable */
-      url: `${config.apiBaseUrl}/api/v2/pi/`,
+      url: `${config.apiBaseUrl}/api/v2/pi/${indicatorId}/`,
       dataType: 'json',
       data: {
         'reference_value': referenceValue,
@@ -82,7 +82,6 @@ export function setReferenceValueForIndicator(indicatorId, referenceValue) {
     Promise.all([referenceValueEndpoint]).then(([referenceValueResult]) => {
       console.log('referenceValueResult', referenceValueResult);
     });
-
   };
 }
 

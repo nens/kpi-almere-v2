@@ -37,7 +37,9 @@ export default class VisualisationSettings extends Component {
   }
 
   handleChange() {
-    this.props.dispatch(setReferenceValueForIndicator(this.props.indicator.id, this.refs.refval.value));
+    const indicatorIdTemp = this.props.indicator.url.split('/');
+    const indicatorId = indicatorIdTemp[indicatorIdTemp.length - 2];
+    this.props.dispatch(setReferenceValueForIndicator(indicatorId, this.refs.refval.value));
   }
 
   handleClose() {
