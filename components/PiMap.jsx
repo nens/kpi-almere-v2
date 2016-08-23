@@ -194,18 +194,23 @@ class Pimap extends Component {
     const markers = (filteredFeatures) ?
       filteredFeatures.map((feature, i) => {
         const center = centroid(feature.geometry);
-
-        const selection1 = _.filter(this.props.indicators.indicators, { regions: [{ selected: true }] });
-        const selection2 = _.filter(selection1[0].regions, { regionId: feature.id });
-        const selectedIndicator = selection2[0];
-        const lastScore = selectedIndicator.series[selectedIndicator.series.length - 1].score;
+        let lastScore;
+        try {
+          const selection1 = _.filter(this.props.indicators.indicators, { regions: [{ selected: true }] });
+          const selection2 = _.filter(selection1[0].regions, { regionId: feature.id });
+          const selectedIndicator = selection2[0];
+          lastScore = Math.round(selectedIndicator.series[selectedIndicator.series.length - 1].score);
+        }
+        catch (e) {
+          console.log('error', e);
+        }
 
         return <Marker
           key={i}
           onClick={() => self.handleMapClick(feature)}
           icon={new L.DivIcon({
             className: styles.mapLabel,
-            html: `${Math.round(lastScore)}`,
+            html: `${(lastScore) ? lastScore : ''}`,
           })}
           position={[center.geometry.coordinates[1], center.geometry.coordinates[0]]} />;
       }) : [];
