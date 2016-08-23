@@ -1,6 +1,7 @@
 import styles from './VisualisationSettings.css';
 import { Grid, Row, Col, Label, Button, ButtonToolbar, ButtonGroup }  from 'react-bootstrap';
 import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import {
@@ -37,8 +38,12 @@ export default class VisualisationSettings extends Component {
   }
 
   handleChange() {
-    const indicatorIdTemp = this.props.indicator.url.split('/');
-    const indicatorId = indicatorIdTemp[indicatorIdTemp.length - 2];
+    // const selection1 = _.filter(this.props.indicators.indicators, { regions: [{ selected: true }] });
+    // console.log('---->', selection1);
+    // const indicatorIdTemp = this.props.indicator.url.split('/');
+    // const indicatorId = indicatorIdTemp[indicatorIdTemp.length - 2];
+    // console.log(this.props);
+    const indicatorId = 1;
     this.props.dispatch(setReferenceValueForIndicator(indicatorId, this.refs.refval.value));
   }
 

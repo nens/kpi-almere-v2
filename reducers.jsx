@@ -141,9 +141,12 @@ function indicators(state = {
     return Object.assign({}, state, {
       isFetching: false,
       indicators: action.piData.map((item) => {
+        const indicatorId = item[0].url.split('/')[6]; // <<-- fragile right here
+        console.log('----------->', indicatorId);
         return {
           name: item[0].name,
           id: guid(),
+          indicatorId,
           regions: item[1].regions.map((region) => {
             const splittedRegionUrl = region.region_url.split('/');
             const regionId = Number(splittedRegionUrl[splittedRegionUrl.length - 2]);
