@@ -10,7 +10,6 @@ import GeoJsonUpdatable from '../lib/GeoJsonUpdatable.jsx';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import getColor from '../lib/getColor.jsx';
 
-
 const style = {
   fillColor: '#000',
   weight: 2,
@@ -136,12 +135,15 @@ class Pimap extends Component {
     let lastValue;
     let lastScore;
     try {
-      const selection1 = _.filter(this.props.indicators.indicators, { regions: [{selected: true}]});
-      const selection2 = _.filter(selection1[0].regions, {regionId: feature.id});
+      const selection1 = _.filter(this.props.indicators.indicators, { regions: [{ selected: true }] });
+      const selection2 = _.filter(selection1[0].regions, { regionId: feature.id });
       selectedIndicator = selection2[0];
       lastValue = selectedIndicator.series[selectedIndicator.series.length - 1].value;
       lastScore = selectedIndicator.series[selectedIndicator.series.length - 1].score;
-    } catch(e) {}
+    }
+    catch (e) {
+      console.log('error', e);
+    }
 
     layer.setStyle({
       color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#fff',
@@ -182,24 +184,34 @@ class Pimap extends Component {
 
     const filteredFeatures = (this.props.indicators.regions.results) ?
       this.props.indicators.regions.results.features.filter((feature) => {
+        console.log('feature ----->', feature);
         if (feature.properties.name !== '') {
           return feature;
         }
         return false;
       }) : [];
 
-      const markers = (filteredFeatures) ?
-        filteredFeatures.map((feature, i) => {
-          const center = centroid(feature.geometry);
-          return <Marker
-            key={i}
-            onClick={() => self.handleMapClick(feature)}
-            icon={new L.DivIcon({
-              className: styles.mapLabel,
-              html: `<i class="fa fa-circle"></i>&nbsp;${feature.properties.name.substr(0, 10)}...`,
-            })}
-            position={[center.geometry.coordinates[1], center.geometry.coordinates[0]]} />;
-        }) : [];
+    const markers = (filteredFeatures) ?
+      filteredFeatures.map((feature, i) => {
+        const center = centroid(feature.geometry);
+
+        const selection1 = _.filter(this.props.indicators.indicators, { regions: [{ selected: true }] });
+        const selection2 = _.filter(selection1[0].regions, { regionId: feature.id });
+        const selectedIndicator = selection2[0];
+        const lastScore = selectedIndicator.series[selectedIndicator.series.length - 1].score;
+
+        return <Marker
+          key={i}
+          onClick={() => self.handleMapClick(feature)}
+          icon={new L.DivIcon({
+            className: styles.mapLabel,
+            html: `${Math.round(lastScore)}`,
+          })}
+          position={[center.geometry.coordinates[1], center.geometry.coordinates[0]]} />;
+      }) : [];
+
+      // <i class="fa fa-circle"></i>&nbsp;
+      //  - ${feature.properties.name.substr(0, 10)}...
 
     return (
       <Map

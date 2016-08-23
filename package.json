@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "KPI Dashboard based on Lizard 6 API",
   "scripts": {
-    "start": "node server.js",
+    "start": "node --max-old-space-size=2048 server.js",
     "test": "cross-env NODE_ENV=test mocha --recursive --compilers js:babel-register --require ./test/setup.js",
     "test:watch": "npm test -- --watch"
   },

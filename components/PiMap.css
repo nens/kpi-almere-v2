@@ -43,7 +43,8 @@
 }
 
 .mapLabel {
-  font-size: 0.9em;
+  font-size: 1.2em;
+  font-weight: bolder;
   color: #fff;
   width: 70px !important;
 }

@@ -77,7 +77,10 @@ class App extends Component {
 
   componentWillReceiveProps(newProps) {
     if (newProps.indicators.errormessage) {
-      this._addNotification(newProps.indicators.errormessage.message, newProps.indicators.errormessage.level);
+      this._addNotification(
+        newProps.indicators.errormessage.message,
+        newProps.indicators.errormessage.level
+      );
     }
   }
 
