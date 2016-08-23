@@ -37,7 +37,15 @@ const messages = defineMessages({
   },
   infoModalBody: {
     id: 'app.infomodalbody',
-    defaultMessage: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    defaultMessage: 'Hier zit u het Dashboard Prestatie Indicatoren voor de waterbeheerder van gemeente Almere. Dit dashboard geeft inzicht in de prestaties van de operationele doelstellingen van de waterbeheerder.',
+  },
+  infoModalBody2: {
+    id: 'app.infomodalbody2',
+    defaultMessage: 'Door op een prestatie indicator te klikken, ziet u de trendlijn voor de ingesteld periode. In de titelbalk ziet u de actuele score. Op de kaart is de score per deelgebied, in kleur zichtbaar. De prestatie indicatoren zijn op drie schaalniveaus op te vragen; Gemeente, Wijk en Buurt.',
+  },
+  infoModalBody3: {
+    id: 'app.infomodalbody3',
+    defaultMessage: 'Klikt u in de titelbalk op het Lizard icoon naast de score, kunt u de onderliggende data inzien waaruit de prestatie indicatoren is opgebouwd.',
   },
   infoModalTitle: {
     id: 'app.infomodaltitle',
@@ -169,7 +177,9 @@ class App extends Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormattedMessage {...messages.infoModalBody} />
+          <FormattedMessage {...messages.infoModalBody} tagName='p' />
+          <FormattedMessage {...messages.infoModalBody2} tagName='p' />
+          <FormattedMessage {...messages.infoModalBody3} tagName='p' />
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.closeInfo}><FormattedMessage {...messages.infoModalClose} /></Button>
