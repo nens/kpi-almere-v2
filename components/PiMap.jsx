@@ -142,7 +142,7 @@ class Pimap extends Component {
       lastScore = selectedIndicator.series[selectedIndicator.series.length - 1].score;
     }
     catch (e) {
-      console.log('error', e);
+      // console.log('error', e);
     }
 
     layer.setStyle({
@@ -184,7 +184,6 @@ class Pimap extends Component {
 
     const filteredFeatures = (this.props.indicators.regions.results) ?
       this.props.indicators.regions.results.features.filter((feature) => {
-        console.log('feature ----->', feature);
         if (feature.properties.name !== '') {
           return feature;
         }
@@ -202,7 +201,7 @@ class Pimap extends Component {
           lastScore = Math.round(selectedIndicator.series[selectedIndicator.series.length - 1].score);
         }
         catch (e) {
-          console.log('error', e);
+          // console.log('error', e);
         }
 
         return <Marker
