@@ -146,7 +146,7 @@ class Pimap extends Component {
     }
 
     layer.setStyle({
-      color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#fff',
+      color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#ffffff',
       opacity: 1,
       weight: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? 5 : 1,
       dashArray: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '5, 10' : 1,
