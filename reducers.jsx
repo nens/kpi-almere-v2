@@ -27,7 +27,7 @@ function indicators(state = {
   isFetching: false,
   region: undefined,
   regions: [],
-  zoomlevel: 'DISTRICT',
+  zoomlevel: 'MUNICIPALITY',
 }, action) {
   // console.log('reducer indicators() was called with state', state, 'and action', action);
   switch (action.type) {
@@ -142,7 +142,7 @@ function indicators(state = {
       isFetching: false,
       indicators: action.piData.map((item) => {
         const indicatorId = item[0].url.split('/')[6]; // <<-- fragile right here
-        console.log('----------->', indicatorId);
+        // console.log('----------->', indicatorId);
         return {
           name: item[0].name,
           id: guid(),

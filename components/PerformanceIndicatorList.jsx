@@ -76,7 +76,7 @@ class PerformanceIndicatorList extends Component {
         minHeight: 200,
         overflowY: 'scroll',
       }}>
-          {performanceindicators}
+          {(performanceindicators.length > 0) ? performanceindicators : ''}
       </div>
     );
   }
