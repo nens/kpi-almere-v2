@@ -7,6 +7,8 @@ import centroid from 'turf-centroid';
 
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 export const CLEAR_MAP_SELECTION = 'CLEAR_MAP_SELECTION';
+export const RECEIVE_APPLICATION_BOOTSTRAP = 'RECEIVE_APPLICATION_BOOTSTRAP';
+export const REQUEST_APPLICATION_BOOTSTRAP = 'REQUEST_APPLICATION_BOOTSTRAP';
 export const RECEIVE_INDICATORS = 'RECEIVE_INDICATORS';
 export const RECEIVE_REGIONS = 'RECEIVE_REGIONS';
 export const REQUEST_INDICATORS = 'REQUEST_INDICATORS';
@@ -189,7 +191,39 @@ export function setIndicator(indicator) {
 }
 
 
+export function fetchApplicationBootstrap() {
+  return dispatch => {
+    dispatch(requestApplicationBootstrap());
+    const bootstrapEndpoint = $.ajax({
+      type: 'GET',
+      url: 'https://nxt.staging.lizard.net/bootstrap/kpi/',
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (data) => {
+        return data;
+      },
+    });
+    Promise.all([bootstrapEndpoint]).then((data) => {
+      console.log('data', data);
+      return dispatch(receiveApplicationBootstrap(data));
+    });
+  };
+}
 
+export function requestApplicationBootstrap() {
+  return {
+    type: REQUEST_APPLICATION_BOOTSTRAP,
+  };
+}
+
+function receiveApplicationBootstrap(data) {
+  return {
+    type: RECEIVE_APPLICATION_BOOTSTRAP,
+    data,
+    receivedAt: Date.now(),
+  };
+}
 
 function requestRegions() {
   return {
