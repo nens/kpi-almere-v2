@@ -1,6 +1,7 @@
 import styles from './PerformanceIndicator.css';
 import React, { Component, PropTypes } from 'react';
 import getColor from '../lib/getColor.jsx';
+import moment from 'moment';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import {
   Label,
@@ -152,6 +153,31 @@ class PerformanceIndicator extends Component {
         </ComposedChart>
       </ResponsiveContainer>;
 
+    const baseUrl = location.href;
+    const lat = (this.props.bootstrap.bootstrap.spatial_bounds[3] +
+      this.props.bootstrap.bootstrap.spatial_bounds[1]) / 2; // Computes the center
+    const lng = (this.props.bootstrap.bootstrap.spatial_bounds[2] +
+      this.props.bootstrap.bootstrap.spatial_bounds[0]) / 2;
+    const zoom = '11';
+
+    const currentYear = moment(lastDate).format('YYYY');
+    console.log('currentYear', currentYear);
+    let tempFromDate;
+    switch (this.props.indicators.daterange) {
+    case '3Y':
+      tempFromDate = Number(currentYear) - 3;
+      break;
+    case '5Y':
+      tempFromDate = Number(currentYear) - 5;
+      break;
+    default:
+      tempFromDate = Number(currentYear) - 1;
+      break;
+    }
+    const fromDate = `Jan,01,${tempFromDate}`;
+    const toDate = moment(lastDate).format('MMM,DD,YYYY');
+    const dynamicLizardLink = `${baseUrl}nl/map/topography,overrun/point@${lat},${lng},${zoom}/${fromDate}-${toDate}`;
+
     const header = (
         <div
             onClick={() => {
@@ -167,7 +193,7 @@ class PerformanceIndicator extends Component {
               backgroundColor: (lastScore > this.props.indicator.referenceValue) ? 'red' : getColor(lastScore),
             }}>{Math.round(lastScore)}</Label>
             <span
-                 onClick={() => window.open('https://flevoland.lizard.net/nl/map/topography,overrun/point@52.3351,5.4815,11/Oct,19,2011-Sep,15,2015', '_blank')}>
+                 onClick={() => window.open(dynamicLizardLink, '_blank')}>
                 <img
                   width="20"
                   style={{ margin: '0px 0px 5px 5px' }}
@@ -199,24 +225,17 @@ class PerformanceIndicator extends Component {
             <li><i className="fa fa-cog"
                    onClick={this._handleCogClick}></i>
             </li>
-            <li
-              style={{
-                fontWeight: (this.props.indicators.daterange === '5Y') ? 'bold' : '',
-              }}
-              onClick={() => this.props.dispatch(setDaterange('5Y'))}>5Y
-            </li>
-            <li
-              style={{
-                fontWeight: (this.props.indicators.daterange === '3Y') ? 'bold' : '',
-              }}
-              onClick={() => this.props.dispatch(setDaterange('3Y'))}>3Y
-            </li>
-            <li
-              style={{
-                fontWeight: (this.props.indicators.daterange === '1Y') ? 'bold' : '',
-              }}
-              onClick={() => this.props.dispatch(setDaterange('1Y'))}>1Y
-            </li>
+            {
+              ['5Y', '3Y', '1Y'].map((range, i) => {
+                return <li
+                          key={i}
+                          style={{
+                            fontWeight: (this.props.indicators.daterange === range) ? 'bold' : '',
+                          }}
+                          onClick={() => this.props.dispatch(setDaterange(range))}>{range}
+                        </li>;
+              })
+            }
           </ul>
           {visualisationOrBackside}
       </Panel>
@@ -225,6 +244,7 @@ class PerformanceIndicator extends Component {
 }
 
 PerformanceIndicator.propTypes = {
+  bootstrap: PropTypes.any,
   dispatch: PropTypes.func,
   indicator: PropTypes.any,
   indicators: PropTypes.any,
