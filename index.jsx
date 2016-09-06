@@ -27,12 +27,7 @@ const language = (navigator.languages && navigator.languages[0]) ||
 
 // Split locales with a region code
 const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
-
 const messages = localeData[languageWithoutRegionCode];// || localeData[language] || localeData.en;
-
-// console.log('languageWithoutRegionCode', languageWithoutRegionCode);
-// console.log('messages', messages);
-// console.log('localeData[languageWithoutRegionCode]', localeData[languageWithoutRegionCode]);
 
 const piEndpoint = $.ajax({
   type: 'GET',
@@ -54,6 +49,9 @@ Promise.all([piEndpoint]).then((data) => {
   }
 });
 
+
+// Create a Redux Store object which will be passed to the App Component
+// using the Provider HoC
 const store = configureStore();
 
 ReactDOM.render(

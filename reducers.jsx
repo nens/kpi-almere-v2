@@ -5,8 +5,10 @@ import {
   CLEAR_MAP_SELECTION,
   RECEIVE_INDICATORS,
   RECEIVE_REGIONS,
+  RECEIVE_APPLICATION_BOOTSTRAP,
   REQUEST_INDICATORS,
   REQUEST_REGIONS,
+  REQUEST_APPLICATION_BOOTSTRAP,
   SELECT_INDICATOR,
   SET_DATERANGE,
   SET_DATERANGE_FOR_PI,
@@ -16,6 +18,24 @@ import {
   SET_ZOOMLEVEL,
   SHOW_ERROR,
 } from './actions.jsx';
+
+function bootstrap(state = {
+  bootstrap: undefined,
+}, action) {
+  switch (action.type) {
+  case RECEIVE_APPLICATION_BOOTSTRAP:
+    return Object.assign({}, state, {
+      isFetching: false,
+      bootstrap: action.data[0],
+    });
+  case REQUEST_APPLICATION_BOOTSTRAP:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  default:
+    return state;
+  }
+}
 
 function indicators(state = {
   bbox: undefined,
@@ -174,6 +194,7 @@ function indicators(state = {
 }
 
 const rootReducer = combineReducers({
+  bootstrap,
   indicators,
 });
 
