@@ -1,5 +1,9 @@
 [
   {
+    "id": "visualisationsettings.helptext",
+    "defaultMessage": "You can set a reference value here if you have administrative privileges."
+  },
+  {
     "id": "visualisationsettings.referencevalue",
     "defaultMessage": "Reference value"
   },

@@ -8,8 +8,28 @@
     "defaultMessage": "Dashboard Performance Indicators"
   },
   {
+    "id": "app.areyousure",
+    "defaultMessage": "Are you sure?"
+  },
+  {
+    "id": "app.areyousureconfirm",
+    "defaultMessage": "Yes I'm sure"
+  },
+  {
+    "id": "app.areyousurefull",
+    "defaultMessage": "Are you sure you want to log out?"
+  },
+  {
+    "id": "app.areyousureclose",
+    "defaultMessage": "Close"
+  },
+  {
     "id": "app.infobutton",
     "defaultMessage": "Information"
+  },
+  {
+    "id": "app.logoutbutton",
+    "defaultMessage": "Log out"
   },
   {
     "id": "app.infomodalclose",

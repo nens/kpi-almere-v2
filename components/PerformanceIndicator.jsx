@@ -154,7 +154,7 @@ class PerformanceIndicator extends Component {
       </ResponsiveContainer>;
 
     const baseUrl = location.href;
-    
+
     const lat = (this.props.bootstrap.bootstrap.spatial_bounds[3] +
       this.props.bootstrap.bootstrap.spatial_bounds[1]) / 2; // Computes the center
     const lng = (this.props.bootstrap.bootstrap.spatial_bounds[2] +

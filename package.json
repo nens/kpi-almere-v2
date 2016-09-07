@@ -259,6 +259,7 @@
     "foreach": "^2.0.5",
     "forever-agent": "^0.6.1",
     "form-data": "^1.0.0-rc4",
+    "format-message": "^4.0.1",
     "forwarded": "^0.1.0",
     "fresh": "^0.3.0",
     "fs.realpath": "^1.0.0",

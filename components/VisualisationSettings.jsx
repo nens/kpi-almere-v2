@@ -1,5 +1,5 @@
 import styles from './VisualisationSettings.css';
-import { Grid, Row, Col, Label, Button, ButtonToolbar, ButtonGroup }  from 'react-bootstrap';
+import { Alert, Grid, Row, Col, Label, Button, ButtonToolbar, ButtonGroup }  from 'react-bootstrap';
 import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
 import { defineMessages, FormattedMessage } from 'react-intl';
@@ -9,6 +9,10 @@ import {
 } from '../actions.jsx';
 
 const messages = defineMessages({
+  helptext: {
+    id: 'visualisationsettings.helptext',
+    defaultMessage: 'You can set a reference value here if you have administrative privileges.',
+  },
   referencevalue: {
     id: 'visualisationsettings.referencevalue',
     defaultMessage: 'Reference value',
@@ -55,11 +59,14 @@ export default class VisualisationSettings extends Component {
     const currentRefVal = this.props.indicator.referenceValue;
     return (
       <div style={{ height: 280 }}>
+        <Alert>
+          <FormattedMessage {...messages.helptext} />
+        </Alert>
         <div className="form-group">
           <label><FormattedMessage {...messages.currentreferencevalue} /></label>: {currentRefVal}
         </div>
         <div className="form-group">
-          <label labelFor="exampleInputEmail1"><FormattedMessage {...messages.referencevalue} /></label>
+          <label htmlFor="exampleInputEmail1"><FormattedMessage {...messages.referencevalue} /></label>
           <input type="number"
                  min="0"
                  ref='refval'

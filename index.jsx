@@ -1,5 +1,6 @@
 /* globals Promise:true */
 import 'babel-polyfill';
+import config from './config.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -31,7 +32,7 @@ const messages = localeData[languageWithoutRegionCode];// || localeData[language
 
 const piEndpoint = $.ajax({
   type: 'GET',
-  url: 'https://nxt.staging.lizard.net/api/v2/pi/',
+  url: `${config.apiBaseUrl}/api/v2/pi/`,
   xhrFields: {
     withCredentials: true,
   },
@@ -45,22 +46,22 @@ Promise.all([piEndpoint]).then((data) => {
   // This is not a temporary measure. A new endpoint should be made for checking
   // auth status from a serverless JS app such as this one...
   if (data[0].count === 0) {
-    window.location.href = `https://nxt.staging.lizard.net/accounts/login/?next=${window.location.href}`;
+    window.location.href = `${config.apiBaseUrl}/accounts/login/?next=${window.location.href}`;
+  }
+  else {
+    // Create a Redux Store object which will be passed to the App Component
+    // using the Provider HoC
+    const store = configureStore();
+
+    ReactDOM.render(
+      <IntlProvider
+        messages={messages}
+        locale={language}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </IntlProvider>,
+      document.getElementById('root')
+    );
   }
 });
-
-
-// Create a Redux Store object which will be passed to the App Component
-// using the Provider HoC
-const store = configureStore();
-
-ReactDOM.render(
-  <IntlProvider
-    messages={messages}
-    locale={language}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </IntlProvider>,
-  document.getElementById('root')
-);
