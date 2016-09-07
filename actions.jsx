@@ -59,16 +59,16 @@ export function showError(message, level) {
 
 export function setReferenceValueForIndicator(indicatorId, referenceValue) {
   return dispatch => {
-    dispatch(setReferenceValue(indicatorId, referenceValue));
     const referenceValueEndpoint = $.ajax({
       type: 'PUT', // Must be PUT because its an update!
       /* eslint-disable */
       url: `${config.apiBaseUrl}/api/v2/pi/${indicatorId}/`,
       dataType: 'json',
-      data: {
+      contentType: 'application/json',
+      data: JSON.stringify({
         'reference_value': referenceValue,
         'boundary_type': 3,
-      },
+      }),
       xhrFields: {
         withCredentials: true
       },
@@ -77,13 +77,17 @@ export function setReferenceValueForIndicator(indicatorId, referenceValue) {
         return data;
       },
       error: (error) => {
-        console.error('Error', error);
         dispatch(showError(error.responseJSON.message, 'error'));
       },
     });
-    Promise.all([referenceValueEndpoint]).then(([referenceValueResult]) => {
-      console.log('referenceValueResult', referenceValueResult);
-    });
+    Promise
+      .all([referenceValueEndpoint])
+      .then(([referenceValueResult]) => {
+        dispatch(setReferenceValue(indicatorId, referenceValue));
+      })
+      .catch((reason) => {
+        dispatch(showError(reason, 'error'));
+      });
   };
 }
 
