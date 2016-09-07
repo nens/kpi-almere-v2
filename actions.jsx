@@ -205,7 +205,6 @@ export function fetchApplicationBootstrap() {
       },
     });
     Promise.all([bootstrapEndpoint]).then((data) => {
-      console.log('data', data);
       return dispatch(receiveApplicationBootstrap(data));
     });
   };
