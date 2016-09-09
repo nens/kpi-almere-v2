@@ -161,8 +161,7 @@ function indicators(state = {
     return Object.assign({}, state, {
       isFetching: false,
       indicators: action.piData.map((item) => {
-        const indicatorId = item[0].url.split('/')[6]; // <<-- fragile right here
-        // console.log('----------->', indicatorId);
+        const indicatorId = item[0].url.split('/')[6]; // <<-- fragile right here?
         return {
           name: item[0].name,
           id: guid(),
@@ -173,6 +172,7 @@ function indicators(state = {
             return {
               name: item[0].name,
               id: guid(),
+              indicatorId,
               aggregationPeriod: item[0].aggregation_period,
               boundaryTypeId: item[0].boundary_type_id,
               boundaryTypeName: item[0].boundary_type_name,

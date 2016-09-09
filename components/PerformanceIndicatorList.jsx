@@ -62,6 +62,16 @@ class PerformanceIndicatorList extends Component {
     });
 
     _performanceindicators = _.flatten(_performanceindicators);
+    _performanceindicators.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+
     const performanceindicators = _performanceindicators.map((p, i) => {
       return <PerformanceIndicator
               {...this.props}

@@ -162,7 +162,6 @@ class PerformanceIndicator extends Component {
     const zoom = '11';
 
     const currentYear = moment(lastDate).format('YYYY');
-    console.log('currentYear', currentYear);
     let tempFromDate;
     switch (this.props.indicators.daterange) {
     case '3Y':

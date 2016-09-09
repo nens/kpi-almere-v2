@@ -42,13 +42,11 @@ export default class VisualisationSettings extends Component {
   }
 
   handleChange() {
-    // const selection1 = _.filter(this.props.indicators.indicators, { regions: [{ selected: true }] });
-    // console.log('---->', selection1);
-    // const indicatorIdTemp = this.props.indicator.url.split('/');
-    // const indicatorId = indicatorIdTemp[indicatorIdTemp.length - 2];
-    // console.log(this.props);
-    const indicatorId = 1;
-    this.props.dispatch(setReferenceValueForIndicator(indicatorId, this.refs.refval.value));
+    this.props.dispatch(
+      setReferenceValueForIndicator(
+        Number(this.props.indicator.indicatorId),
+        this.refs.refval.value)
+    );
   }
 
   handleClose() {
@@ -62,20 +60,20 @@ export default class VisualisationSettings extends Component {
         <Alert>
           <FormattedMessage {...messages.helptext} />
         </Alert>
-        <div className="form-group">
+        <div className='form-group'>
           <label><FormattedMessage {...messages.currentreferencevalue} /></label>: {currentRefVal}
         </div>
         <div className="form-group">
-          <label htmlFor="exampleInputEmail1"><FormattedMessage {...messages.referencevalue} /></label>
-          <input type="number"
-                 min="0"
+          <label htmlFor='refval'><FormattedMessage {...messages.referencevalue} /></label>
+          <input type='number'
+                 min='0'
                  ref='refval'
-                 className="form-control"
+                 className='form-control'
                  defaultValue={this.props.indicator.referenceValue}
-                 id="exampleInputEmail1"
-                 placeholder=""/>
+                 id='refval'
+                 placeholder=''/>
                <br/>
-               <div className="pull-right">
+               <div className='pull-right'>
                  <ButtonGroup>
                    <Button onClick={this.handleChange}><FormattedMessage {...messages.applyRefvalButton} /></Button>
                    <Button onClick={this.handleClose}><FormattedMessage {...messages.closeRefvalButton} /></Button>
@@ -87,4 +85,6 @@ export default class VisualisationSettings extends Component {
   }
 }
 
-VisualisationSettings.propTypes = {}
+VisualisationSettings.propTypes = {
+  indicator: PropTypes.any,
+};
