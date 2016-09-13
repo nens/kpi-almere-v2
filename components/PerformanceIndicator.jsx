@@ -104,6 +104,41 @@ class PerformanceIndicator extends Component {
       </div>
       :
       <ResponsiveContainer height={200}>
+        {(this.state.showValues) ?
+        <ComposedChart
+          data={linedata}
+          margin={{ top: 10, right: -30, left: -40, bottom: 0 }}>
+          <XAxis dataKey="time" tickFormatter={(tick) => {
+            const d = new Date(tick);
+            const options = {
+              year: '2-digit',
+              month: 'short',
+            };
+            return `${d.toLocaleDateString('nl-NL', options)}`;
+          }} />
+         <YAxis
+           yAxisId='right'
+           orientation='right'
+         />
+         <Tooltip />
+          <Area
+            type='monotone'
+            yAxisId='right'
+            dataKey='value'
+            fill='#8884d8'
+            dot={false}
+            activeDot={{ r: 8 }}
+            isAnimationActive={false}
+          />
+         <ReferenceLine
+           alwaysShow={true}
+           y={this.props.indicator.referenceValue}
+           label='Referentiewaarde'
+           yAxisId='right'
+           stroke='red'
+         />          
+        </ComposedChart>          
+          :
         <ComposedChart
           data={linedata}
           margin={{ top: 10, right: -30, left: -40, bottom: 0 }}>
@@ -119,28 +154,7 @@ class PerformanceIndicator extends Component {
            yAxisId="left"
            domain={[1, 10]}
          />
-         <YAxis
-           yAxisId='right'
-           orientation='right'
-         />
          <Tooltip />
-         <ReferenceLine
-           y={this.props.indicator.referenceValue}
-           label=''
-           yAxisId='right'
-           stroke='red'
-         />
-         {(this.state.showValues) ?
-           <Area
-             type='monotone'
-             yAxisId='right'
-             dataKey='value'
-             fill='#8884d8'
-             dot={false}
-             activeDot={{ r: 8 }}
-             isAnimationActive={false}
-            />
-          :
            <Area
              type='monotone'
              yAxisId='left'
@@ -149,8 +163,8 @@ class PerformanceIndicator extends Component {
              isAnimationActive={false}
              dot={false}
           />
+        </ComposedChart>          
         }
-        </ComposedChart>
       </ResponsiveContainer>;
 
     const baseUrl = location.href;
