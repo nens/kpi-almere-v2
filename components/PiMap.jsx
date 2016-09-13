@@ -214,9 +214,6 @@ class Pimap extends Component {
           position={[center.geometry.coordinates[1], center.geometry.coordinates[0]]} />;
       }) : [];
 
-      // <i class="fa fa-circle"></i>&nbsp;
-      //  - ${feature.properties.name.substr(0, 10)}...
-
     return (
       <Map
            ref='map'
