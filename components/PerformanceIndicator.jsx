@@ -83,7 +83,6 @@ class PerformanceIndicator extends Component {
     }
 
     const lastDate = new Date(linedata[linedata.length - 1].time);
-    // const timeBack = d3.timeMonth.offset(lastDate, interval);
     const timeBack = d3.time.month.offset(lastDate, interval);
 
     const lastScore = linedata[linedata.length - 1].score;

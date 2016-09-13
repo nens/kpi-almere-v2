@@ -70,14 +70,19 @@ export function setReferenceValueForIndicator(indicatorId, referenceValue) {
         'boundary_type': 3,
       }),
       xhrFields: {
-        withCredentials: true
+        withCredentials: true,
       },
       /* eslint-enable */
-      success: (data) => {
-        return data;
+      success: (data, textStatus, xhr) => {
+        if (xhr.status === 200) {
+          return data;
+        }
+        else {
+          dispatch(showError('Instellen referentiewaarde mislukt...', 'error'));
+        }
       },
       error: (error) => {
-        dispatch(showError(error.responseJSON.message, 'error'));
+        console.log(error.responseJSON);
       },
     });
     Promise
@@ -86,7 +91,7 @@ export function setReferenceValueForIndicator(indicatorId, referenceValue) {
         dispatch(setReferenceValue(indicatorId, referenceValue));
       })
       .catch((reason) => {
-        dispatch(showError(reason, 'error'));
+        dispatch(showError('Instellen referentiewaarde mislukt...', 'error'));
       });
   };
 }
