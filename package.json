@@ -535,7 +535,7 @@
     "readable-stream": "^2.0.6",
     "readdirp": "^2.1.0",
     "readline2": "^1.0.1",
-    "recharts": "^0.12.7",
+    "recharts": "^0.14.1",
     "recharts-scale": "^0.2.1",
     "redbox-react": "^1.2.10",
     "reduce-css-calc": "^1.2.4",
