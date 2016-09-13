@@ -267,7 +267,7 @@ export function fetchRegions(type) {
       /* eslint-disable */
       url: `${config.apiBaseUrl}/api/v2/regions/?type=${zoomlevelmapping[type] || 3}&within_portal_bounds=true&format=json&page_size=0`,
       xhrFields: {
-        withCredentials: true
+        withCredentials: true,
       },
       /* eslint-enable */
       success: (data) => {
