@@ -155,7 +155,7 @@ export function fetchIndicators() {
       Promise.all(urls).then((details) => {
         // Combine the pi detail with the pi parent
         const piData = _.zip(indicatorResults.results, details);
-        const zoomlevels = _.uniq(indicatorResults.results.map((piresult) => {
+        const zoomlevels = _.uniq(indicatorResults.results.reverse().map((piresult) => {
           return piresult.boundary_type_name;
         }));
         return dispatch(receiveIndicators(piData, zoomlevels));
@@ -282,7 +282,6 @@ export function fetchRegionsIfNeeded() {
     return dispatch(fetchRegions());
   };
 }
-
 
 export function setZoomLevel(zoomlevel) {
   return {
