@@ -145,18 +145,40 @@ class Pimap extends Component {
       // console.log('error', e);
     }
 
+  if (this.props.indicators.indicator) {
+    let fillColor;
+    if (lastScore > this.props.indicators.indicator.referenceValue) {
+      fillColor = 'red';
+    }
+    else {
+      fillColor = getColor(lastScore);
+    }
     layer.setStyle({
       color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#ffffff',
       opacity: 1,
       weight: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? 5 : 1,
       dashArray: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '5, 10' : 1,
-      fillColor: getColor(lastScore),
+      fillColor,
       fillOpacity: 1,
     });
     console.log('%c %s %s', `background: ${getColor(lastScore)}; color: #ffffff`, feature.properties.name, lastScore);
   }
+  else {
+    layer.setStyle({
+      color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#ffffff',
+      opacity: 1,
+      weight: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? 5 : 1,
+      dashArray: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '5, 10' : 1,
+      fillColor: '#ccc',
+      fillOpacity: 1,
+    });
+    console.log('%c %s %s', `background: #ccc; color: #ffffff`, feature.properties.name, lastScore);
+  }
+
+  }
 
   render() {
+
 
     let selectedIndicatorItem;
 

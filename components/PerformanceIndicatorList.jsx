@@ -35,7 +35,6 @@ class PerformanceIndicatorList extends Component {
   render() {
     let _performanceindicators = this.props.indicators.indicators.map((indicator) => {
       return indicator.regions.filter((region) => {
-        // if no region is set, return gemeente almere!
         if (this.props.indicators.region && region.regionId === this.props.indicators.region.id) {
           return {
             'boundaryTypeName': region.boundaryTypeName,
