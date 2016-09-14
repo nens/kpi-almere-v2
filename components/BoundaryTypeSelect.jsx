@@ -2,6 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import {
+  clearMapSelection,
+} from '../actions.jsx';
+
 class BoundaryTypeSelect extends Component {
 
   constructor(props) {
@@ -12,6 +16,7 @@ class BoundaryTypeSelect extends Component {
 
   _handleClick(zoomlevel) {
     this.props.selectZoomLevel(zoomlevel);
+    this.props.dispatch(clearMapSelection());
   }
 
   render() {
