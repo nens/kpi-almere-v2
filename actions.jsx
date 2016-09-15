@@ -276,7 +276,7 @@ export function fetchRegions(type) {
     });
     Promise.all([regionEndpoint]).then(([regionResults]) => {
       let regions = {};
-      regions.results = regionResults
+      regions.results = regionResults;
       return dispatch(receiveRegions(regions));
     });
   };
