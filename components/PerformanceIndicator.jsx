@@ -12,6 +12,7 @@ import * as d3 from 'd3';
 import VisualisationSettings from './VisualisationSettings.jsx';
 import {
   Area,
+  Bar,
   ComposedChart,
   ReferenceLine,
   ResponsiveContainer,
@@ -120,15 +121,13 @@ class PerformanceIndicator extends Component {
            orientation='right'
          />
          <Tooltip />
-          <Area
+         <Bar
             type='monotone'
-            yAxisId='right'
-            dataKey='value'
-            fill='#8884d8'
-            dot={false}
-            activeDot={{ r: 8 }}
-            isAnimationActive={false}
-          />
+            yAxisId='right'      
+            isAnimationActive={false}    
+            dataKey="value"
+            barSize={20} 
+            fill="#413ea0" />
          <ReferenceLine
            alwaysShow={true}
            y={this.props.indicator.referenceValue}
