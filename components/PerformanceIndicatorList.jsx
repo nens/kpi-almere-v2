@@ -8,6 +8,7 @@ class PerformanceIndicatorList extends Component {
     this.state = {
       width: window.innerWidth,
       height: window.innerHeight,
+      openedAtIndex: [],
     };
     this.redraw = this.redraw.bind(this);
     this._selectPi = this._selectPi.bind(this);
@@ -28,8 +29,18 @@ class PerformanceIndicatorList extends Component {
     });
   }
 
-  _selectPi(indicator) {
-    this.props.selectPi(indicator);
+  _selectPi(index) {
+    const currentRegister = this.state.openedAtIndex;
+    if (currentRegister[index] === true) {
+      currentRegister[index] = false;
+    }
+    else {
+      currentRegister[index] = true;
+    }
+    this.setState({
+      openedAtIndex: currentRegister,
+    });
+    console.log('currentRegister', currentRegister);
   }
 
   render() {
@@ -76,7 +87,9 @@ class PerformanceIndicatorList extends Component {
               {...this.props}
               indicator={p}
               key={i}
+              order={i}
               selectPi={this._selectPi}
+              openRegister={this.state.openedAtIndex}
             />;
     });
 

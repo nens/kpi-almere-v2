@@ -1,3 +1,4 @@
+// @flow
 import config from '../config.jsx';
 const loadingIndicator = require('./loading.svg');
 const almereGeojson = require('../almere.json');
