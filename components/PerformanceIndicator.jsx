@@ -120,8 +120,8 @@ class PerformanceIndicator extends Component {
         <ComposedChart
           data={linedata}
           margin={{ top: 15, right: -30, left: -40, bottom: 0 }}>
-          <XAxis 
-            dataKey="time" 
+          <XAxis
+            dataKey="time"
             tickFormatter={(tick) => {
               const d = new Date(tick);
               const options = {
@@ -139,10 +139,10 @@ class PerformanceIndicator extends Component {
          <Tooltip />
          <Bar
             type='monotone'
-            yAxisId='right'      
-            isAnimationActive={false}    
+            yAxisId='right'
+            isAnimationActive={false}
             dataKey="value"
-            barSize={20} 
+            barSize={20}
             fill="#413ea0" />
          <ReferenceLine
            alwaysShow={true}
@@ -152,8 +152,8 @@ class PerformanceIndicator extends Component {
            strokeDasharray="3 3"
            y={this.props.indicator.referenceValue}
            yAxisId='right'
-         />          
-        </ComposedChart>          
+         />
+        </ComposedChart>
           :
         <ComposedChart
           data={linedata}
@@ -180,7 +180,7 @@ class PerformanceIndicator extends Component {
              isAnimationActive={false}
              dot={false}
           />
-        </ComposedChart>          
+        </ComposedChart>
         }
       </ResponsiveContainer>;
 
