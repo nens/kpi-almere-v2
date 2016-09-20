@@ -78,6 +78,10 @@ class PerformanceIndicator extends Component {
   }
 
   render() {
+
+    const order = this.props.order;
+    const openRegister = this.props.openRegister;
+
     let linedata = this.props.indicator.series.map((item) => {
       return { time: item.date, value: item.value, score: item.score };
     });
@@ -121,7 +125,7 @@ class PerformanceIndicator extends Component {
           data={linedata}
           margin={{ top: 15, right: -30, left: -40, bottom: 0 }}>
           <XAxis 
-            dataKey="time" 
+            dataKey='time'
             tickFormatter={(tick) => {
               const d = new Date(tick);
               const options = {
@@ -211,33 +215,41 @@ class PerformanceIndicator extends Component {
 
     const header = (
         <div
-            onClick={() => {
-              this.props.dispatch(selectIndicator(this.props.indicator));
-            }}
             style={{
               cursor: 'pointer',
               fontWeight: (this.props.indicator.selected) ? 'bold' : '',
             }}>
-          <span className="pull-right">
+          <span onClick={() => this.props.selectPi(order)}>
+            <i className={(this.props.indicator.selected) ? 'fa fa-toggle-up' : 'fa fa-toggle-down'}></i>
+          </span>&nbsp;
+          <span className='pull-right'>
             <Label style={{
               fontSize: '0.95em',
               backgroundColor: (lastScore > this.props.indicator.referenceValue) ? 'red' : getColor(lastScore),
-            }}>{Math.round(lastScore)}</Label>
+            }}>
+              {Math.round(lastScore)}
+            </Label>
             <span
                  onClick={() => window.open(dynamicLizardLink, '_blank')}>
                 <img
                   width="20"
                   style={{ margin: '0px 0px 5px 5px' }}
-                  src={lizardImage} />
+                  src={lizardImage}
+                />
               </span>
           </span>
-          {this.props.indicator.name}<br/>
+          <span 
+            onClick={() => {
+              this.props.dispatch(selectIndicator(this.props.indicator));
+            }}>          
+          {this.props.indicator.name}</span><br/>
         </div>
       );
+
     return (
       <Panel
         collapsible
-        expanded={this.props.indicator.selected}
+        expanded={openRegister[order]}
         bsStyle={(this.props.indicator.selected) ? 'primary' : 'default'}
         header={header}>
         <div style={{ 'float': 'right' }}>
