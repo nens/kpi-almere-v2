@@ -87,7 +87,8 @@ class PerformanceIndicator extends Component {
     const openRegister = this.props.openRegister;
 
     let linedata = this.props.indicator.series.map((item) => {
-      return { time: item.date, value: item.value, score: item.score };
+      const formattedDate = moment(item.date).format('DD-MM-YYYY');
+      return { time: formattedDate, value: item.value, score: item.score };
     });
 
     let interval = -12; // 3 months back by default
