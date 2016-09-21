@@ -40,7 +40,6 @@ class PerformanceIndicatorList extends Component {
     this.setState({
       openedAtIndex: currentRegister,
     });
-    console.log('currentRegister', currentRegister);
   }
 
   render() {
