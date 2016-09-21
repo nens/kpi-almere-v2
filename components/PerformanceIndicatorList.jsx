@@ -8,7 +8,7 @@ class PerformanceIndicatorList extends Component {
     this.state = {
       width: window.innerWidth,
       height: window.innerHeight,
-      openedAtIndex: [],
+      openedAtIndex: [true],
     };
     this.redraw = this.redraw.bind(this);
     this._selectPi = this._selectPi.bind(this);
