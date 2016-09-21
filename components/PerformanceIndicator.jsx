@@ -1,4 +1,8 @@
+import center from 'turf-centroid';
+import bboxPolygon from 'turf-bbox-polygon';
+import point from 'turf-point';
 import styles from './PerformanceIndicator.css';
+import config from '../config.jsx';
 import React, { Component, PropTypes } from 'react';
 import getColor from '../lib/getColor.jsx';
 import moment from 'moment';
@@ -124,7 +128,7 @@ class PerformanceIndicator extends Component {
         <ComposedChart
           data={linedata}
           margin={{ top: 15, right: -30, left: -40, bottom: 0 }}>
-          <XAxis 
+          <XAxis
             dataKey='time'
             tickFormatter={(tick) => {
               const d = new Date(tick);
@@ -143,10 +147,10 @@ class PerformanceIndicator extends Component {
          <Tooltip />
          <Bar
             type='monotone'
-            yAxisId='right'      
-            isAnimationActive={false}    
+            yAxisId='right'
+            isAnimationActive={false}
             dataKey="value"
-            barSize={20} 
+            barSize={20}
             fill="#413ea0" />
          <ReferenceLine
            alwaysShow={true}
@@ -156,8 +160,8 @@ class PerformanceIndicator extends Component {
            strokeDasharray="3 3"
            y={this.props.indicator.referenceValue}
            yAxisId='right'
-         />          
-        </ComposedChart>          
+         />
+        </ComposedChart>
           :
         <ComposedChart
           data={linedata}
@@ -184,17 +188,21 @@ class PerformanceIndicator extends Component {
              isAnimationActive={false}
              dot={false}
           />
-        </ComposedChart>          
+        </ComposedChart>
         }
       </ResponsiveContainer>;
 
-    const baseUrl = location.href;
+    // Should be replaced with 'location.href' to make it dynamic:
+    const baseUrl = `${config.apiBaseUrl}/`;
 
-    const lat = (this.props.bootstrap.bootstrap.spatial_bounds[3] +
-      this.props.bootstrap.bootstrap.spatial_bounds[1]) / 2; // Computes the center
-    const lng = (this.props.bootstrap.bootstrap.spatial_bounds[2] +
-      this.props.bootstrap.bootstrap.spatial_bounds[0]) / 2;
     const zoom = '11';
+    const spatialbounds = this.props.bootstrap.bootstrap.spatial_bounds;
+
+    // Convert bbox to bboxpoly using Turf.js
+    const bboxPoly = bboxPolygon([spatialbounds[0], spatialbounds[1], spatialbounds[2], spatialbounds[3]]);
+    // Then get the center of that bboxPolygon and extract its lat/lng
+    const lat = center(bboxPoly).geometry.coordinates[1];
+    const lng = center(bboxPoly).geometry.coordinates[0];
 
     const currentYear = moment(lastDate).format('YYYY');
     let tempFromDate;
@@ -219,9 +227,11 @@ class PerformanceIndicator extends Component {
               cursor: 'pointer',
               fontWeight: (this.props.indicator.selected) ? 'bold' : '',
             }}>
-          <span onClick={() => this.props.selectPi(order)}>
-            <i className={(this.props.indicator.selected) ? 'fa fa-toggle-up' : 'fa fa-toggle-down'}></i>
-          </span>&nbsp;
+          <Button
+            bsSize='xsmall'
+            onClick={() => this.props.selectPi(order)}>
+              <i className={(openRegister[order]) ? 'fa fa-chevron-up' : 'fa fa-chevron-down'}></i>
+          </Button>&nbsp;
           <span className='pull-right'>
             <Label style={{
               fontSize: '0.95em',
@@ -238,11 +248,12 @@ class PerformanceIndicator extends Component {
                 />
               </span>
           </span>
-          <span 
+          <span
+            className={styles.PiTitle}
             onClick={() => {
               this.props.dispatch(selectIndicator(this.props.indicator));
-            }}>          
-          {this.props.indicator.name}</span><br/>
+            }}>
+          {this.props.indicator.name}</span>
         </div>
       );
 

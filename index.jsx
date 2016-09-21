@@ -19,20 +19,9 @@ import localeData from './build/locales/data.json';
 
 addLocaleData([...en, ...nl]);
 
-// Define user's language. Different browsers have the user locale defined
-// on different fields on the `navigator` object, so we make sure to account
-// for these different by checking all of them
-const language = (navigator.languages && navigator.languages[0]) ||
-                     navigator.language ||
-                     navigator.userLanguage;
-
-// Split locales with a region code
-const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
-const messages = localeData[languageWithoutRegionCode];// || localeData[language] || localeData.en;
-
 const piEndpoint = $.ajax({
   type: 'GET',
-  url: `${config.apiBaseUrl}/api/v2/pi/`,
+  url: `${config.apiBaseUrl}/bootstrap/kpi/`,
   xhrFields: {
     withCredentials: true,
   },
@@ -45,10 +34,13 @@ Promise.all([piEndpoint]).then((data) => {
   // Count the available PI's. If zero, redirect to auth page...
   // This is not a temporary measure. A new endpoint should be made for checking
   // auth status from a serverless JS app such as this one...
-  if (data[0].count === 0) {
+  if (data[0].pis.length === 0) {
     window.location.href = `${config.apiBaseUrl}/accounts/login/?next=${window.location.href}`;
   }
   else {
+    const languageFromBootstrap = data[0].locale;
+    const messages = localeData[languageFromBootstrap];// || localeData[language] || localeData.en;
+
     // Create a Redux Store object which will be passed to the App Component
     // using the Provider HoC
     const store = configureStore();
@@ -56,7 +48,7 @@ Promise.all([piEndpoint]).then((data) => {
     ReactDOM.render(
       <IntlProvider
         messages={messages}
-        locale={language}>
+        locale={languageFromBootstrap}>
         <Provider store={store}>
           <App />
         </Provider>
