@@ -192,7 +192,7 @@ class App extends Component {
               <Label bsStyle='info'>
               <FormattedMessage {...messages.selected} />:&nbsp;&nbsp;
               {(this.props.indicators.region) ? `${this.props.indicators.region.properties.name}` : '---'}&nbsp;
-              {(this.props.indicators.region) ? <i style={{ cursor: 'pointer' }} onClick={this.handleClearSelection} className='fa fa-times'></i>: ''}
+              {(this.props.indicators.region) ? <i style={{ cursor: 'pointer' }} onClick={this.handleClearSelection} className='fa fa-times'></i> : ''}
               </Label>
             </h4>
           </Col>
