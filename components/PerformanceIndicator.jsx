@@ -124,7 +124,7 @@ class PerformanceIndicator extends Component {
           {...this.props} />
       </div>
       :
-      <ResponsiveContainer height={200}>
+      <ResponsiveContainer>
         {(this.state.showValues) ?
         <ComposedChart
           data={linedata}
@@ -150,15 +150,17 @@ class PerformanceIndicator extends Component {
             type='monotone'
             yAxisId='right'
             isAnimationActive={false}
-            dataKey="value"
-            barSize={20}
-            fill="#413ea0" />
+            dataKey='value'
+            barSize={4}
+            fill='#413ea0' />
          <ReferenceLine
            alwaysShow={true}
-           label={<ReferenceLabel referenceVal={this.props.indicator.referenceValue} />}
+           label={
+             <ReferenceLabel referenceVal={this.props.indicator.referenceValue} />
+           }
            isFront={true}
            stroke='red'
-           strokeDasharray="3 3"
+           strokeDasharray='3 3'
            y={this.props.indicator.referenceValue}
            yAxisId='right'
          />
@@ -167,7 +169,7 @@ class PerformanceIndicator extends Component {
         <ComposedChart
           data={linedata}
           margin={{ top: 10, right: -30, left: -40, bottom: 0 }}>
-          <XAxis dataKey="time" tickFormatter={(tick) => {
+          <XAxis dataKey='time' tickFormatter={(tick) => {
             const d = new Date(tick);
             const options = {
               year: '2-digit',
@@ -176,7 +178,7 @@ class PerformanceIndicator extends Component {
             return `${d.toLocaleDateString('nl-NL', options)}`;
           }} />
          <YAxis
-           yAxisId="left"
+           yAxisId='left'
            domain={[1, 10]}
            padding={{ bottom: 10 }}
          />
@@ -220,7 +222,12 @@ class PerformanceIndicator extends Component {
     }
     const fromDate = `Jan,01,${tempFromDate}`;
     const toDate = moment(lastDate).format('MMM,DD,YYYY');
-    const dynamicLizardLink = `${baseUrl}nl/map/topography,overrun/point@${lat},${lng},${zoom}/${fromDate}-${toDate}`;
+
+    const eventSeriesUrl = this.props.indicator.eventSeries;
+    const eventUuid = eventSeriesUrl.split('/')[6].split('-')[0];
+    const layerFragment = 'topography,eventseries$' + eventUuid;
+
+    const dynamicLizardLink = `${baseUrl}nl/map/${layerFragment}/point@${lat},${lng},${zoom}/${fromDate}-${toDate}`;
 
     const header = (
         <div
@@ -243,7 +250,7 @@ class PerformanceIndicator extends Component {
             <span
                  onClick={() => window.open(dynamicLizardLink, '_blank')}>
                 <img
-                  width="20"
+                  width='20'
                   style={{ margin: '0px 0px 5px 5px' }}
                   src={lizardImage}
                 />
@@ -267,17 +274,17 @@ class PerformanceIndicator extends Component {
         <div style={{ 'float': 'right' }}>
           <input onClick={this._handleClick}
                  className={styles.showValuesCheckbox}
-                 type="checkbox"
-                 value="None"
+                 type='checkbox'
+                 value='None'
                  id={this.props.pid}
-                 name="check" />
+                 name='check' />
           <label className={styles.showValuesLabel} htmlFor={this.props.pid}>
             <FormattedMessage {...messages.showvalues}>{(message) => <span>{message}</span>}</FormattedMessage>
           </label>
           &nbsp;&nbsp;
         </div>
-          <ul className="list-unstyled list-inline" style={{ cursor: 'pointer' }}>
-            <li><i className="fa fa-cog"
+          <ul className='list-unstyled list-inline' style={{ cursor: 'pointer' }}>
+            <li><i className='fa fa-cog'
                    onClick={this._handleCogClick}></i>
             </li>
             {
@@ -292,7 +299,9 @@ class PerformanceIndicator extends Component {
               })
             }
           </ul>
-          {visualisationOrBackside}
+          <div style={{ height: 200 }}>
+            {visualisationOrBackside}
+          </div>
       </Panel>
     );
   }
