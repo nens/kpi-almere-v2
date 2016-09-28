@@ -29,7 +29,7 @@
     "react-leaflet-choropleth": "",
     "react-notification-system": "https://registry.npmjs.org/react-notification-system/-/react-notification-system-0.2.7.tgz",
     "react-redux": "",
-    "recharts": "",
+    "recharts": "0.15.1",
     "redux": "",
     "redux-logger": "",
     "redux-thunk": "",

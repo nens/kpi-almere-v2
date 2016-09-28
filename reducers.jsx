@@ -176,6 +176,7 @@ function indicators(state = {
               aggregationPeriod: item[0].aggregation_period,
               boundaryTypeId: item[0].boundary_type_id,
               boundaryTypeName: item[0].boundary_type_name,
+              eventSeries: item[0].event_series,
               referenceValue: item[0].reference_value,
               regionName: region.region_name,
               regionUrl: region.region_url,
