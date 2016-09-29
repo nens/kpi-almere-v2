@@ -278,6 +278,9 @@ export function fetchRegions(type) {
       let regions = {};
       regions.results = regionResults;
       return dispatch(receiveRegions(regions));
+    }).then((result) => {
+      const currentRegion = result.regions.results.features[0];
+      return dispatch(setRegion(currentRegion));
     });
   };
 }

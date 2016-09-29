@@ -1,7 +1,6 @@
 // @flow
 import config from '../config.jsx';
 const loadingIndicator = require('./loading.svg');
-const almereGeojson = require('../almere.json');
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 import { Button, ButtonGroup, Grid, Row, Col, Label, Modal } from 'react-bootstrap';
@@ -100,12 +99,11 @@ class App extends Component {
     this._notificationSystem = this.refs.notificationSystem;
     this.props.dispatch(fetchIndicatorsIfNeeded());
     this.props.dispatch(fetchRegionsIfNeeded());
-    this.props.dispatch(setRegion(almereGeojson));
-    // ^^ Not the right way to do this but needed for presentation purpose
     this.props.dispatch(fetchApplicationBootstrap());
   }
 
   componentWillReceiveProps(newProps) {
+
     if (newProps.indicators.errormessage) {
       this._addNotification(
         newProps.indicators.errormessage.message,
