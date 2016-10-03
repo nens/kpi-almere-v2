@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var definePlugin = new webpack.DefinePlugin({
   'process.env': {
@@ -15,6 +16,10 @@ var config = {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js'
   },
+  plugins: [new HtmlWebpackPlugin({
+    title: 'KPI Dashboard',
+    template: 'index.template.html'
+  })],
   module: {
     loaders: [
       {
