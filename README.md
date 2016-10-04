@@ -41,35 +41,6 @@ Technical
 
 
 
-
-API endpoint
-============
-
-Describes the REST API endpoint.
-
-`https://demo.lizard.net/api/v2/regions/`
------------------------------------------
-Parameters: `z` for zoomlevel (1-22)
-
-Response:
-```
-{
-}
-```
-
-
-
-State shape
-===========
-
-This object describes the applications' initial/root state.
-
-```
-{
-}
-```
-
-
 Project installation / setup
 ============================
 
@@ -78,7 +49,7 @@ Preparation
 
 Assumptions: Node.js `6.3.1` and NPM `3.10.6` installed globally.
 
-* On OSX: `$ brew update && brew install node` (or upgrade using `$ brew update && brew upgrade node && npm install -g npm`)
+* On OSX: `$ brew update && brew install node` (or upgrade using `$ brew update && brew upgrade node && npm install -g npm`) - or just install using the official installer from [nodejs.org](https://nodejs.org/en/).
 
 * On (recent) Ubuntu: `$ sudo apt-get update && sudo apt-get install nodejs nodejs-legacy`
 
@@ -95,9 +66,10 @@ $ npm install
 ```
 
 This will install all thats needed to develop or build.
-Note that an `npm-shrinkwrap.json` file is present to ensure the right dependencies are installed.
 
-Please re-generate it when changing the dependencies in `package.json` and don't forget to check it in.
+**Note** An `npm-shrinkwrap.json` file is included to ensure the right dependencies are installed.
+
+Please re-generate it when changing dependencies in `package.json`.
 
 
 
@@ -146,7 +118,25 @@ To build a production bundle, in the root of the project:
 ```
 $ NODE_ENV=production webpack -p --config webpack.production.config.js
 ```
-This disables the HMR functionality and minifies the code as much as possible. Places `bundle.js` in `dist/`. Will propbably output warnings which you can ignore safely.
+This disables the HMR functionality and minifies the code as much as possible. Places `index.html` and `bundle.js` in `dist/`. Will propbably output warnings which you can ignore safely.
+
+
+To release a production build, first generate a new bundle, fill out the `CHANGELOG.rst`, and then run the release script:
+
+```
+$ node release.js
+```
+
+This will subsequently:
+
+- Read the current version number from `package.json`
+- Bump the current version
+- Modify the CHANGELOG
+- Commit, create a dev tag, push a dist tag from a build branch
+- Clean up the repo and switch back to the `master` branch
+
+A new tag/release should appear in https://github.com/nens/kpi-almere-v2/releases
+
 
 
 ESlint
@@ -157,38 +147,3 @@ The code is written in ES6 and compiled to regular JS with [Babel](http://babelj
 Be sure to install [ESLint](http://eslint.org/) support [in your editor](http://eslint.org/docs/user-guide/integrations).
 
 There's support for [Atom](https://atom.io/packages/linter-eslint), [Sublime](https://github.com/roadhump/SublimeLinter-eslint), [Vim](https://github.com/scrooloose/syntastic/tree/master/syntax_checkers/javascript), [PyCharm](http://plugins.jetbrains.com/plugin/7494), [Emacs](http://www.flycheck.org/manual/latest/Supported-languages.html#Javascript) and [VSCode](https://code.visualstudio.com/).
-
-
-
-
-References
-==========
-
-* [React Data Visualization](http://fraserxu.me/2015/06/03/react-data-visualization/) - Excellent article on how to use React itself for SVG rendering
-
-* [React & Data viz](http://slides.com/fraserxu/deck#/) - Presentation accompanying this ^^ article
-
-* [react-data-visualization](https://github.com/fraserxu/react-data-visualization) - Repo of ^^ article
-
-* [React port of D3 Choropleth](http://bl.ocks.org/pleasetrythisathome/9713092)
-
-* [Generating SVG with React](https://www.smashingmagazine.com/2015/12/generating-svg-with-react/) - By Smashing Magazine
-
-* [react-svg-chart](https://github.com/colinmeinke/react-svg-chart) - Nice looking React charts (entirely without D3!). See [BarChart](https://github.com/colinmeinke/react-svg-chart/blob/master/src/BarChart.js)
-
-* [chartjs-react](http://jhudson8.github.io/react-chartjs/) and [some other stuff](https://gist.github.com/tdboone/fdd1ea6a6912d635475b)
-
-
-
-Todo
-----
-
-* Kleuren op basis v/d waarde (grafiekdiv)
-
-* Url lizardlogo kloppend maken
-
-* DONE Collapse/expand van series div
-
-* DONE Globale tijdsinstelling ipv per serie
-
-* Kleuren v/d kaart kloppend obv waarde (niet score)
