@@ -1,5 +1,5 @@
 Changelog of kpi-almere-v2
--
+- Adding a release script
 
 
 Release 0.0.3 (2016-10-4)
@@ -24,4 +24,3 @@ Release 0.0.4 (2016-10-4)
 
 Release 0.0.3 (2016-10-4)
 ---------------------
-==========================
