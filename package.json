@@ -1,6 +1,6 @@
 {
   "name": "lizard-kpi-client",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "KPI Dashboard based on Lizard 6 API",
   "scripts": {
     "start": "node server.js",
