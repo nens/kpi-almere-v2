@@ -66,11 +66,11 @@ function commitDist() {
 }
 
 function subTreePush() {
-  return shell.exec('git subtree push --prefix dist/ origin ' + options.upstream);
+  return shell.exec('git subtree push --prefix dist/ origin dist');
 }
 
 function checkoutDist() {
-  return shell.exec('git checkout origin/' + options.upstream);
+  return shell.exec('git checkout origin/dist');
 }
 
 function devTag() {
@@ -121,5 +121,5 @@ p.then(getCurrentBranch)
  .then(goBackToBranch)
  .then(removeBuildBranch)
  .done(function() {
-   console.log('done');
+   console.log('Done releasing...');
  });
