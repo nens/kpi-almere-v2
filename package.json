@@ -1,7 +1,11 @@
 {
   "name": "lizard-kpi-client",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "KPI Dashboard based on Lizard 6 API",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nens/kpi-almere-v2.git"
+  },
   "scripts": {
     "start": "node server.js",
     "release": "release-it",
