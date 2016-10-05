@@ -139,6 +139,24 @@ A new tag/release should appear in https://github.com/nens/kpi-almere-v2/release
 
 
 
+Deployment
+==========
+
+To deploy this project to integration or staging, make sure to copy `deploy/hosts.example` to `deploy/hosts` and edit the servers under [integration] and/or [staging]. For production, do the same but in a copy of `deploy/production_hosts.example`.
+
+Make sure you have Ansible [installed on your system](http://docs.ansible.com/ansible/intro_installation.html).
+
+Run:
+```
+$ ansible-playbook --ask-pass -i deploy/hosts --limit=integration -K deploy/deploy.yml --extra-vars "version=0.1.0"
+```
+
+Where `--limit` is a safety measure to deploy only to that host and `--extra-vars "version=0.1.0"` defines [which tag](https://github.com/nens/kpi-almere-v2/releases) to release.
+
+Also, make sure the target machines have your ssh key (or run `$ ssh-copy-id username@host` to do it).
+
+
+
 ESlint
 ======
 
