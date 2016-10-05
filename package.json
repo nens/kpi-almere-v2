@@ -1,9 +1,11 @@
 {
   "name": "lizard-kpi-client",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "KPI Dashboard based on Lizard 6 API",
   "scripts": {
     "start": "node server.js",
+    "release": "release-it",
+    "release-asset": "node release-asset.js",
     "test": "cross-env NODE_ENV=test mocha --recursive --compilers js:babel-register --require ./test/setup.js",
     "test:watch": "npm test -- --watch"
   },
@@ -75,6 +77,7 @@
     "q": "^1.4.1",
     "react-addons-test-utils": "",
     "redux-devtools": "",
+    "release-it": "^2.4.3",
     "semver": "^5.3.0",
     "shelljs": "^0.7.4",
     "style-loader": "",

@@ -148,7 +148,7 @@ Make sure you have Ansible [installed on your system](http://docs.ansible.com/an
 
 Run:
 ```
-$ ansible-playbook --ask-pass -i deploy/hosts --limit=integration -K deploy/deploy.yml --extra-vars "version=0.1.0"
+$ ansible-playbook -i deploy/hosts deploy/deploy.yml -k -K --limit=integration -u your.username --extra-vars="version=0.1.0"
 ```
 
 Where `--limit` is a safety measure to deploy only to that host and `--extra-vars "version=0.1.0"` defines [which tag](https://github.com/nens/kpi-almere-v2/releases) to release.
