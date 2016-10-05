@@ -1,0 +1,12 @@
+- hosts: all
+  gather_facts: no
+  sudo: yes
+
+  tasks:
+  # DEPLOY
+
+  - name: git checkout client
+    sudo_user: "{{ build_user }}"
+    git: repo=ssh://git@github.com/nens/kpi-almere-v2.git
+         dest={{ project_path }}
+         version={{ version }}

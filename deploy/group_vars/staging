@@ -1,0 +1,5 @@
+deploy_type: staging
+
+sitename: "staging.nxt.lizard.net"
+clientname: "kpi"
+project_path: "/srv/{{ sitename }}_{{ clientname }}"

@@ -1,0 +1,5 @@
+deploy_type: production
+
+sitename: "nxt.lizard.net"
+clientname: "kpi"
+project_path: "/srv/{{ sitename }}_{{ clientname }}"

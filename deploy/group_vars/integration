@@ -1,0 +1,6 @@
+version: master
+deploy_type: integration
+
+sitename: "integration.nxt.lizard.net"
+clientname: "kpi"
+project_path: "/srv/{{ sitename }}_{{ clientname }}"
