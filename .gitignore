@@ -16,3 +16,4 @@ templates.js
 doc/
 .DS_Store
 hosts
+production_hosts
