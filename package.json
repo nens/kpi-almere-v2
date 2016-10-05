@@ -1,6 +1,6 @@
 {
   "name": "lizard-kpi-client",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "KPI Dashboard based on Lizard 6 API",
   "repository": {
     "type": "git",
