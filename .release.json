@@ -29,7 +29,7 @@
     "afterReleaseCommand": false
   },
   "github": {
-    "release": true,
+    "release": false,
     "releaseName": "Release %s",
     "tokenRef": "GITHUB_TOKEN"
   },
