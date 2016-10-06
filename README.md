@@ -121,28 +121,33 @@ $ NODE_ENV=production webpack -p --config webpack.production.config.js
 This disables the HMR functionality and minifies the code as much as possible. Places `index.html` and `bundle.js` in `dist/`. Will propbably output warnings which you can ignore safely.
 
 
-To release a production build, first generate a new bundle, fill out the `CHANGELOG.rst`, and then run the release script:
+Releasing
+=========
+Releasing is pretty straightforward. Consisting of only a few steps. Defining the kind of release:
+patch (default), minor or major. Running the release script and afterwards running the script to
+upload the release tarball.
 
-```
-$ node release.js
-```
+* Make sure webpack has a built version in the dist folder `npm run build`
 
-This will subsequently:
+* Draft a release with `npm run release -- <release_type>`, where `release_type` can be any of the following
+    * `major` (e.g. 1.0.0 becomes 2.0.0)
+    * `minor` (e.g. 1.0.0 becomes 1.1.0)
+    * `patch` (e.g. 1.0.0 becomes 1.0.1 this is the default)
 
-- Read the current version number from `package.json`
-- Bump the current version
-- Modify the CHANGELOG
-- Commit, create a dev tag, push a dist tag from a build branch
-- Clean up the repo and switch back to the `master` branch
+* Create & Upload zip of the dist folder `npm run release-asset`
 
-A new tag/release should appear in https://github.com/nens/kpi-almere-v2/releases
-
+Deployment uses the zip that is uploaded to github under the version name. So update the
+`version_name` in the group_vars (or individual files). Read on for deployment section:
 
 
 Deployment
 ==========
 
-To deploy this project to integration or staging, make sure to copy `deploy/hosts.example` to `deploy/hosts` and edit the servers under [integration] and/or [staging]. For production, do the same but in a copy of `deploy/production_hosts.example`.
+To deploy this project to integration or staging, make sure to do the following:
+
+* Copy `deploy/hosts.example` to `deploy/hosts` and edit the servers under [integration] and/or [staging]. For production, do the same but in a copy of `deploy/production_hosts.example`.
+
+* Copy `deploy/auth.json.example` to `deploy/auth.json` and make sure that your [Github token](https://github.com/settings/tokens) is filled out. The access token needs full repo access, so make sure to select the right scopes when creating the token.
 
 Make sure you have Ansible [installed on your system](http://docs.ansible.com/ansible/intro_installation.html).
 
@@ -151,9 +156,9 @@ Run:
 $ ansible-playbook -i deploy/hosts deploy/deploy.yml -k -K --limit=integration -u your.username --extra-vars="version=0.1.0"
 ```
 
-Where `--limit` is a safety measure to deploy only to that host and `--extra-vars "version=0.1.0"` defines [which tag](https://github.com/nens/kpi-almere-v2/releases) to release.
+Where `--limit` is a safety measure to deploy only to that host and `--extra-vars "version=0.1.0"` defines [which version](https://github.com/nens/kpi-almere-v2/releases) to release.
 
-Also, make sure the target machines have your ssh key (or run `$ ssh-copy-id username@host` to do it).
+
 
 
 

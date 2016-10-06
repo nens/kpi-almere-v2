@@ -1,6 +1,6 @@
 {
   "name": "kpi-almere-v2",
-  "version": "0.0.14",
+  "version": "2.1.0",
   "description": "KPI Dashboard based on Lizard 6 API",
   "repository": {
     "type": "git",
@@ -11,6 +11,7 @@
     "start": "node server.js",
     "release": "release-it",
     "release-asset": "node release-asset.js",
+    "build": "NODE_ENV=production webpack --config webpack.production.config.js",
     "test": "cross-env NODE_ENV=test mocha --recursive --compilers js:babel-register --require ./test/setup.js",
     "test:watch": "npm test -- --watch"
   },

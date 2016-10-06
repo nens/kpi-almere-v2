@@ -3,10 +3,30 @@
   sudo: yes
 
   tasks:
-  # DEPLOY
 
-  - name: git checkout client
+  - name: download release
+    sudo: yes
     sudo_user: "{{ build_user }}"
-    git: repo=ssh://git@github.com/nens/kpi-almere-v2.git
-         dest={{ project_path }}
-         version={{ version }}
+    get_url: url=https://github.com/nens/{{ repo_name }}/releases/download/{{ version }}/{{ version }}.zip dest=/tmp/{{ version }}.zip
+
+  - name: rm old frontend
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{ deploy_path }} state=absent
+
+  - name: mkdir
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path={{ deploy_path }} state=directory owner={{ build_user }}
+
+  - name: unzip release
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    # unarchive: src=/tmp/{{ version}}.zip dest=/var/www/frontend
+    command: unzip /tmp/{{ version }}.zip -d {{ deploy_path }}
+
+
+  - name: rm tmp zip
+    sudo: yes
+    sudo_user: "{{ build_user }}"
+    file: path=/tmp/{{ version}}.zip state=absent
