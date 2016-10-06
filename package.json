@@ -1,6 +1,6 @@
 {
   "name": "kpi-almere-v2",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "KPI Dashboard based on Lizard 6 API",
   "repository": {
     "type": "git",
