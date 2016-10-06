@@ -23,18 +23,14 @@ archive.finalize();
 
 function uploadAssets (err, body) {
   if (err) {
-    console.log(err.body);
+    // console.log('err', err);
+    // console.log('body', body);
     if (parseInt(err.statusCode) === 422) {
-      console.log(`
-        Error: ` + err.body + `\n
-        It looks like there is already a draft or release on github.
-        Go to https://github.com/nens/threedi-frontend/releases/tag/` + version + `\n
-        and delete the release. Yes, this is fine. The tag will still be there.
-        \n\n
-        Then run this again.
-        `);
+      console.log(err.body);
+      console.log('It looks like there is already a draft or release on github.');
+      console.log('Go to https://github.com/' + pkg.repository.name + '/releases/tag/' + version);
+      console.log('and delete the release. Yes, this is fine. The tag will still be there.');
     }
-    throw err;
   }
   console.log('Created release, getting ready to upload assets');
   var ghrelease = client.release(pkg.repository.name, body.id);
