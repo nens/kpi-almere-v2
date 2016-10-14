@@ -231,13 +231,19 @@ class PerformanceIndicator extends Component {
 
     const header = (
         <div
+            onClick={() => {
+              this.props.dispatch(selectIndicator(this.props.indicator));
+            }}
             style={{
               cursor: 'pointer',
               fontWeight: (this.props.indicator.selected) ? 'bold' : '',
             }}>
           <Button
-            bsSize='xsmall'
-            onClick={() => this.props.selectPi(order)}>
+            onClick={(e) => {
+              e.stopPropagation();
+              this.props.selectPi(order)
+            }}
+            bsSize='xsmall'>
               <i className={(openRegister[order]) ? 'fa fa-chevron-up' : 'fa fa-chevron-down'}></i>
           </Button>&nbsp;
           <span className='pull-right'>
@@ -248,7 +254,10 @@ class PerformanceIndicator extends Component {
               {Math.round(lastScore)}
             </Label>
             <span
-                 onClick={() => window.open(dynamicLizardLink, '_blank')}>
+                 onClick={(e) => {
+                   e.stopPropagation();
+                   window.open(dynamicLizardLink, '_blank')
+                 }}>
                 <img
                   width='20'
                   style={{ margin: '0px 0px 5px 5px' }}
@@ -256,11 +265,7 @@ class PerformanceIndicator extends Component {
                 />
               </span>
           </span>
-          <span
-            className={styles.PiTitle}
-            onClick={() => {
-              this.props.dispatch(selectIndicator(this.props.indicator));
-            }}>
+          <span className={styles.PiTitle}>
           {this.props.indicator.name}</span>
         </div>
       );
