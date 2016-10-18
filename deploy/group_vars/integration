@@ -1,4 +1,0 @@
-deploy_type: integration
-
-sitename: "integration.nxt.lizard.net"
-deploy_path: "/srv/{{ sitename }}_{{ clientname }}"

@@ -1,7 +1,4 @@
-
-
-
-lizard-kpi
+kpi-dashboard
 ==========
 
 This is the 2nd iteration of the [KPI prototype](http://nens.github.io/kpi-prototype/#/).
@@ -12,13 +9,13 @@ The main goal of this prototype is to connect it to the Lizard 6 API.
 Demo
 ====
 
-[http://nens.github.io/kpi-almere-v2/](http://nens.github.io/kpi-almere-v2/)
+[http://nens.github.io/kpi-dashboard/](http://nens.github.io/kpi-dashboard/)
 
 
 Screenshot (August 2016)
 ========================
 
-![Screenshot](https://raw.githubusercontent.com/nens/kpi-almere-v2/master/screenshot-august-2016.jpg)
+![Screenshot](https://raw.githubusercontent.com/nens/kpi-dashboard/master/screenshot-august-2016.jpg)
 
 
 
@@ -156,10 +153,7 @@ Run:
 $ ansible-playbook -i deploy/hosts deploy/deploy.yml -k -K --limit=integration -u your.username --extra-vars="version=0.1.0"
 ```
 
-Where `--limit` is a safety measure to deploy only to that host and `--extra-vars "version=0.1.0"` defines [which version](https://github.com/nens/kpi-almere-v2/releases) to release.
-
-
-
+Where `--limit` is a safety measure to deploy only to that host and `--extra-vars "version=0.1.0"` defines [which version](https://github.com/nens/kpi-dashboard/releases) to release.
 
 
 ESlint

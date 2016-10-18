@@ -1,11 +1,11 @@
 {
-  "name": "kpi-almere-v2",
+  "name": "kpi-dashboard",
   "version": "0.0.2",
   "description": "KPI Dashboard based on Lizard 6 API",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nens/kpi-almere-v2.git",
-    "name": "nens/kpi-almere-v2"
+    "url": "git+https://github.com/nens/kpi-dashboard.git",
+    "name": "nens/kpi-dashboard"
   },
   "scripts": {
     "start": "node server.js",
@@ -68,6 +68,7 @@
     "babel-preset-react": "",
     "babel-preset-react-hmre": "",
     "babel-register": "",
+    "buck-trap": "^1.0.14",
     "cross-env": "",
     "css-loader": "",
     "eslint": "",

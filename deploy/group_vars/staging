@@ -1,4 +1,0 @@
-deploy_type: staging
-
-sitename: "staging.nxt.lizard.net"
-deploy_path: "/srv/{{ sitename }}_{{ clientname }}"
