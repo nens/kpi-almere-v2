@@ -9,8 +9,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "release": "release-it",
-    "release-asset": "node release-asset.js",
+    "buck-trap": "buck-trap -a",
     "build": "NODE_ENV=production webpack --config webpack.production.config.js",
     "test": "cross-env NODE_ENV=test mocha --recursive --compilers js:babel-register --require ./test/setup.js",
     "test:watch": "npm test -- --watch"
