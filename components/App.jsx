@@ -149,7 +149,7 @@ class App extends Component {
 
   _selectZoomLevel(zoomlevel) {
     this.props.dispatch(setZoomLevel(zoomlevel));
-    this.props.dispatch(fetchRegions(zoomlevel));
+    this.props.dispatch(fetchRegions(zoomlevel));    
   }
 
   render() {

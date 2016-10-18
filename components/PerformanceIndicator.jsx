@@ -6,7 +6,7 @@ import config from '../config.jsx';
 import React, { Component, PropTypes } from 'react';
 import getColor from '../lib/getColor.jsx';
 import moment from 'moment';
-import lizardImage from './lizard.png';
+import $ from 'jquery';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import {
   Label,
@@ -14,6 +14,8 @@ import {
   Button,
 } from 'react-bootstrap';
 import * as d3 from 'd3';
+import PerformanceIndicatorHeader from './PerformanceIndicatorHeader.jsx';
+import ReferenceLabel from './ReferenceLabel.jsx';
 import VisualisationSettings from './VisualisationSettings.jsx';
 import {
   Area,
@@ -38,16 +40,6 @@ const messages = defineMessages({
   },
 });
 
-class ReferenceLabel extends Component {
-  render() {
-    const { x, y, stroke, payload, referenceVal } = this.props;
-    return (
-      <text fill={'red'} x={0} y={( y - 5 )}>
-        Referentiewaarde ({referenceVal})
-      </text>
-    );
-  }
-}
 
 class PerformanceIndicator extends Component {
   constructor(props) {
@@ -62,8 +54,7 @@ class PerformanceIndicator extends Component {
     this._handleCogClick = this._handleCogClick.bind(this);
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   _handleClick() {
     this.setState({
@@ -82,10 +73,6 @@ class PerformanceIndicator extends Component {
   }
 
   render() {
-
-    const order = this.props.order;
-    const openRegister = this.props.openRegister;
-
     let linedata = this.props.indicator.series.map((item) => {
       const formattedDate = moment(item.date).format('DD-MM-YYYY');
       return { time: formattedDate, value: item.value, score: item.score };
@@ -195,85 +182,14 @@ class PerformanceIndicator extends Component {
         }
       </ResponsiveContainer>;
 
-    // Should be replaced with 'location.href' to make it dynamic:
-    const baseUrl = `${config.apiBaseUrl}/`;
 
-    const zoom = '11';
-    const spatialbounds = this.props.bootstrap.bootstrap.spatial_bounds;
 
-    // Convert bbox to bboxpoly using Turf.js
-    const bboxPoly = bboxPolygon([spatialbounds[0], spatialbounds[1], spatialbounds[2], spatialbounds[3]]);
-    // Then get the center of that bboxPolygon and extract its lat/lng
-    const lat = center(bboxPoly).geometry.coordinates[1];
-    const lng = center(bboxPoly).geometry.coordinates[0];
-
-    const currentYear = moment(lastDate).format('YYYY');
-    let tempFromDate;
-    switch (this.props.indicators.daterange) {
-    case '3Y':
-      tempFromDate = Number(currentYear) - 3;
-      break;
-    case '5Y':
-      tempFromDate = Number(currentYear) - 5;
-      break;
-    default:
-      tempFromDate = Number(currentYear) - 1;
-      break;
-    }
-    const fromDate = `Jan,01,${tempFromDate}`;
-    const toDate = moment(lastDate).format('MMM,DD,YYYY');
-
-    const eventSeriesUrl = this.props.indicator.eventSeries;
-    const eventUuid = eventSeriesUrl.split('/')[6].split('-')[0];
-    const layerFragment = 'topography,eventseries$' + eventUuid;
-
-    const dynamicLizardLink = `${baseUrl}nl/map/${layerFragment}/point@${lat},${lng},${zoom}/${fromDate}-${toDate}`;
-
-    const header = (
-        <div
-            onClick={() => {
-              this.props.dispatch(selectIndicator(this.props.indicator));
-            }}
-            style={{
-              cursor: 'pointer',
-              fontWeight: (this.props.indicator.selected) ? 'bold' : '',
-            }}>
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              this.props.selectPi(order)
-            }}
-            bsSize='xsmall'>
-              <i className={(openRegister[order]) ? 'fa fa-chevron-up' : 'fa fa-chevron-down'}></i>
-          </Button>&nbsp;
-          <span className='pull-right'>
-            <Label style={{
-              fontSize: '0.95em',
-              backgroundColor: (lastScore > this.props.indicator.referenceValue) ? 'red' : getColor(lastScore),
-            }}>
-              {Math.round(lastScore)}
-            </Label>
-            <span
-                 onClick={(e) => {
-                   e.stopPropagation();
-                   window.open(dynamicLizardLink, '_blank')
-                 }}>
-                <img
-                  width='20'
-                  style={{ margin: '0px 0px 5px 5px' }}
-                  src={lizardImage}
-                />
-              </span>
-          </span>
-          <span className={styles.PiTitle}>
-          {this.props.indicator.name}</span>
-        </div>
-      );
+    const header = <PerformanceIndicatorHeader {...this.props} lastData={lastDate} lastScore={lastScore} />;
 
     return (
       <Panel
         collapsible
-        expanded={openRegister[order]}
+        expanded={this.props.openRegister[this.props.order]}
         bsStyle={(this.props.indicator.selected) ? 'primary' : 'default'}
         header={header}>
         <div style={{ 'float': 'right' }}>

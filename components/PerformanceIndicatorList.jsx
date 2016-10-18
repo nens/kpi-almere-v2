@@ -1,5 +1,6 @@
 import PerformanceIndicator from './PerformanceIndicator.jsx';
 import React, { Component, PropTypes } from 'react';
+import $ from 'jquery';
 import _ from 'lodash';
 
 class PerformanceIndicatorList extends Component {
