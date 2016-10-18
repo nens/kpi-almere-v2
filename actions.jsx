@@ -148,6 +148,7 @@ export function fetchIndicators() {
     });
     Promise.all([indicatorEndpoint]).then(([indicatorResults]) => {
       // Now, get the details for every PI object
+
       const urls = indicatorResults.results.map((indicator) => {
         return $.ajax({
           type: 'GET',
@@ -163,6 +164,12 @@ export function fetchIndicators() {
         const zoomlevels = _.uniq(indicatorResults.results.reverse().map((piresult) => {
           return piresult.boundary_type_name;
         }));
+        setTimeout(function () {
+          let l = document.getElementById('pi');
+          if (l !== null) {
+            l.click();
+          }
+        }, 250);
         return dispatch(receiveIndicators(piData, zoomlevels));
       });
     });
@@ -186,6 +193,12 @@ export function fetchIndicatorsIfNeeded() {
 
 
 export function setRegion(region) {
+  setTimeout(function () {
+    let l = document.getElementById('pi');
+    if (l !== null) {
+      l.click();
+    }
+  }, 250);
   return {
     type: SET_REGION,
     region,
@@ -205,7 +218,7 @@ export function fetchApplicationBootstrap() {
     dispatch(requestApplicationBootstrap());
     const bootstrapEndpoint = $.ajax({
       type: 'GET',
-      url: 'https://nxt.staging.lizard.net/bootstrap/kpi/',
+      url: `${config.apiBaseUrl}/bootstrap/kpi/`,
       xhrFields: {
         withCredentials: true,
       },

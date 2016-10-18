@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import zoomlevelLookup from './zoomlevelLookup.jsx';
 import { Nav, NavItem } from 'react-bootstrap';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
@@ -16,7 +17,7 @@ class BoundaryTypeSelect extends Component {
 
   _handleClick(zoomlevel) {
     this.props.selectZoomLevel(zoomlevel);
-    this.props.dispatch(clearMapSelection());
+    this.props.dispatch(clearMapSelection());    
   }
 
   render() {
@@ -24,12 +25,6 @@ class BoundaryTypeSelect extends Component {
         this.props.indicators.zoomlevels === undefined) {
       return <div/>;
     }
-
-    const ZOOMLEVELS = {
-      'DISTRICT': 'Wijk',
-      'MUNICIPALITY': 'Gemeente',
-      'NEIGHBOURHOOD': 'Buurt',
-    };
 
     return (
       <Nav
@@ -42,7 +37,8 @@ class BoundaryTypeSelect extends Component {
             onClick={() => this._handleClick(zoomlevel)}
             active={(this.props.indicators.zoomlevel === zoomlevel) ? true : false}
             eventKey={zoomlevel}>
-            {ZOOMLEVELS[zoomlevel] || zoomlevel.charAt(0).toUpperCase() + zoomlevel.slice(1).toLowerCase()}
+            {zoomlevelLookup[zoomlevel].human_readable ||
+              `${zoomlevel.charAt(0).toUpperCase()}${zoomlevel.slice(1).toLowerCase()}`}
           </NavItem>;
         })}
       </Nav>
