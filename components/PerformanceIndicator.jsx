@@ -97,6 +97,8 @@ class PerformanceIndicator extends Component {
     const lastScore = linedata[linedata.length - 1].score;
     const lastValue = linedata[linedata.length - 1].value;
 
+    const dateFormat = "dd - MM - YYYY";
+
     linedata = linedata.filter((linedataItem) => {
       if (new Date(linedataItem.time) >= timeBack && new Date(linedataItem.time) <= lastDate) {
         return linedataItem;
@@ -119,7 +121,7 @@ class PerformanceIndicator extends Component {
           <XAxis
             dataKey='time'
             tickFormatter={(tick) => {
-              const d = new Date(tick);
+              const d = moment(tick, dateFormat).toDate();
               const options = {
                 year: '2-digit',
                 month: 'short',
@@ -132,6 +134,7 @@ class PerformanceIndicator extends Component {
            orientation='right'
            padding={{ bottom: 10 }}
          />
+,10
          <Tooltip />
          <Bar
             type='monotone'
@@ -157,7 +160,7 @@ class PerformanceIndicator extends Component {
           data={linedata}
           margin={{ top: 10, right: -30, left: -40, bottom: 0 }}>
           <XAxis dataKey='time' tickFormatter={(tick) => {
-            const d = new Date(tick);
+            const d = moment(tick, dateFormat).toDate();
             const options = {
               year: '2-digit',
               month: 'short',
