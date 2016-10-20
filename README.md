@@ -1,7 +1,4 @@
-
-
-
-lizard-kpi
+kpi-dashboard
 ==========
 
 This is the 2nd iteration of the [KPI prototype](http://nens.github.io/kpi-prototype/#/).
@@ -12,13 +9,13 @@ The main goal of this prototype is to connect it to the Lizard 6 API.
 Demo
 ====
 
-[http://nens.github.io/kpi-almere-v2/](http://nens.github.io/kpi-almere-v2/)
+[http://nens.github.io/kpi-dashboard/](http://nens.github.io/kpi-dashboard/)
 
 
 Screenshot (August 2016)
 ========================
 
-![Screenshot](https://raw.githubusercontent.com/nens/kpi-almere-v2/master/screenshot-august-2016.jpg)
+![Screenshot](https://raw.githubusercontent.com/nens/kpi-dashboard/master/screenshot-august-2016.jpg)
 
 
 
@@ -123,21 +120,30 @@ This disables the HMR functionality and minifies the code as much as possible. P
 
 Releasing
 =========
-Releasing is pretty straightforward. Consisting of only a few steps. Defining the kind of release:
-patch (default), minor or major. Running the release script and afterwards running the script to
-upload the release tarball.
+To start off, make sure webpack has a built version in the dist folder `npm run build`
+This creates a build in the dist/ folder.
 
-* Make sure webpack has a built version in the dist folder `npm run build`
+To tag this as a new release and to add the dist folder to the release attachments you we use nens/buck-trap. It versions your repo and changes the changelog for you.
 
-* Draft a release with `npm run release -- <release_type>`, where `release_type` can be any of the following
-    * `major` (e.g. 1.0.0 becomes 2.0.0)
-    * `minor` (e.g. 1.0.0 becomes 1.1.0)
-    * `patch` (e.g. 1.0.0 becomes 1.0.1 this is the default)
+	npm run buck-trap
 
-* Create & Upload zip of the dist folder `npm run release-asset`
+NOTE: buck-trap assumes:
 
-Deployment uses the zip that is uploaded to github under the version name. So update the
-`version_name` in the group_vars (or individual files). Read on for deployment section:
+    There is a package.json.
+    You release from master branch.
+    There is a dist folder which will be attached to the release on github
+
+Releasing hotfixes or patches
+
+If a stable release is coming out release it and start a new branch for the stable release e.g.:
+
+	git checkout -b release4.0
+
+If stuff is fixed on this branch, the fixes can be rolled out as patches without affecting the mainline release track. To run buck-trap from this branch and to release the branch with its CHANGELOG.md
+
+	npm run buck-trap -- -b release4.0
+
+The fixes and the CHANGELOG.md would have to be merged with master, which might give some merge conflicts. C'est la vie.
 
 
 Deployment
@@ -156,10 +162,7 @@ Run:
 $ ansible-playbook -i deploy/hosts deploy/deploy.yml -k -K --limit=integration -u your.username --extra-vars="version=0.1.0"
 ```
 
-Where `--limit` is a safety measure to deploy only to that host and `--extra-vars "version=0.1.0"` defines [which version](https://github.com/nens/kpi-almere-v2/releases) to release.
-
-
-
+Where `--limit` is a safety measure to deploy only to that host and `--extra-vars "version=0.1.0"` defines [which version](https://github.com/nens/kpi-dashboard/releases) to release.
 
 
 ESlint

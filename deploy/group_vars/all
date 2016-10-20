@@ -1,6 +1,0 @@
-build_user: buildout
-
-repo_name: kpi-almere-v2
-
-clientname: "kpi"
-deploy_path: "/srv/{{ sitename }}_{{ clientname }}"
