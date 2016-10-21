@@ -73,6 +73,7 @@ class PerformanceIndicator extends Component {
   }
 
   render() {
+
     let linedata = this.props.indicator.series.map((item) => {
       const formattedDate = moment(item.date).format('DD-MM-YYYY');
       return { time: formattedDate, value: item.value, score: item.score };
@@ -131,10 +132,10 @@ class PerformanceIndicator extends Component {
           />
          <YAxis
            yAxisId='right'
-           orientation='right'
+           orientation='left'
            padding={{ bottom: 10 }}
          />
-,10
+
          <Tooltip />
          <Bar
             type='monotone'
@@ -208,8 +209,8 @@ class PerformanceIndicator extends Component {
           &nbsp;&nbsp;
         </div>
           <ul className='list-unstyled list-inline' style={{ cursor: 'pointer' }}>
-            <li><i className='fa fa-cog'
-                   onClick={this._handleCogClick}></i>
+            <li>
+              <i className='fa fa-cog' onClick={this._handleCogClick}></i>
             </li>
             {
               ['5Y', '3Y', '1Y'].map((range, i) => {
