@@ -171,6 +171,7 @@ class PerformanceIndicator extends Component {
            yAxisId='left'
            domain={['dataMin - 1', 10]}
            padding={{ bottom: 0 }}
+           tickCount={3}
          />
          <Tooltip />
            <Area
