@@ -134,7 +134,7 @@ class PerformanceIndicator extends Component {
            orientation='right'
            padding={{ bottom: 10 }}
          />
-,10
+
          <Tooltip />
          <Bar
             type='monotone'
@@ -169,8 +169,8 @@ class PerformanceIndicator extends Component {
           }} />
          <YAxis
            yAxisId='left'
-           domain={[1, 10]}
-           padding={{ bottom: 10 }}
+           domain={['dataMin - 1', 10]}
+           padding={{ bottom: 0 }}
          />
          <Tooltip />
            <Area
