@@ -170,8 +170,9 @@ class PerformanceIndicator extends Component {
           }} />
          <YAxis
            yAxisId='left'
-           domain={[1, 10]}
-           padding={{ bottom: 10 }}
+           domain={['dataMin - 1', 10]}
+           padding={{ bottom: 0 }}
+           tickCount={3}
          />
          <Tooltip />
            <Area
