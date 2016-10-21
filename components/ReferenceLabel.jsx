@@ -9,7 +9,7 @@ class ReferenceLabel extends Component {
   render() {
     const { x, y, stroke, payload, referenceVal } = this.props;
     return (
-      <text fill={'red'} x={0} y={(y - 5)}>
+      <text fill={'red'} x={25} y={(y - 5)}>
         Referentiewaarde ({referenceVal})
       </text>
     );
