@@ -120,7 +120,11 @@ This disables the HMR functionality and minifies the code as much as possible. P
 
 Releasing
 =========
-To start off, make sure webpack has a built version in the dist folder `npm run build`
+Check if your `deploy/` folder has a `auth.json` file with a github token.
+To start off, make sure webpack has a built version in the dist folder 
+
+	npm run build
+
 This creates a build in the dist/ folder.
 
 To tag this as a new release and to add the dist folder to the release attachments you we use nens/buck-trap. It versions your repo and changes the changelog for you.
@@ -144,6 +148,8 @@ If stuff is fixed on this branch, the fixes can be rolled out as patches without
 	npm run buck-trap -- -b release4.0
 
 The fixes and the CHANGELOG.md would have to be merged with master, which might give some merge conflicts. C'est la vie.
+
+If a release went wrong and you, don't worry just fix the error and run it again. It will bump the version again, but who cares.
 
 
 Deployment
