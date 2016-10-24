@@ -145,41 +145,40 @@ class Pimap extends Component {
       // console.log('error', e);
     }
 
-  if (this.props.indicators.indicator) {
-    let fillColor;
-    if (lastScore > this.props.indicators.indicator.referenceValue) {
-      fillColor = 'red';
+    let selected = (this.props.indicators.region && this.props.indicators.region.id === feature.id)
+    if (this.props.indicators.indicator) {
+      let fillColor;
+      if (lastScore > this.props.indicators.indicator.referenceValue) {
+        fillColor = 'red';
+      }
+      else {
+        fillColor = getColor(lastScore);
+      }
+      layer.setStyle({
+        color: selected ? '#19A4B9' : '#ffffff',
+        opacity: 1,
+        weight: selected ? 5 : 1,
+        dashArray: selected ? '5, 10' : 1,
+        fillColor,
+        fillOpacity: 1,
+      });
+      console.log('%c %s %s', `background: ${getColor(lastScore)}; color: #ffffff`, feature.properties.name, lastScore);
     }
     else {
-      fillColor = getColor(lastScore);
+      layer.setStyle({
+        color: selected ? '#19A4B9' : '#ffffff',
+        opacity: 1,
+        weight: selected ? 5 : 1,
+        dashArray: selected ? '5, 10' : 1,
+        fillColor: '#ccc',
+        fillOpacity: 1,
+      });
+      console.log('%c %s %s', `background: #ccc; color: #ffffff`, feature.properties.name, lastScore);
     }
-    layer.setStyle({
-      color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#ffffff',
-      opacity: 1,
-      weight: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? 5 : 1,
-      dashArray: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '5, 10' : 1,
-      fillColor,
-      fillOpacity: 1,
-    });
-    console.log('%c %s %s', `background: ${getColor(lastScore)}; color: #ffffff`, feature.properties.name, lastScore);
-  }
-  else {
-    layer.setStyle({
-      color: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '#19A4B9' : '#ffffff',
-      opacity: 1,
-      weight: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? 5 : 1,
-      dashArray: (this.props.indicators.region && this.props.indicators.region.id === feature.id) ? '5, 10' : 1,
-      fillColor: '#ccc',
-      fillOpacity: 1,
-    });
-    console.log('%c %s %s', `background: #ccc; color: #ffffff`, feature.properties.name, lastScore);
-  }
 
   }
 
   render() {
-
-
     let selectedIndicatorItem;
 
     let zoom = 11;
@@ -211,6 +210,16 @@ class Pimap extends Component {
         }
         return false;
       }) : [];
+
+    let selected;
+    try {
+      let regionId = this.props.indicators.region.id;
+      selected = filteredFeatures.find(function (feature) {
+        return feature.id === regionId;
+      });
+    } catch (e) {
+      //console.error(e.message)
+    }
 
     const markers = (filteredFeatures) ?
       filteredFeatures.map((feature, i) => {
@@ -257,6 +266,7 @@ class Pimap extends Component {
         />
         <GeoJsonUpdatable
           data={filteredFeatures}
+          selectedFeature={selected}
           onEachFeature={this.onEachFeature.bind(this)}
         />
         {markers}
