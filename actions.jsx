@@ -164,12 +164,6 @@ export function fetchIndicators() {
         const zoomlevels = _.uniq(indicatorResults.results.reverse().map((piresult) => {
           return piresult.boundary_type_name;
         }));
-        setTimeout(function () {
-          let l = document.getElementById('pi');
-          if (l !== null) {
-            l.click();
-          }
-        }, 250);
         return dispatch(receiveIndicators(piData, zoomlevels));
       });
     });
@@ -193,12 +187,6 @@ export function fetchIndicatorsIfNeeded() {
 
 
 export function setRegion(region) {
-  setTimeout(function () {
-    let l = document.getElementById('pi');
-    if (l !== null) {
-      l.click();
-    }
-  }, 250);
   return {
     type: SET_REGION,
     region,
