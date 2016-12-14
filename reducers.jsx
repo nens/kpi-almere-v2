@@ -68,7 +68,6 @@ function indicators(state = {
         };
       }),
     });
-
   case SHOW_ERROR:
     return Object.assign({}, state, {
       errormessage: {
@@ -160,15 +159,26 @@ function indicators(state = {
   case RECEIVE_INDICATORS:
     return Object.assign({}, state, {
       isFetching: false,
+      indicator: action.activeIndicator,
       indicators: action.piData.map((item) => {
-        const indicatorId = item[0].url.split('/')[6]; // <<-- fragile right here?
+        const indicatorId = item[0].url.split('/')[6];
+        // ^^ Flaky
+
+        let selected = false;
+        if (action.activeIndicator) {
+          selected = parseInt(indicatorId) ===
+            parseInt(action.activeIndicator.indicatorId) ? true : false;
+        }
+
         return {
           name: item[0].name,
           id: guid(),
           indicatorId,
-          regions: item[1].regions.map((region) => {
+          regions: item[1].regions.map((region, i) => {
             const splittedRegionUrl = region.region_url.split('/');
-            const regionId = Number(splittedRegionUrl[splittedRegionUrl.length - 2]);
+            const regionId = Number(
+              splittedRegionUrl[splittedRegionUrl.length - 2]
+            );
             return {
               name: item[0].name,
               id: guid(),
@@ -183,6 +193,7 @@ function indicators(state = {
               regionId,
               series: region.aggregations,
               daterange: '1Y',
+              selected: selected,
             };
           }),
         };
