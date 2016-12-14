@@ -147,13 +147,13 @@ class Pimap extends Component {
 
     let selected = (this.props.indicators.region && this.props.indicators.region.id === feature.id)
     if (this.props.indicators.indicator) {
-      let fillColor;
-      if (lastScore > this.props.indicators.indicator.referenceValue) {
-        fillColor = 'red';
-      }
-      else {
-        fillColor = getColor(lastScore);
-      }
+      // let fillColor;
+      // if (lastScore > this.props.indicators.indicator.referenceValue) {
+      //   fillColor = 'red';
+      // }
+      // else {
+      const fillColor = getColor(lastScore);
+      // }
       layer.setStyle({
         color: selected ? '#19A4B9' : '#ffffff',
         opacity: 1,
