@@ -37,7 +37,12 @@ class PerformanceIndicatorHeader extends Component {
     const spatialbounds = this.props.bootstrap.bootstrap.spatial_bounds;
 
     // Convert bbox to bboxpoly using Turf.js
-    const bboxPoly = bboxPolygon([spatialbounds[0], spatialbounds[1], spatialbounds[2], spatialbounds[3]]);
+    const bboxPoly = bboxPolygon([
+      spatialbounds[0],
+      spatialbounds[1],
+      spatialbounds[2],
+      spatialbounds[3]
+    ]);
     // Then get the center of that bboxPolygon and extract its lat/lng
     const lat = center(bboxPoly).geometry.coordinates[1];
     const lng = center(bboxPoly).geometry.coordinates[0];
@@ -67,6 +72,7 @@ class PerformanceIndicatorHeader extends Component {
     return (
       <div
           id='pi'
+          className='pi'
           onClick={() => {
             this.props.dispatch(selectIndicator(this.props.indicator));
           }}
@@ -80,12 +86,13 @@ class PerformanceIndicatorHeader extends Component {
             this.props.selectPi(this.props.order)
           }}
           bsSize='xsmall'>
-            <i className={(this.props.openRegister[this.props.order]) ? 'fa fa-chevron-up' : 'fa fa-chevron-down'}></i>
+            <i className={(this.props.openRegister[this.props.order]) ?
+              'fa fa-chevron-up' : 'fa fa-chevron-down'}></i>
         </Button>&nbsp;
         <span className='pull-right'>
           <Label style={{
             fontSize: '0.95em',
-            backgroundColor: (this.props.lastScore > this.props.indicator.referenceValue) ? 'red' : getColor(this.props.lastScore),
+            backgroundColor: getColor(this.props.lastScore),
           }}>
             {Math.round(this.props.lastScore)}
           </Label>
