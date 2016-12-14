@@ -12,6 +12,11 @@ import {
   Label,
   Panel,
   Button,
+  ButtonGroup,
+  Grid,
+  Row,
+  Col,
+  Modal,
 } from 'react-bootstrap';
 import * as d3 from 'd3';
 import PerformanceIndicatorHeader from './PerformanceIndicatorHeader.jsx';
@@ -48,6 +53,7 @@ class PerformanceIndicator extends Component {
       showValues: false,
       showBackside: false,
       open: false,
+      showInfoModal: false,
     };
     this._handleClick = this._handleClick.bind(this);
     this._handleSelectPi = this._handleSelectPi.bind(this);
@@ -101,7 +107,8 @@ class PerformanceIndicator extends Component {
     const dateFormat = "dd - MM - YYYY";
 
     linedata = linedata.filter((linedataItem) => {
-      if (new Date(linedataItem.time) >= timeBack && new Date(linedataItem.time) <= lastDate) {
+      if (new Date(linedataItem.time) >= timeBack &&
+          new Date(linedataItem.time) <= lastDate) {
         return linedataItem;
       }
       return false;
@@ -118,7 +125,7 @@ class PerformanceIndicator extends Component {
         {(this.state.showValues) ?
         <ComposedChart
           data={linedata}
-          margin={{ top: 15, right: -30, left: -40, bottom: 0 }}>
+          margin={{ top: 15, right: -30, left: -20, bottom: 0 }}>
           <XAxis
             dataKey='time'
             tickFormatter={(tick) => {
@@ -147,7 +154,8 @@ class PerformanceIndicator extends Component {
          <ReferenceLine
            alwaysShow={true}
            label={
-             <ReferenceLabel referenceVal={this.props.indicator.referenceValue} />
+             <ReferenceLabel
+              referenceVal={this.props.indicator.referenceValue} />
            }
            isFront={true}
            stroke='red'
@@ -159,7 +167,7 @@ class PerformanceIndicator extends Component {
           :
         <ComposedChart
           data={linedata}
-          margin={{ top: 10, right: -30, left: -40, bottom: 0 }}>
+          margin={{ top: 10, right: -30, left: -30, bottom: 0 }}>
           <XAxis dataKey='time' tickFormatter={(tick) => {
             const d = moment(tick, dateFormat).toDate();
             const options = {
@@ -189,7 +197,10 @@ class PerformanceIndicator extends Component {
 
 
 
-    const header = <PerformanceIndicatorHeader {...this.props} lastData={lastDate} lastScore={lastScore} />;
+    const header = <PerformanceIndicatorHeader
+                    {...this.props}
+                    lastData={lastDate}
+                    lastScore={lastScore} />;
 
     return (
       <Panel
@@ -198,6 +209,13 @@ class PerformanceIndicator extends Component {
         bsStyle={(this.props.indicator.selected) ? 'primary' : 'default'}
         header={header}>
         <div style={{ 'float': 'right' }}>
+          <i
+            style={{
+              color: '#377BB5',
+              cursor: 'pointer',
+            }}
+            onClick={() => this.setState({ showInfoModal: true })}
+            className='fa fa-info-circle'></i>&nbsp;
           <input onClick={this._handleClick}
                  className={styles.showValuesCheckbox}
                  type='checkbox'
@@ -205,22 +223,29 @@ class PerformanceIndicator extends Component {
                  id={this.props.pid}
                  name='check' />
           <label className={styles.showValuesLabel} htmlFor={this.props.pid}>
-            <FormattedMessage {...messages.showvalues}>{(message) => <span>{message}</span>}</FormattedMessage>
+            <FormattedMessage {...messages.showvalues}>
+              {(message) => <span>{message}</span>}
+            </FormattedMessage>
           </label>
           &nbsp;&nbsp;
         </div>
-          <ul className='list-unstyled list-inline' style={{ cursor: 'pointer' }}>
+          <ul className='list-unstyled list-inline'
+              style={{ cursor: 'pointer' }}>
             <li>
-              <i className='fa fa-cog' onClick={this._handleCogClick}></i>
+              <i className='fa fa-cog'
+                 onClick={this._handleCogClick}></i>
             </li>
             {
               ['5Y', '3Y', '1Y'].map((range, i) => {
-                return <li
-                          key={i}
-                          style={{
-                            fontWeight: (this.props.indicators.daterange === range) ? 'bold' : '',
-                          }}
-                          onClick={() => this.props.dispatch(setDaterange(range))}>{range}
+                return <li key={i}
+                           style={{
+                             fontWeight:
+                               (this.props.indicators.daterange === range) ?
+                                'bold' : '',
+                            }}
+                            onClick={() =>
+                              this.props.dispatch(setDaterange(range))}>
+                              {range}
                         </li>;
               })
             }
@@ -228,6 +253,32 @@ class PerformanceIndicator extends Component {
           <div style={{ height: 200 }}>
             {visualisationOrBackside}
           </div>
+          <Modal
+            show={this.state.showInfoModal}
+            onHide={() => this.setState({ showInfoModal: false })}>
+            <Modal.Header closeButton>
+              <Modal.Title>
+                Informatie
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+              in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={() => this.setState({
+                showInfoModal: false,
+              })}>
+                  Sluiten
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
       </Panel>
     );
   }

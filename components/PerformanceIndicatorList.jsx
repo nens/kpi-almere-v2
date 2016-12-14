@@ -44,9 +44,11 @@ class PerformanceIndicatorList extends Component {
   }
 
   render() {
-    let _performanceindicators = this.props.indicators.indicators.map((indicator) => {
+    let _performanceindicators = this.props.indicators.indicators.map(
+      (indicator) => {
       return indicator.regions.filter((region) => {
-        if (this.props.indicators.region && region.regionId === this.props.indicators.region.id) {
+        if (this.props.indicators.region &&
+            region.regionId === this.props.indicators.region.id) {
           return {
             'boundaryTypeName': region.boundaryTypeName,
             'name': region.name,
@@ -89,8 +91,7 @@ class PerformanceIndicatorList extends Component {
               key={i}
               order={i}
               selectPi={this._selectPi}
-              openRegister={this.state.openedAtIndex}
-            />;
+              openRegister={this.state.openedAtIndex} />;
     });
 
     return (

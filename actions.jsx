@@ -58,7 +58,7 @@ export function showError(message, level) {
 }
 
 export function setReferenceValueForIndicator(indicatorId, referenceValue) {
-  return dispatch => {
+  return (dispatch, getState) => {
     const referenceValueEndpoint = $.ajax({
       type: 'PUT', // Must be PUT because its an update!
       /* eslint-disable */
@@ -88,7 +88,9 @@ export function setReferenceValueForIndicator(indicatorId, referenceValue) {
     Promise
       .all([referenceValueEndpoint])
       .then(([referenceValueResult]) => {
-        dispatch(setReferenceValue(indicatorId, referenceValue));
+        // dispatch(setReferenceValue(indicatorId, referenceValue));
+        dispatch(showError('Een moment geduld a.u.b...', 'success'));
+        dispatch(fetchIndicators());
       })
       .catch((reason) => {
         dispatch(showError('Instellen referentiewaarde mislukt...', 'error'));
@@ -124,17 +126,25 @@ function requestIndicators() {
   };
 }
 
-function receiveIndicators(piData, zoomlevels) {
+function receiveIndicators(piData, zoomlevels, activeIndicator) {
+  if(activeIndicator === undefined) {
+    setTimeout(
+      () => {
+        $('.pi').first().click();
+      }, 1000);
+  }
+
   return {
     type: RECEIVE_INDICATORS,
     piData,
     zoomlevels,
     receivedAt: Date.now(),
+    activeIndicator,
   };
 }
 
 export function fetchIndicators() {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(requestIndicators());
     const indicatorEndpoint = $.ajax({
       type: 'GET',
@@ -164,7 +174,7 @@ export function fetchIndicators() {
         const zoomlevels = _.uniq(indicatorResults.results.reverse().map((piresult) => {
           return piresult.boundary_type_name;
         }));
-        return dispatch(receiveIndicators(piData, zoomlevels));
+        return dispatch(receiveIndicators(piData, zoomlevels, getState().indicators.indicator));
       });
     });
   };
@@ -241,7 +251,11 @@ function requestRegions() {
 }
 
 function receiveRegions(regions) {
-  // console.log('regions', regions);
+  setTimeout(
+    () => {
+      $('.pi').first().click();
+    }, 1000);
+
   return {
     type: RECEIVE_REGIONS,
     regions,
@@ -266,7 +280,8 @@ export function fetchRegions(type) {
     const regionEndpoint = $.ajax({
       type: 'GET',
       /* eslint-disable */
-      url: `${config.apiBaseUrl}/api/v2/regions/?type=${zoomlevelmapping[type] || 3}&within_portal_bounds=true&format=json&page_size=0`,
+      url: `${config.apiBaseUrl}/api/v2/regions/?type=${zoomlevelmapping[type]
+        || 3}&within_portal_bounds=true&format=json&page_size=0`,
       xhrFields: {
         withCredentials: true,
       },
