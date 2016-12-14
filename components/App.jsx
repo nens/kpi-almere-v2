@@ -3,7 +3,15 @@ import config from '../config.jsx';
 const loadingIndicator = require('./loading.svg');
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
-import { Button, ButtonGroup, Grid, Row, Col, Label, Modal } from 'react-bootstrap';
+import {
+  Button,
+  ButtonGroup,
+  Grid,
+  Row,
+  Col,
+  Label,
+  Modal,
+} from 'react-bootstrap';
 import Pimap from './PiMap.jsx';
 import PerformanceIndicatorList from './PerformanceIndicatorList.jsx';
 import BoundaryTypeSelect from './BoundaryTypeSelect.jsx';
@@ -149,7 +157,7 @@ class App extends Component {
 
   _selectZoomLevel(zoomlevel) {
     this.props.dispatch(setZoomLevel(zoomlevel));
-    this.props.dispatch(fetchRegions(zoomlevel));    
+    this.props.dispatch(fetchRegions(zoomlevel));
   }
 
   render() {
@@ -167,12 +175,14 @@ class App extends Component {
                 <Button
                   onClick={this.openInfo}
                   bsSize='xsmall'>
-                  <i className='fa fa-info-circle'></i>&nbsp;<FormattedMessage {...messages.infobutton} />
+                  <i className='fa fa-info-circle'></i>&nbsp;
+                  <FormattedMessage {...messages.infobutton} />
                 </Button>
                 <Button
                   onClick={this.handleLogout}
                   bsSize='xsmall'>
-                  <i className='fa fa-sign-out'></i>&nbsp;<FormattedMessage {...messages.logoutbutton} />
+                  <i className='fa fa-sign-out'></i>&nbsp;
+                  <FormattedMessage {...messages.logoutbutton} />
                 </Button>
               </ButtonGroup>
             </div>
@@ -180,7 +190,8 @@ class App extends Component {
               fontFamily: '"Lato", "sans-serif"',
               fontWeight: '100',
             }}><FormattedMessage {...messages.apptitle} />
-            {(this.props.indicators.isFetching) ? <img src={loadingIndicator}/> : ''}
+            {(this.props.indicators.isFetching) ?
+              <img src={loadingIndicator}/> : ''}
             </h3>
           </Col>
         </Row>
@@ -189,8 +200,12 @@ class App extends Component {
             <h4>
               <Label bsStyle='info'>
               <FormattedMessage {...messages.selected} />:&nbsp;&nbsp;
-              {(this.props.indicators.region) ? `${this.props.indicators.region.properties.name}` : '---'}&nbsp;
-              {(this.props.indicators.region) ? <i style={{ cursor: 'pointer' }} onClick={this.handleClearSelection} className='fa fa-times'></i> : ''}
+              {(this.props.indicators.region) ?
+                `${this.props.indicators.region.properties.name}` : '---'}&nbsp;
+              {(this.props.indicators.region) ?
+                <i style={{ cursor: 'pointer' }}
+                   onClick={this.handleClearSelection}
+                   className='fa fa-times'></i> : ''}
               </Label>
             </h4>
           </Col>
@@ -230,7 +245,9 @@ class App extends Component {
           <FormattedMessage {...messages.infoModalBody3} tagName='p' />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.closeInfo}><FormattedMessage {...messages.infoModalClose} /></Button>
+          <Button onClick={this.closeInfo}>
+            <FormattedMessage {...messages.infoModalClose} />
+          </Button>
         </Modal.Footer>
       </Modal>
 
@@ -246,8 +263,12 @@ class App extends Component {
           <FormattedMessage {...messages.areYouSureFull} tagName='p' />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.handleRedirectToLogout}><FormattedMessage {...messages.areYouSureConfirm} /></Button>
-          <Button onClick={this.closeLogoutModal}><FormattedMessage {...messages.areYouSureClose} /></Button>
+          <Button onClick={this.handleRedirectToLogout}>
+            <FormattedMessage {...messages.areYouSureConfirm} />
+          </Button>
+          <Button onClick={this.closeLogoutModal}>
+            <FormattedMessage {...messages.areYouSureClose} />
+          </Button>
         </Modal.Footer>
       </Modal>
 
