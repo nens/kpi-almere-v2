@@ -135,17 +135,23 @@ class Pimap extends Component {
     let lastValue;
     let lastScore;
     try {
-      const selection1 = _.filter(this.props.indicators.indicators, { regions: [{ selected: true }] });
-      const selection2 = _.filter(selection1[0].regions, { regionId: feature.id });
+      const selection1 = _.filter(this.props.indicators.indicators, {
+        regions: [{ selected: true }] });
+      const selection2 = _.filter(selection1[0].regions, {
+        regionId: feature.id });
       selectedIndicator = selection2[0];
-      lastValue = selectedIndicator.series[selectedIndicator.series.length - 1].value;
-      lastScore = selectedIndicator.series[selectedIndicator.series.length - 1].score;
+      lastValue = selectedIndicator.series[
+        selectedIndicator.series.length - 1].value;
+      lastScore = selectedIndicator.series[
+        selectedIndicator.series.length - 1].score;
     }
     catch (e) {
       // console.log('error', e);
     }
 
-    let selected = (this.props.indicators.region && this.props.indicators.region.id === feature.id)
+    let selected = (this.props.indicators.region &&
+                    this.props.indicators.region.id === feature.id);
+
     if (this.props.indicators.indicator) {
       // let fillColor;
       // if (lastScore > this.props.indicators.indicator.referenceValue) {
@@ -162,7 +168,8 @@ class Pimap extends Component {
         fillColor,
         fillOpacity: 1,
       });
-      console.log('%c %s %s', `background: ${getColor(lastScore)}; color: #ffffff`, feature.properties.name, lastScore);
+      console.log('%c %s %s', `background: ${getColor(lastScore)};
+        color: #ffffff`, feature.properties.name, lastScore);
     }
     else {
       layer.setStyle({
@@ -173,7 +180,8 @@ class Pimap extends Component {
         fillColor: '#ccc',
         fillOpacity: 1,
       });
-      console.log('%c %s %s', `background: #ccc; color: #ffffff`, feature.properties.name, lastScore);
+      console.log('%c %s %s', `background: #ccc; color: #ffffff`,
+        feature.properties.name, lastScore);
     }
 
   }
@@ -182,9 +190,11 @@ class Pimap extends Component {
     let selectedIndicatorItem;
 
     let zoom = 11;
-    if (selectedIndicatorItem && selectedIndicatorItem.boundaryTypeName === 'DISTRICT') {
+    if (selectedIndicatorItem &&
+        selectedIndicatorItem.boundaryTypeName === 'DISTRICT') {
       zoom = 11;
-    } else if (selectedIndicatorItem && selectedIndicatorItem.boundaryTypeName === 'MUNICIPALITY') {
+    } else if (selectedIndicatorItem &&
+               selectedIndicatorItem.boundaryTypeName === 'MUNICIPALITY') {
       zoom = 9;
     }
 
@@ -196,8 +206,10 @@ class Pimap extends Component {
 
     // A better way may be to use the bounding box instead of the centroid.
     let initialLocation = {
-      lat: (this.props.indicators.centroid) ? this.props.indicators.centroid.geometry.coordinates[1] : 52.3741,
-      lng: (this.props.indicators.centroid) ? this.props.indicators.centroid.geometry.coordinates[0] : 5.2032,
+      lat: (this.props.indicators.centroid) ?
+        this.props.indicators.centroid.geometry.coordinates[1] : 52.3741,
+      lng: (this.props.indicators.centroid) ?
+        this.props.indicators.centroid.geometry.coordinates[0] : 5.2032,
       zoom: zoom,
     };
 
@@ -226,10 +238,15 @@ class Pimap extends Component {
         const center = centroid(feature.geometry);
         let lastScore;
         try {
-          const selection1 = _.filter(this.props.indicators.indicators, { regions: [{ selected: true }] });
-          const selection2 = _.filter(selection1[0].regions, { regionId: feature.id });
+          const selection1 = _.filter(this.props.indicators.indicators, {
+            regions: [{ selected: true }] });
+          const selection2 = _.filter(selection1[0].regions, {
+            regionId: feature.id });
           const selectedIndicator = selection2[0];
-          lastScore = Math.round(selectedIndicator.series[selectedIndicator.series.length - 1].score);
+          lastScore = Math.round(
+            selectedIndicator.series[
+              selectedIndicator.series.length - 1].score
+          );
         }
         catch (e) {
           // console.log('error', e);
@@ -242,7 +259,9 @@ class Pimap extends Component {
             className: styles.mapLabel,
             html: `${(lastScore) ? lastScore : ''}`,
           })}
-          position={[center.geometry.coordinates[1], center.geometry.coordinates[0]]} />;
+          position={[
+            center.geometry.coordinates[1],
+            center.geometry.coordinates[0]]} />;
       }) : [];
 
     return (
@@ -250,7 +269,8 @@ class Pimap extends Component {
            ref='map'
            center={position}
            zoomControl
-           zoom={(this.state.zoomlevel) ? this.state.zoomlevel : initialLocation.zoom}
+           zoom={(this.state.zoomlevel) ?
+             this.state.zoomlevel : initialLocation.zoom}
            scrollWheelZoom={false}
            keyboard={false}
            boxZoom={false}

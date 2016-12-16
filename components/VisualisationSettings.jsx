@@ -61,10 +61,14 @@ export default class VisualisationSettings extends Component {
           <FormattedMessage {...messages.helptext} />
         </Alert>
         <div className='form-group'>
-          <label><FormattedMessage {...messages.currentreferencevalue} /></label>: {currentRefVal}
+          <label>
+            <FormattedMessage {...messages.currentreferencevalue} />
+          </label>: {currentRefVal}
         </div>
         <div className="form-group">
-          <label htmlFor='refval'><FormattedMessage {...messages.referencevalue} /></label>
+          <label htmlFor='refval'>
+            <FormattedMessage {...messages.referencevalue} />
+          </label>
           <input type='number'
                  min='0'
                  ref='refval'
@@ -75,8 +79,12 @@ export default class VisualisationSettings extends Component {
                <br/>
                <div className='pull-right'>
                  <ButtonGroup>
-                   <Button onClick={this.handleChange}><FormattedMessage {...messages.applyRefvalButton} /></Button>
-                   <Button onClick={this.handleClose}><FormattedMessage {...messages.closeRefvalButton} /></Button>
+                    <Button onClick={this.handleChange}>
+                      <FormattedMessage {...messages.applyRefvalButton} />
+                    </Button>
+                    <Button onClick={this.handleClose}>
+                      <FormattedMessage {...messages.closeRefvalButton} />
+                    </Button>
                  </ButtonGroup>
                </div>
         </div>
