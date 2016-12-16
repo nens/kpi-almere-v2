@@ -79,7 +79,6 @@ class PerformanceIndicator extends Component {
   }
 
   render() {
-
     let linedata = this.props.indicator.series.map((item) => {
       const formattedDate = moment(item.date).format('DD-MM-YYYY');
       return {
@@ -130,7 +129,7 @@ class PerformanceIndicator extends Component {
         {(this.state.showValues) ?
         <ComposedChart
           data={linedata}
-          margin={{ top: 15, right: -30, left: -20, bottom: 0 }}>
+          margin={{ top: 15, right: 0, left: -20, bottom: 0 }}>
           <XAxis
             dataKey='time'
             tickFormatter={(tick) => {
@@ -146,8 +145,10 @@ class PerformanceIndicator extends Component {
            yAxisId='right'
            orientation='left'
            padding={{ bottom: 10 }}
+           tickFormatter={(tick) => {
+             return parseFloat(tick);
+           }}
          />
-
          <Tooltip />
          <Bar
             type='monotone'
@@ -172,22 +173,28 @@ class PerformanceIndicator extends Component {
           :
         <ComposedChart
           data={linedata}
-          margin={{ top: 10, right: -30, left: -30, bottom: 0 }}>
-          <XAxis dataKey='time' tickFormatter={(tick) => {
-            const d = moment(tick, dateFormat).toDate();
-            const options = {
-              year: '2-digit',
-              month: 'short',
-            };
-            return `${d.toLocaleDateString('nl-NL', options)}`;
-          }} />
-         <YAxis
-           yAxisId='left'
-           domain={['dataMin - 1', 10]}
-           padding={{ bottom: 0 }}
-           tickCount={3}
-         />
-         <Tooltip />
+          margin={{ top: 10, right: 0, left: -30, bottom: 0 }}>
+            <XAxis dataKey='time' tickFormatter={(tick) => {
+              const d = moment(tick, dateFormat).toDate();
+              const options = {
+                year: '2-digit',
+                month: 'short',
+              };
+              return `${d.toLocaleDateString('nl-NL', options)}`;
+            }} />
+           <YAxis
+             tickFormatter={(tick) => {
+               return parseInt(tick);
+             }}
+             yAxisId='left'
+             domain={['dataMin - 1', 10]}
+             padding={{ bottom: 0 }}
+             tickCount={3}
+           />
+           <Tooltip formatter={(value) => {
+             console.log('value', value);
+             return value;
+           }}/>
            <Area
              type='monotone'
              yAxisId='left'
