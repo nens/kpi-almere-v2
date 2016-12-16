@@ -82,7 +82,12 @@ class PerformanceIndicator extends Component {
 
     let linedata = this.props.indicator.series.map((item) => {
       const formattedDate = moment(item.date).format('DD-MM-YYYY');
-      return { time: formattedDate, value: item.value, score: item.score };
+      return {
+        originaldate: item.date,
+        time: formattedDate,
+        value: item.value,
+        score: item.score,
+      };
     });
 
     let interval = -12; // 3 months back by default
@@ -98,7 +103,7 @@ class PerformanceIndicator extends Component {
       break;
     }
 
-    const lastDate = new Date(linedata[linedata.length - 1].time);
+    const lastDate = moment(linedata[linedata.length - 1].originaldate).toDate();
     const timeBack = d3.time.month.offset(lastDate, interval);
 
     const lastScore = linedata[linedata.length - 1].score;
@@ -107,8 +112,8 @@ class PerformanceIndicator extends Component {
     const dateFormat = "dd - MM - YYYY";
 
     linedata = linedata.filter((linedataItem) => {
-      if (new Date(linedataItem.time) >= timeBack &&
-          new Date(linedataItem.time) <= lastDate) {
+      if (moment(linedataItem.originaldate).toDate() >= timeBack &&
+          moment(linedataItem.originaldate).toDate() <= lastDate) {
         return linedataItem;
       }
       return false;
