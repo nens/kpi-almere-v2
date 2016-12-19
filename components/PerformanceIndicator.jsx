@@ -187,8 +187,8 @@ class PerformanceIndicator extends Component {
                return parseInt(tick);
              }}
              yAxisId='left'
-             domain={['dataMin - 1', 10]}
-             padding={{ bottom: 0 }}
+             domain={[0, 10]}
+             padding={{ bottom: 10 }}
              tickCount={3}
            />
            <Tooltip formatter={(value) => {
