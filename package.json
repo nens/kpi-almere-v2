@@ -1,6 +1,6 @@
 {
   "name": "kpi-dashboard",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "KPI Dashboard based on Lizard 6 API",
   "repository": {
     "type": "git",
