@@ -170,11 +170,9 @@ function indicators(state = {
             parseInt(action.activeIndicator.indicatorId) ? true : false;
         }
 
-        return {
-          name: item[0].name,
-          id: guid(),
-          indicatorId,
-          regions: item[1].regions.map((region, i) => {
+        let regions;
+        try {
+          regions = item[1].regions.map((region, i) => {
             const splittedRegionUrl = region.region_url.split('/');
             const regionId = Number(
               splittedRegionUrl[splittedRegionUrl.length - 2]
@@ -195,7 +193,16 @@ function indicators(state = {
               daterange: '1Y',
               selected: selected,
             };
-          }),
+          });
+        } catch(e) {
+          regions = [];
+        };
+
+        return {
+          name: item[0].name,
+          id: guid(),
+          indicatorId,
+          regions: regions,
         };
       }),
       zoomlevels: action.zoomlevels,

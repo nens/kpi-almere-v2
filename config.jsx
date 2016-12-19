@@ -1,4 +1,4 @@
 var config = {
-  'apiBaseUrl': 'https://nxt.staging.lizard.net',
+  'apiBaseUrl': 'https://flevoland.lizard.net',
 };
 export default config;

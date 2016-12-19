@@ -3,6 +3,7 @@ var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
 var config = require('./webpack.config');
 var express = require('express');
+var request = require('request');
 
 var app = new (express)();
 var port = 3000;
