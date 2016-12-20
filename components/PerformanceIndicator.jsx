@@ -160,8 +160,7 @@ class PerformanceIndicator extends Component {
          <ReferenceLine
            alwaysShow={true}
            label={
-             <ReferenceLabel
-              referenceVal={this.props.indicator.referenceValue} />
+             <ReferenceLabel {...this.props} />
            }
            isFront={true}
            stroke='red'
