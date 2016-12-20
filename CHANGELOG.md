@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.8"></a>
+## [0.1.8](https://github.com/nens/kpi-dashboard/compare/v0.1.7...v0.1.8) (2016-12-20)
+
+
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/nens/kpi-dashboard/compare/v0.1.6...v0.1.7) (2016-12-19)
 
