@@ -16,10 +16,18 @@ var config = {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js'
   },
-  plugins: [new HtmlWebpackPlugin({
-    title: 'KPI Dashboard',
-    template: 'index.template.html'
-  })],
+  plugins: [
+    new webpack.optimize.DedupePlugin(),
+    new HtmlWebpackPlugin({
+      title: 'KPI Dashboard',
+      template: 'index.template.html'
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            warnings: false
+        }
+    })    
+  ],
   module: {
     loaders: [
       {
