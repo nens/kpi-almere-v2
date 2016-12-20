@@ -274,13 +274,16 @@ class PerformanceIndicator extends Component {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <strong>In dit venster is informatie opgenomen over de prestatie indicator. In de titelbalk is informatie opgenomen met achtereenvolgens:</strong><br/><br/>
+              <ul>
+              <li>Naamgeving van de prestatie indicator.</li>
+              <li>Het aggregatieniveau dat in de kaart is geselecteerd.</li>
+              <li>De actuele score van het geselecteerde gebied, inclusief gekleurde achtergrond, dat overeen komt het geselecteerde gebied op de kaart.</li>
+              <li>Een lizard-icoon, met een directe koppeling naar Lizard.</li>
+              </ul>
+              <p>In de grafiek is de trendlijn van de prestatie indicator weergegeven, voor de ingestelde tijdsperiode. De PI-scores zijn per gebied en per maand bepaald, op basis van het aantal relevante gebeurtenissen en de gehanteerde referentiewaarde. De PI-score varieert tussen de waarde 10 en 1. De referentiewaarde is de waarde die wordt gehanteerd waarop de gebruiker gesignaleerd wilt worden om actie te ondernemen. Dit heeft als resultaat een PI-score van 5,5.</p>
+              <p>Het aantal gebeurtenissen en de gehanteerde referentiewaarde zijn zichtbaar door de optie "toon waardes" aan te vinken. Er is één referentiewaarde instelbaar per aggregatieniveau (gemeente, wijk, buurt).</p>
+              <p>Indien de PI-scores zijn genormaliseerd op basis van gebiedskenmerken - om een vergelijkbare PI-score te krijgen zodat het éne gebied in verhouding staat tot het andere gebied - worden zowel de genormaliseerde gebeurtenissen als de genormaliseerde referentiewaarde getoond. Nadere informatie hierover krijgt u door op het tandwieltje te klikken. De referentiewaarde kan alleen worden ingesteld door de beheerder van de applicatie.</p>
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={() => this.setState({

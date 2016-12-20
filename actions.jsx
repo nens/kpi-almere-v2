@@ -256,6 +256,16 @@ function receiveRegions(regions) {
       $('.pi').first().click();
     }, 1000);
 
+  if(regions.results.features.length === 0) {
+    return {
+      type: RECEIVE_REGIONS,
+      regions,
+      bbox: undefined,
+      centroid: undefined,
+      receivedAt: Date.now(),
+    };
+  }
+
   return {
     type: RECEIVE_REGIONS,
     regions,
@@ -290,11 +300,13 @@ export function fetchRegions(type) {
         return data;
       },
     });
-    Promise.all([regionEndpoint]).then(([regionResults]) => {
+    Promise
+    .all([regionEndpoint]).then(([regionResults]) => {
       let regions = {};
       regions.results = regionResults;
       return dispatch(receiveRegions(regions));
-    }).then((result) => {
+    })
+    .then((result) => {
       const currentRegion = result.regions.results.features[0];
       return dispatch(setRegion(currentRegion));
     });
