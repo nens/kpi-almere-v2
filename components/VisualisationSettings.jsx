@@ -1,7 +1,6 @@
 import styles from './VisualisationSettings.css';
 import { Alert, Grid, Row, Col, Label, Button, ButtonToolbar, ButtonGroup }  from 'react-bootstrap';
 import React, { Component, PropTypes } from 'react';
-import _ from 'lodash';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import {
