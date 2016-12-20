@@ -1,5 +1,5 @@
 .Map {
-  z-index: -9;
+  /*z-index: -9;*/
 	display: block;
 	position: absolute;
 	top: 50px;

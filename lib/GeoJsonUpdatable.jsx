@@ -1,8 +1,9 @@
 import React from 'react';
-import {GeoJson } from 'react-leaflet';
+import {GeoJSON} from 'react-leaflet';
 import _ from 'lodash';
 
-export default class GeoJsonUpdatable extends GeoJson {
+export default class GeoJsonUpdatable extends GeoJSON {
+
   componentWillReceiveProps(prevProps) {
     if (prevProps.data !== this.props.data) {
       this.leafletElement.clearLayers();
@@ -13,7 +14,7 @@ export default class GeoJsonUpdatable extends GeoJson {
     if (prevProps.data !== this.props.data) {
       this.leafletElement.addData(this.props.data);
       let selFeat = this.props.selectedFeature;
-      let selLayer; 
+      let selLayer;
       _.forEach(this.leafletElement._layers, function (layer) {
         if (selFeat && layer.feature && selFeat.id === layer.feature.id) {
           selLayer = layer

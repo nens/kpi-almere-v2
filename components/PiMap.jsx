@@ -134,20 +134,27 @@ class Pimap extends Component {
     let selectedIndicator;
     let lastValue;
     let lastScore;
-    try {
-      const selection1 = _.filter(this.props.indicators.indicators, {
-        regions: [{ selected: true }] });
-      const selection2 = _.filter(selection1[0].regions, {
-        regionId: feature.id });
+    let selection2;
+
+    const selection1 = _.filter(this.props.indicators.indicators, {
+      regions: [{ selected: true }]
+    });
+    if (selection1.length > 0) {
+      selection2 = _.filter(selection1[0].regions, {
+        regionId: feature.id
+      });
       selectedIndicator = selection2[0];
-      lastValue = selectedIndicator.series[
-        selectedIndicator.series.length - 1].value;
-      lastScore = selectedIndicator.series[
-        selectedIndicator.series.length - 1].score;
+      if(selectedIndicator) {
+        lastValue = selectedIndicator.series[
+          selectedIndicator.series.length - 1].value;
+        lastScore = selectedIndicator.series[
+            selectedIndicator.series.length - 1].score;
+      }
+
     }
-    catch (e) {
-      // console.log('error', e);
-    }
+
+
+
 
     let selected = (this.props.indicators.region &&
                     this.props.indicators.region.id === feature.id);
@@ -261,7 +268,8 @@ class Pimap extends Component {
           })}
           position={[
             center.geometry.coordinates[1],
-            center.geometry.coordinates[0]]} />;
+            center.geometry.coordinates[0]]}
+        />;
       }) : [];
 
     return (
