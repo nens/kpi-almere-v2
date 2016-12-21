@@ -7,7 +7,6 @@ class ReferenceLabel extends Component {
   }
 
   render() {
-    console.log('--->', this.props);
     const { x, y, stroke, payload, referenceVal } = this.props;
     return (
       <svg>
@@ -18,7 +17,7 @@ class ReferenceLabel extends Component {
         </filter>
       </defs>
       <text filter={'url(#solid)'} fill={'red'} x={45} y={(y - 5)}>
-        Referentiewaarde: {this.props.indicator.referenceValue} {(this.props.indicator.normalisedByValue) ? `(per ${this.props.indicator.normalisedByValue} ${this.props.indicator.normalisedBy})` : ''}
+        Referentiewaarde: {this.props.indicator.referenceValue} {(this.props.indicator.normalisedBy) ? `(per ${this.props.indicator.normalisedBy})` : ''}
       </text>
       </svg>
     );

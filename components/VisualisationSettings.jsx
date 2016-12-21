@@ -62,7 +62,7 @@ export default class VisualisationSettings extends Component {
         <div className='form-group'>
           <label>
             <FormattedMessage {...messages.currentreferencevalue} />
-          </label>: {currentRefVal} {(this.props.indicator.normalisedByValue) ? `(per ${this.props.indicator.normalisedByValue} ${this.props.indicator.normalisedBy})` : ''}
+          </label>: {currentRefVal} {(this.props.indicator.normalisedBy) ? `(per ${this.props.indicator.normalisedBy})` : ''}
         </div>
         <div className="form-group">
           <label htmlFor='refval'>
