@@ -92,6 +92,9 @@ class PerformanceIndicatorHeader extends Component {
         <span className='pull-right'>
           <Label style={{
             fontSize: '0.95em',
+            color: (
+              Math.round(this.props.lastScore) > 2 &&
+              Math.round(this.props.lastScore) < 7) ? 'black' : 'white',
             backgroundColor: getColor(this.props.lastScore),
           }}>
             {Math.round(this.props.lastScore)}

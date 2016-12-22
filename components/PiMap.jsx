@@ -263,7 +263,9 @@ class Pimap extends Component {
           key={i}
           onClick={() => self.handleMapClick(feature)}
           icon={new L.DivIcon({
-            className: styles.mapLabel,
+            className: (
+              Math.round(lastScore) > 2 &&
+              Math.round(lastScore) < 7) ? styles.mapLabelBlack : styles.mapLabelWhite,
             html: `${(lastScore) ? lastScore : ''}`,
           })}
           position={[

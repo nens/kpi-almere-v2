@@ -42,9 +42,15 @@
   background-repeat: repeat;
 }
 
-.mapLabel {
+.mapLabelWhite {
   font-size: 1.2em;
   font-weight: bolder;
   color: #fff;
+  width: 70px !important;
+}
+.mapLabelBlack {
+  font-size: 1.2em;
+  font-weight: bolder;
+  color: #000;
   width: 70px !important;
 }
