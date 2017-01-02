@@ -1,4 +1,4 @@
 var config = {
-  'apiBaseUrl': 'https://flevoland.lizard.net',
+  'apiBaseUrl': 'https://demo.lizard.net',
 };
 export default config;
