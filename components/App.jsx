@@ -67,7 +67,7 @@ const messages = defineMessages({
   },
   infoModalBody: {
     id: 'app.infomodalbody',
-    defaultMessage: 'Hier zit u het Dashboard Prestatie Indicatoren voor de waterbeheerder van gemeente Almere. Dit dashboard geeft inzicht in de prestaties van de operationele doelstellingen van de waterbeheerder.',
+    defaultMessage: 'Hier zit u het Dashboard Prestatie Indicatoren. Dit dashboard geeft inzicht in de prestaties van de operationele doelstellingen van de waterbeheerder.',
   },
   infoModalBody2: {
     id: 'app.infomodalbody2',

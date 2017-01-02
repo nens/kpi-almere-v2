@@ -11,7 +11,7 @@
 // 9,5 - 10
 
 export default function getColor(d) {
-  console.log('getColor(d)', d);
+  // console.log('getColor(d)', d);
   // d = Math.floor(Number(d));
   if (d === 0) {
     return 'grey';
