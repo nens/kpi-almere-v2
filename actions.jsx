@@ -62,7 +62,7 @@ export function setReferenceValueForIndicator(indicatorId, referenceValue) {
     const referenceValueEndpoint = $.ajax({
       type: 'PUT', // Must be PUT because its an update!
       /* eslint-disable */
-      url: `${config.apiBaseUrl}/api/v2/pi/${indicatorId}/`,
+      url: `/api/v2/pi/${indicatorId}/`,
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify({
@@ -148,7 +148,7 @@ export function fetchIndicators() {
     dispatch(requestIndicators());
     const indicatorEndpoint = $.ajax({
       type: 'GET',
-      url: `${config.apiBaseUrl}/api/v2/pi/`,
+      url: `/api/v2/pi/`,
       xhrFields: {
         withCredentials: true,
       },
@@ -216,7 +216,7 @@ export function fetchApplicationBootstrap() {
     dispatch(requestApplicationBootstrap());
     const bootstrapEndpoint = $.ajax({
       type: 'GET',
-      url: `${config.apiBaseUrl}/bootstrap/kpi/`,
+      url: `/bootstrap/kpi/`,
       xhrFields: {
         withCredentials: true,
       },
@@ -290,7 +290,7 @@ export function fetchRegions(type) {
     const regionEndpoint = $.ajax({
       type: 'GET',
       /* eslint-disable */
-      url: `${config.apiBaseUrl}/api/v2/regions/?type=${zoomlevelmapping[type]
+      url: `/api/v2/regions/?type=${zoomlevelmapping[type]
         || 3}&within_portal_bounds=true&format=json&page_size=0`,
       xhrFields: {
         withCredentials: true,

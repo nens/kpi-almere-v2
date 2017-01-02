@@ -31,7 +31,7 @@ class PerformanceIndicatorHeader extends Component {
 
   render() {
     // Should be replaced with 'location.href' to make it dynamic:
-    const baseUrl = `${config.apiBaseUrl}/`;
+
 
     const zoom = '11';
     const spatialbounds = this.props.bootstrap.bootstrap.spatial_bounds;
@@ -67,7 +67,7 @@ class PerformanceIndicatorHeader extends Component {
     const eventUuid = eventSeriesUrl.split('/')[6].split('-')[0];
     const layerFragment = 'topography,eventseries$' + eventUuid;
 
-    const dynamicLizardLink = `${baseUrl}nl/map/${layerFragment}/point@${lat},${lng},${zoom}/${fromDate}-${toDate}`;
+    const dynamicLizardLink = `/nl/map/${layerFragment}/point@${lat},${lng},${zoom}/${fromDate}-${toDate}`;
 
     return (
       <div

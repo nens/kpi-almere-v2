@@ -148,7 +148,7 @@ class App extends Component {
   }
 
   handleRedirectToLogout() {
-    window.location.href = `${config.apiBaseUrl}/accounts/logout/`;
+    window.location.href = '/accounts/logout/';
   }
 
   _selectRegion(region) {
