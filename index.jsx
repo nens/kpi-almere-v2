@@ -21,7 +21,7 @@ addLocaleData([...en, ...nl]);
 
 const piEndpoint = $.ajax({
   type: 'GET',
-  url: `${config.apiBaseUrl}/bootstrap/kpi/`,
+  url: '/bootstrap/kpi/',
   xhrFields: {
     withCredentials: true,
   },
@@ -35,7 +35,7 @@ Promise.all([piEndpoint]).then((data) => {
   // This is not a temporary measure. A new endpoint should be made for checking
   // auth status from a serverless JS app such as this one...
   if (data[0].pis.length === 0) {
-    window.location.href = `${config.apiBaseUrl}/accounts/login/?next=${window.location.href}`;
+    window.location.href = `/accounts/login/?next=${window.location.href}`;
   }
   else {
     const languageFromBootstrap = data[0].locale;

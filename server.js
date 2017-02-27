@@ -14,7 +14,40 @@ app.use(webpackHotMiddleware(compiler));
 
 app.use(express.static(__dirname + '/'));
 
-app.listen(port, function(error) {
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.use('/bootstrap/kpi/', (req, res) => {
+  const url = 'https://flevoland.lizard.net/bootstrap/kpi/';
+  const headers = {
+    'username': process.env.sso_user,
+    'password': process.env.sso_pass,
+  };
+  req.pipe(request({
+    url,
+    headers,
+  })).pipe(res);
+});
+
+
+app.use('/api', (req, res) => {
+  const url = 'https://flevoland.lizard.net/api' + req.url;
+  const headers = {
+    'username': process.env.sso_user,
+    'password': process.env.sso_pass,
+  };
+  req.pipe(request({
+    url,
+    headers,
+  })).pipe(res);
+});
+
+
+app.listen(port, '0.0.0.0', (error) => {
   if (error) {
     console.error(error);
   } else {

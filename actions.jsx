@@ -148,7 +148,7 @@ export function fetchIndicators() {
     dispatch(requestIndicators());
     const indicatorEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/v2/pi/`,
+      url: `/api/v2/pi/?page_size=0`,
       xhrFields: {
         withCredentials: true,
       },
@@ -158,11 +158,14 @@ export function fetchIndicators() {
     });
     Promise.all([indicatorEndpoint]).then(([indicatorResults]) => {
       // Now, get the details for every PI object
+      const urls = indicatorResults.map((indicator) => {
 
-      const urls = indicatorResults.results.map((indicator) => {
+        let parser = document.createElement('a');
+        parser.href = indicator.url;
+
         return $.ajax({
           type: 'GET',
-          url: `${indicator.url}`,
+          url: `${parser.pathname}`,
           xhrFields: {
             withCredentials: true,
           },
@@ -170,8 +173,9 @@ export function fetchIndicators() {
       });
       Promise.all(urls).then((details) => {
         // Combine the pi detail with the pi parent
-        const piData = _.zip(indicatorResults.results, details);
-        const zoomlevels = _.uniq(indicatorResults.results.reverse().map((piresult) => {
+
+        const piData = _.zip(indicatorResults, details);
+        const zoomlevels = _.uniq(indicatorResults.reverse().map((piresult) => {
           return piresult.boundary_type_name;
         }));
         return dispatch(receiveIndicators(piData, zoomlevels, getState().indicators.indicator));

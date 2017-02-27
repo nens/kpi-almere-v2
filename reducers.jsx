@@ -143,11 +143,11 @@ function indicators(state = {
     });
   case REQUEST_REGIONS:
     return Object.assign({}, state, {
-      isFetching: true,
+      // isFetching: true,
     });
   case RECEIVE_REGIONS:
     return Object.assign({}, state, {
-      isFetching: false,
+      // isFetching: false,
       bbox: action.bbox,
       centroid: action.centroid,
       regions: action.regions,

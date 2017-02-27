@@ -10,13 +10,18 @@ var definePlugin = new webpack.DefinePlugin({
 
 var config = {
   // We change to normal source mapping
-  devtool: 'source-map',
+  // devtool: 'source-map',
   entry: './index.jsx',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js'
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': '"production"'
+      },
+    }),    
     new webpack.optimize.DedupePlugin(),
     new HtmlWebpackPlugin({
       title: 'KPI Dashboard',
@@ -26,7 +31,7 @@ var config = {
         compress: {
             warnings: false
         }
-    })    
+    })
   ],
   module: {
     loaders: [
