@@ -155,20 +155,9 @@ If a release went wrong and you, don't worry just fix the error and run it again
 Deployment
 ==========
 
-To deploy this project to integration or staging, make sure to do the following:
-
-* Copy `deploy/hosts.example` to `deploy/hosts` and edit the servers under [integration] and/or [staging]. For production, do the same but in a copy of `deploy/production_hosts.example`.
-
-* Copy `deploy/auth.json.example` to `deploy/auth.json` and make sure that your [Github token](https://github.com/settings/tokens) is filled out. The access token needs full repo access, so make sure to select the right scopes when creating the token.
-
-Make sure you have Ansible [installed on your system](http://docs.ansible.com/ansible/intro_installation.html).
-
-Run:
-```
-$ ansible-playbook -i deploy/hosts deploy/deploy.yml -k -K --limit=integration -u your.username --extra-vars="version=0.1.0"
-```
-
-Where `--limit` is a safety measure to deploy only to that host and `--extra-vars "version=0.1.0"` defines [which version](https://github.com/nens/kpi-dashboard/releases) to release.
+For the deployment of frontend repositories we make use of an Ansible script in the lizard-nxt repository.
+More information is provided in the readme file of lizard-nxt: https://github.com/nens/lizard-nxt/blob/master/README.rst
+Look below the heading "Deployment clients".
 
 
 ESlint
