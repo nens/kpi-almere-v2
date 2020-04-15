@@ -91,7 +91,7 @@
     "shelljs": "^0.7.4",
     "style-loader": "",
     "url-loader": "",
-    "webpack": "",
+    "webpack": "1.14.0",
     "webpack-dev-middleware": "",
     "webpack-hot-middleware": ""
   }

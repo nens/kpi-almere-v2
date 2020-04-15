@@ -57,10 +57,14 @@ Installing dependencies
 
 Globally, install `babel-cli`: `$ npm install -g babel-cli`.
 
-In the project directory:
+In the project directory:  
+~~$ npm install~~
+
+EDIT due to problems with webpack do yarn install instead:
 ```
-$ npm install
+$ yarn install
 ```
+
 
 This will install all thats needed to develop or build.
 
@@ -73,15 +77,26 @@ Please re-generate it when changing dependencies in `package.json`.
 Development
 ===========
 
-To start development, in the root of the project:
+To start development, in the root of the project:  
+~~$ npm start~~
 
+EDIT due to problems with webpack do yarn start instead:
 ```
-$ npm start
+$ yarn start
 ```
 This will start Webpack in Hot Module Replacement (HMR) mode and will also
 create a source-map file for debugging.
 Open http://localhost:3000 in a webbrowser... Most changes will reflect instantly,
 or your console will tell you to refresh manually. Error messages will be shown in the browser as well, for easy debugging.
+
+Dev trouble
+===========
+
+If you get redirected to a login on dev, but this does not work, then I worked around it by commenting out:  
+if (data[0].pis.length === 0) {  
+    window.location.href = `/accounts/login/?next=${window.location.href}`;  
+  }  
+You wil not get to run all features, but maybe just enough to test a small change (in my case).  
 
 
 Translations

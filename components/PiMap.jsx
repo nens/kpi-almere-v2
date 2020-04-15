@@ -292,7 +292,7 @@ class Pimap extends Component {
                   }}>
         <TileLayer
           attribution=''
-          url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15e647c/{z}/{x}/{y}.png'
+          url={`https://api.mapbox.com/styles/v1/nelenschuurmans/ck8o9q49a3df21ipjpobadw4y/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmVsZW5zY2h1dXJtYW5zIiwiYSI6ImhkXzhTdXcifQ.3k2-KAxQdyl5bILh_FioCw`}
         />
         <GeoJsonUpdatable
           data={filteredFeatures}

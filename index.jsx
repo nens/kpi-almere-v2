@@ -37,7 +37,6 @@ Promise.all([piEndpoint]).then((data) => {
   if (data[0].pis.length === 0) {
     window.location.href = `/accounts/login/?next=${window.location.href}`;
   }
-  else {
     const languageFromBootstrap = data[0].locale;
     const messages = localeData[languageFromBootstrap];// || localeData[language] || localeData.en;
 
@@ -55,5 +54,4 @@ Promise.all([piEndpoint]).then((data) => {
       </IntlProvider>,
       document.getElementById('root')
     );
-  }
 });
