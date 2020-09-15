@@ -50,7 +50,7 @@
     "turf-point": "^2.0.1",
     "turf-simplify": "",
     "underscore": "1.8.3",
-    "underscore.string": "3.3.4",
+    "underscore.string": "3.3.5",
     "webworkify-webpack": "^1.0.4",
     "why-did-you-update": ""
   },
